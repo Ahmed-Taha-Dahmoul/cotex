@@ -1,14 +1,26 @@
 import React from 'react';
 import './App.css';
-import GameList from './components/GameList';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import GameList from './components/GameList/GameList';
+import GameDetail from './components/Gamedetail/GameDetail';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <GameList />
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <header className="App-header">
+          <nav>
+            <Link to="/">Home</Link>
+          </nav>
+        </header>
+        <main>
+          <Routes>
+            <Route path="/" element={<GameList />} />
+            <Route path="/games/:id" element={<GameDetail />} />
+          </Routes>
+        </main>
+      </div>
+    </Router>
   );
 }
 
