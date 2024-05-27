@@ -34,17 +34,18 @@ class GameLinksSpider(scrapy.Spider):
             if link == self.first_link:
                 self.log(f"Stopping crawl as link {link} matches the first saved link.")
                 return
-            
-            # Add the game to the list of new games
-            self.new_games.append({
-                'title': title,
-                'link': link
-            })
 
-            yield {
-                'title': title,
-                'link': link
-            }
+            # Only add the game to the list if the link contains "https://www.gamestorrents.fm"
+            if link and link.startswith("https://www.gamestorrents.fm"):
+                self.new_games.append({
+                    'title': title,
+                    'link': link
+                })
+
+                yield {
+                    'title': title,
+                    'link': link
+                }
 
         # Follow the next page link
         next_page = response.css('ul.pagination li a:contains("›")::attr(href)').get()

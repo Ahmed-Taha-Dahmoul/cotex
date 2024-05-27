@@ -2,6 +2,7 @@ import scrapy
 import json
 import os
 from googletrans import Translator
+from datetime import datetime  # Import datetime module
 
 # Ensure Django is setup before importing models
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cotex.settings')
@@ -22,7 +23,7 @@ class GameDetailsSpider(scrapy.Spider):
         rel_path = '../../visited_links_everyday.json'
         abs_file_path = os.path.join(script_dir, rel_path)
 
-        scraped_rel_path = '../../scraped_games_evreyday.json'
+        scraped_rel_path = '../../scraped_games_everyday.json'
         scraped_abs_file_path = os.path.join(script_dir, scraped_rel_path)
 
         existing_games = []
@@ -74,7 +75,11 @@ class GameDetailsSpider(scrapy.Spider):
         item['languages'] = response.css('li.idioma span img::attr(title)').getall()
         item['format'] = response.css('li:contains("Formato:") strong::text').get()
         item['description'] = response.css('p.mantekol').xpath('string()').get()
-        item['release_date'] = response.css('li:contains("Fecha:") strong::text').get()
+        
+        # Extract and convert the release date
+        raw_date = response.css('li:contains("Fecha:") strong::text').get()
+        item['release_date'] = self.convert_date_format(raw_date)
+
         item['cracker'] = response.css('li:contains("Release:") strong::text').get()
         item['version'] = response.css('li:contains("Version:") strong::text').get()
         item['size'] = response.css('li:contains("Tamaño:") strong::text').get()
@@ -118,3 +123,14 @@ class GameDetailsSpider(scrapy.Spider):
             return ''
         translated_text = self.translator.translate(text, src='auto', dest='en')
         return translated_text.text
+
+    def convert_date_format(self, raw_date):
+        """Convert date from DD-MM-YYYY to YYYY-MM-DD format."""
+        if not raw_date:
+            return None
+        try:
+            date_obj = datetime.strptime(raw_date, '%d-%m-%Y')
+            return date_obj.strftime('%Y-%m-%d')
+        except ValueError:
+            self.logger.error(f"Invalid date format for date: {raw_date}")
+            return None
