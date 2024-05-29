@@ -1,0 +1,9 @@
+footer {
+    font-family: var(--font-inter), sans-serif;
+    background-color: #1f2937; /* Tailwind gray-800 */
+    color: #ffffff; /* Tailwind white */
+    text-align: center;
+    padding: 1rem 1.5rem; /* Tailwind py-4 px-6 */
+    margin-top: 1%;
+  }
+  

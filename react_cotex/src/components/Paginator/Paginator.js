@@ -1,63 +1,24 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+
 
 const Paginator = ({ currentPage, totalPages, onPageChange }) => {
-  const renderPageNumbers = () => {
-    const pageNumbers = [];
-    const numPagesToShow = 5;
-
-    if (currentPage !== 1) {
-      pageNumbers.push(1);
-    }
-
-    if (currentPage > 3) {
-      const startPage = Math.max(currentPage - 2, 2);
-      if (startPage > 2) {
-        pageNumbers.push('...');
-      }
-      for (let i = startPage; i < currentPage; i++) {
-        pageNumbers.push(i);
-      }
-    }
-
-    pageNumbers.push(currentPage);
-
-    if (currentPage < totalPages - 2) {
-      const endPage = Math.min(currentPage + 2, totalPages - 1);
-      for (let i = currentPage + 1; i <= endPage; i++) {
-        pageNumbers.push(i);
-      }
-      if (endPage < totalPages - 1) {
-        pageNumbers.push('...');
-      }
-    } else {
-      for (let i = currentPage + 1; i <= totalPages - 1; i++) {
-        pageNumbers.push(i);
-      }
-    }
-
-    if (currentPage !== totalPages) {
-      pageNumbers.push(totalPages);
-    }
-
-    return (
-      <div className="pagination">
-        {pageNumbers.map((number, index) => (
-          <React.Fragment key={index}>
-            {number === '...' ? (
-              <span className="ellipsis">...</span>
-            ) : (
-              <Button onClick={() => onPageChange(number)} disabled={number === currentPage}>
-                {number === currentPage ? <strong>{number}</strong> : number}
-              </Button>
-            )}
-          </React.Fragment>
-        ))}
-      </div>
-    );
+  const handleChange = (event, value) => {
+    onPageChange(value);
   };
 
-  return <div>{renderPageNumbers()}</div>;
+  return (
+    <Stack spacing={2} style={{ margin: '20px' }}> {/* Add margin here */}
+      <Pagination
+        count={totalPages}
+        page={currentPage}
+        onChange={handleChange}
+        variant="outlined"
+        shape="rounded"
+      />
+    </Stack>
+  );
 };
 
 export default Paginator;
