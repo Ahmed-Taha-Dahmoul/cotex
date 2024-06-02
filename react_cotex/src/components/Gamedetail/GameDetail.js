@@ -32,7 +32,7 @@ const GameDetail = () => {
         </Spinner>
       ) : (
         <Card>
-          <Card.Img variant="top" src={game.image_url} />
+          <Card.Img variant="top" src={`http://localhost:8000/${game.image_path}`} />
           <Card.Body>
             <Card.Title>{game.title}</Card.Title>
             <Card.Text>{game.description}</Card.Text>

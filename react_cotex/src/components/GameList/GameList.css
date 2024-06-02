@@ -1,6 +1,7 @@
 .container-game-list {
-  margin-left: -8px; /* Add negative margin to the left */
-  margin-right: -8px; /* Add negative margin to the right */
+  margin-left: 300px; /* Add negative margin to the left */
+  margin-right: 300px; /* Add negative margin to the right */
+  margin-top: 50px;
 }
 
 .game-card {

@@ -12,5 +12,5 @@ class GameResource(resources.ModelResource):
 class GameAdmin(ImportExportMixin, admin.ModelAdmin):
     resource_class = GameResource
     list_display = ('title', 'release_date', 'platform', 'version')
-    search_fields = ['title', 'platform', 'version']
+    search_fields = ['title', 'platform', 'version', 'release_date']  # Add 'release_date' here
     show_full_result_count = False  # Disable pagination

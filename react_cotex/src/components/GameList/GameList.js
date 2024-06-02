@@ -38,12 +38,13 @@ const GameList = () => {
     <div className="container-game-list">
       <Row gutter={[16, 16]}>
         {games.map((game) => (
-          <Col key={game.id} xs={24} sm={12} md={8} lg={4} xl={4} style={{ padding: '0 8px' }}> {/* Adjusted width and added padding */}
+          <Col key={game.id} xs={24} sm={12} md={8} lg={4} xl={4} style={{ padding: '0 8px' }}>
             <Link to={`/games/${game.id}`}>
               <div className="game-card">
                 <div className="game-cover">
                   <Skeleton loading={loading} active>
-                    <img alt="Game Cover" src={game.image_url} />
+                    {/* Updated src to use image_path */}
+                    <img alt="Game Cover" src={`http://localhost:8000/${game.image_path}`} />
                   </Skeleton>
                 </div>
                 <div className="game-info">
