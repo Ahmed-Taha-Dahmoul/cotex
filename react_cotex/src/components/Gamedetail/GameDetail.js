@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import { Container, Card, Spinner } from 'react-bootstrap';
+import { Container, Spinner } from 'react-bootstrap';
+import './GameDetail.css';
+import windowsflag from './windows logo.svg';
 
 const GameDetail = () => {
   const { id } = useParams();
@@ -23,22 +25,117 @@ const GameDetail = () => {
     fetchGameDetails();
   }, [id]);
 
+  // Function to get the image path for a language
+  const getLanguageImagePath = (language) => {
+    return `${language}.png`; // Append ".png" to the language name
+  };
+
   return (
     <Container>
-      <h1>Game Details</h1>
       {loading ? (
         <Spinner animation="border" role="status">
           <span className="sr-only">Loading...</span>
         </Spinner>
       ) : (
-        <Card>
-          <Card.Img variant="top" src={`http://localhost:8000/${game.image_path}`} />
-          <Card.Body>
-            <Card.Title>{game.title}</Card.Title>
-            <Card.Text>{game.description}</Card.Text>
-            {/* Add more game details as needed */}
-          </Card.Body>
-        </Card>
+        <div className="body_content">
+          <h1 className="main_title">Download {game.title}</h1>
+          <div className="row game-page">
+            <div className="col-md-3 game-img">
+              <img
+                className="post_image"
+                src={`http://localhost:8000/${game.image_path}`}
+                alt={`Download ${game.title}`}
+                title={`Download ${game.title}`}
+              />
+            </div>
+            <div className="col-md-9">
+              <div className="col-md-6">
+                <ul className="list">
+                  <li>Name: <strong>{game.title}</strong></li>
+                  <li className="platform">Platform: <strong>{game.platform}</strong>
+                    <img
+                      style={{ marginTop: '-9px' }}
+                      className="console windowsflag"
+                      src={windowsflag}
+                      alt={`Games for ${game.platform}`}
+                    />
+                  </li>
+                  <li className="language">Languages:
+                    <span>
+                      {game.languages.map((language, index) => (
+                        <img
+                          key={index}
+                          className="post_flag"
+                          src={`${getLanguageImagePath(language)}`}
+                          title={language.replace('Idioma ', '')} // Remove "Idioma"
+                          alt={language.replace('Idioma ', '')} // Remove "Idioma"
+                        />
+                      ))}
+                    </span>
+                  </li>
+                  <li>Genre:
+                    <span className="category">
+                      
+                          <a href={`http://localhost:8000/category/${game.genres}/`} rel="category tag">{game.genres}</a>
+                        
+                    </span>
+                  </li>
+                  <li>Format: <strong>{game.format}</strong></li>
+                </ul>
+              </div>
+              <div className="col-md-6">
+                <ul className="list">
+                  <li>Size: <strong>{game.size}</strong></li>
+                  <li>Release Date: <strong>{game.release_date}</strong></li>
+                  <li>Release Group: <strong>{game.release_group}</strong></li>
+                  <li>Version: <strong>{game.version}</strong></li>
+                </ul>
+              </div>
+              <div className="col-md-12">
+                <h3 className="description">Description:</h3>
+                <p className="details">
+                  {game.description}
+                </p>
+                <span id="view_full_description">View Full Description &gt;</span>
+                <br />
+                
+                <br />
+                <p className="details more-details" style={{ maxHeight: 'none' }}>
+                  {game.additional_description}
+                </p>
+                <br />
+                <center>
+                  <a
+                    href={`http://localhost:8000/${game.torrent_path}`}
+                    id="download_torrent"
+                    target="_blank"
+                    className="btn full_button"
+                  >
+                    DOWNLOAD TORRENT <span className="glyphicon glyphicon-download-alt" style={{ marginLeft: '10px' }}></span>
+                  </a>
+                </center>
+                <div className="thank_you">
+                  <center>
+                    <p>Your file has been downloaded!</p>
+                    <span>The best way to thank us is by sharing this game. Come on... it will only take 5 seconds!</span>
+                    <img id="helping" src="http://localhost:8000/path_to_image/help_down.gif" alt="Help Down" />
+                    <div className="social_buttons">
+                      <span rel="nofollow" onClick={() => window.open(`https://www.facebook.com/sharer.php?u=http://localhost:8000/games-pc/${game.slug}/`, 'mywin', 'width=500,height=500')} className="buttonsocial fa fa-facebook"></span>
+                      <span rel="nofollow" onClick={() => window.open(`https://twitter.com/share?url=http://localhost:8000/games-pc/${game.slug}/`, 'mywin', 'width=500,height=500')} className="buttonsocial fa fa-twitter"></span>
+                      <span rel="nofollow" onClick={() => window.open(`https://plus.google.com/share?url=http://localhost:8000/games-pc/${game.slug}/`, 'mywin', 'width=500,height=500')} className="buttonsocial fa fa-google"></span>
+                      <span rel="nofollow" onClick={() => window.open(`https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:8000/games-pc/${game.slug}/&title=${game.title}&summary=&source=`, 'mywin', 'width=500,height=500')} className="buttonsocial fa fa-linkedin"></span>
+                    </div>
+                  </center>
+                </div>
+                <div className="videoWrapperOuter">
+                  <div className="videoWrapperInner">
+                    <iframe src={`https://www.youtube.com/embed/${game.youtube_link}`} frameBorder="0" allowFullScreen title={game.title}></iframe>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </Container>
   );
