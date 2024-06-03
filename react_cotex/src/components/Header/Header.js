@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Header.css';
-import tunisianFlag from './tunisia-flag.svg';
+import logo from './logo.png';
 
 function SearchIcon(props) {
   return (
@@ -48,15 +48,15 @@ const Header = () => {
   }, [prevScrollPos, scrollCount]);
 
   return (
+    <div className="search">
     <header className={`header ${visible ? 'header-visible' : 'header-hidden'}`}>
       <div className="header-container">
         <Link className="logo" to="/">
           <img
             alt="Tunisian Flag"
             className="logo-img"
-            src={tunisianFlag}
+            src={logo}
           />
-          <span className="logo-text">GameHub</span>
         </Link>
         <nav className="nav-links">
           <Link className="nav-link" to="/action">
@@ -72,20 +72,24 @@ const Header = () => {
             Multiplayer
           </Link>
         </nav>
+        
         <div className="search-container">
-          <div className="search-input-wrapper">
-            <SearchIcon className="search-icon" />
-            <input
-              className="search-input"
-              placeholder="Search games..."
-              type="text"
-            />
-          </div>
           <button className="btn btn-signin">Sign In</button>
-          <button className="btn btn-login">Login</button>
+          <button className="btn btn-login">Log In</button>
         </div>
-      </div>
+        </div>
+      
+      
     </header>
+    <div className="search-input-wrapper">
+    <SearchIcon className="search-icon" />
+    <input
+      className="search-input"
+      placeholder="Search games..."
+      type="text"
+    />
+  </div>
+  </div>
   );
 };
 
