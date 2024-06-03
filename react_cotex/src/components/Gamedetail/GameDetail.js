@@ -5,6 +5,40 @@ import { Container, Spinner } from 'react-bootstrap';
 import './GameDetail.css';
 import windowsflag from './windows logo.svg';
 
+import Arabic from './Arabic.png';
+import Brazil from './Brazil.png';
+import Chinese from './Chinese.png';
+import Coreano from './Coreano.png';
+import Czech from './Czech.png';
+import English from './English.png';
+import Español from './Espanol.png';
+import French from './French.png';
+import German from './German.png';
+import Italian from './Italian.png';
+import Japanese from './Japanese.png';
+import Polaco from './Polaco.png';
+import Portuguese from './Portuguese.png';
+import Russian from './Russian.png';
+import Turkish from './Turkish.png';
+
+const languageImages = {
+  Arabic,
+  Brazil,
+  Chinese,
+  Coreano,
+  Czech,
+  English,
+  Español,
+  French,
+  German,
+  Italian,
+  Japanese,
+  Polaco,
+  Portuguese,
+  Russian,
+  Turkish,
+};
+
 const GameDetail = () => {
   const { id } = useParams();
   const [game, setGame] = useState(null);
@@ -24,11 +58,6 @@ const GameDetail = () => {
 
     fetchGameDetails();
   }, [id]);
-
-  // Function to get the image path for a language
-  const getLanguageImagePath = (language) => {
-    return `${language}.png`; // Append ".png" to the language name
-  };
 
   return (
     <Container>
@@ -62,22 +91,28 @@ const GameDetail = () => {
                   </li>
                   <li className="language">Languages:
                     <span>
-                      {game.languages.map((language, index) => (
-                        <img
-                          key={index}
-                          className="post_flag"
-                          src={`${getLanguageImagePath(language)}`}
-                          title={language.replace('Idioma ', '')} // Remove "Idioma"
-                          alt={language.replace('Idioma ', '')} // Remove "Idioma"
-                        />
-                      ))}
+                      {game.languages.map((language, index) => {
+                        const languageKey = language.replace('Idioma ', '');
+                        const imagePath = languageImages[languageKey];
+                        return (
+                          <img
+                            key={index}
+                            className="post_flag"
+                            src={imagePath}
+                            title={languageKey}
+                            alt={languageKey}
+                          />
+                        );
+                      })}
                     </span>
                   </li>
                   <li>Genre:
                     <span className="category">
-                      
-                          <a href={`http://localhost:8000/category/${game.genres}/`} rel="category tag">{game.genres}</a>
-                        
+                      {game.genres.map((genre, index) => (
+                        <React.Fragment key={index}>
+                          <a href={`http://localhost:8000/category/${genre.slug}/`} rel="category tag">{genre.name}</a>{index < game.genres.length - 1 && ', '}
+                        </React.Fragment>
+                      ))}
                     </span>
                   </li>
                   <li>Format: <strong>{game.format}</strong></li>
@@ -129,7 +164,7 @@ const GameDetail = () => {
                 </div>
                 <div className="videoWrapperOuter">
                   <div className="videoWrapperInner">
-                    <iframe src={`https://www.youtube.com/embed/${game.youtube_link}`} frameBorder="0" allowFullScreen title={game.title}></iframe>
+                    <iframe src={`https://www.youtube.com/embed/${game.youtube_video_id}`} frameBorder="0" allowFullScreen title={game.title}></iframe>
                   </div>
                 </div>
               </div>
