@@ -102,6 +102,7 @@ const GameDetail = () => {
                             title={languageKey}
                             alt={languageKey}
                           />
+                          
                         );
                       })}
                     </span>
