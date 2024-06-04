@@ -35,7 +35,15 @@ const GameList = () => {
   };
 
   return (
+    
     <div className="container-game-list">
+      <div className="d-flex justify-content-center mt-4">
+        <Paginator
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      </div>
       <Row gutter={[16, 16]}>
         {games.map((game) => (
           <Col key={game.id} xs={24} sm={12} md={8} lg={6} xl={4} style={{ padding: '0 8px' }}>

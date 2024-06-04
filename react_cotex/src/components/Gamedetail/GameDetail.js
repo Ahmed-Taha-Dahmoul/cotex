@@ -77,6 +77,48 @@ const GameDetail = () => {
 
   const youtubeVideoId = game ? extractYouTubeVideoId(game.youtube_link) : null;
 
+  const extractSections = (description) => {
+    const sections = {
+      mainDescription: '',
+      minimumRequirements: '',
+      recommendedRequirements: '',
+      installationInstructions: ''
+    };
+
+    if (!description) return sections;
+
+    const minReqIndex = description.indexOf('Minimum requirements');
+    const recReqIndex = description.indexOf('Recommended requirements');
+    const instIndex = description.indexOf('Installation instructions');
+
+    if (minReqIndex !== -1) {
+      sections.mainDescription = description.substring(0, minReqIndex).trim();
+      sections.minimumRequirements = description.substring(minReqIndex, recReqIndex !== -1 ? recReqIndex : description.length)
+        .replace('Minimum requirements', '')
+        .trim();
+    }
+
+    if (recReqIndex !== -1) {
+      sections.recommendedRequirements = description.substring(recReqIndex, instIndex !== -1 ? instIndex : description.length)
+        .replace('Recommended requirements', '')
+        .trim();
+    }
+
+    if (instIndex !== -1) {
+      sections.installationInstructions = description.substring(instIndex)
+        .replace('Installation instructions', '')
+        .trim();
+    }
+
+    return sections;
+  };
+
+  const formatText = (text) => {
+    return text.split('. ').join('.\n');
+  };
+
+  const { mainDescription, minimumRequirements, recommendedRequirements, installationInstructions } = game ? extractSections(game.description) : {};
+
   return (
     <Container>
       {loading ? (
@@ -147,11 +189,33 @@ const GameDetail = () => {
               <div className="col-md-12">
                 <h3 className="description">Description:</h3>
                 <p className="details">
-                  {showFullDescription ? game.description : game.description.split('\n').slice(0, 2).join('\n')}
+                  {showFullDescription ? mainDescription : mainDescription.split('\n').slice(0, 2).join('\n')}
                 </p>
                 <span id="view_full_description" onClick={toggleDescription} style={{ cursor: 'pointer', color: '#007bff' }}>
                   {showFullDescription ? 'View Less' : 'View Full Description >'}
                 </span>
+                
+                  <>
+                    {minimumRequirements && (
+                      <div className="requirements">
+                        <h4>Minimum Requirements</h4>
+                        <pre>{formatText(minimumRequirements)}</pre>
+                      </div>
+                    )}
+                    {recommendedRequirements && (
+                      <div className="requirements">
+                        <h4>Recommended Requirements</h4>
+                        <pre>{formatText(recommendedRequirements)}</pre>
+                      </div>
+                    )}
+                    {installationInstructions && (
+                      <div className="instructions">
+                        <h4>Installation Instructions</h4>
+                        <pre>{formatText(installationInstructions)}</pre>
+                      </div>
+                    )}
+                  </>
+                
                 <br />
                 <center>
                   <a

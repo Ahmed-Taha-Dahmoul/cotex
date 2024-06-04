@@ -1,6 +1,8 @@
 .container-game-list {
   padding: 0 15px; /* Responsive padding */
   margin-top: 50px;
+  margin-right: 10%;
+  margin-left: 10%;
 }
 
 @media (min-width: 576px) {
@@ -57,7 +59,7 @@
 }
 
 .game-title {
-  font-weight: 600;
+  font-weight: 300;
 }
 
 .game-description {
