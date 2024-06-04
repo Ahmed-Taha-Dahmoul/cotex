@@ -5,6 +5,7 @@ import GameList from './components/GameList/GameList';
 import GameDetail from './components/GameDetail/GameDetail';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
+import SearchResults from './components/SearchResults/SearchResults'; // Import your SearchResults component
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/adventure" element={<div>Adventure Games</div>} />
             <Route path="/simulation" element={<div>Simulation Games</div>} />
             <Route path="/multiplayer" element={<div>Multiplayer Games</div>} />
+            <Route path="/search_result" element={<SearchResults />} /> {/* Add this route */}
           </Routes>
         </main>
         <Footer />
