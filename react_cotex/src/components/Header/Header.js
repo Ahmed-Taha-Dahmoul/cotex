@@ -2,28 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Header.css';
 import logo from './logo.png';
+import SearchBar from '../SearchBar/SearchBar'; // Import the SearchBar component
 
-function SearchIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="11" cy="11" r="8" />
-      <path d="m21 21-4.3-4.3" />
-    </svg>
-  );
-}
-
-const Header = () => {
+function Header() {
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
   const [scrollCount, setScrollCount] = useState(0);
@@ -49,48 +30,39 @@ const Header = () => {
 
   return (
     <div className="search">
-    <header className={`header ${visible ? 'header-visible' : 'header-hidden'}`}>
-      <div className="header-container">
-        <Link className="logo" to="/">
-          <img
-            alt="Tunisian Flag"
-            className="logo-img"
-            src={logo}
-          />
-        </Link>
-        <nav className="nav-links">
-          <Link className="nav-link" to="/action">
-            Action
+      <header className={`header ${visible ? 'header-visible' : 'header-hidden'}`}>
+        <div className="header-container">
+          <Link className="logo" to="/">
+            <img
+              alt="Tunisian Flag"
+              className="logo-img"
+              src={logo}
+            />
           </Link>
-          <Link className="nav-link" to="/adventure">
-            Adventure
-          </Link>
-          <Link className="nav-link" to="/simulation">
-            Simulation
-          </Link>
-          <Link className="nav-link" to="/multiplayer">
-            Multiplayer
-          </Link>
-        </nav>
-        
-        <div className="search-container">
-          <button className="btn btn-signin">Sign In</button>
-          <button className="btn btn-login">Log In</button>
+          <nav className="nav-links">
+            <Link className="nav-link" to="/action">
+              Action
+            </Link>
+            <Link className="nav-link" to="/adventure">
+              Adventure
+            </Link>
+            <Link className="nav-link" to="/simulation">
+              Simulation
+            </Link>
+            <Link className="nav-link" to="/multiplayer">
+              Multiplayer
+            </Link>
+          </nav>
+          
+          <div className="search-container">
+            <button className="btn btn-signin">Sign In</button>
+            <button className="btn btn-login">Log In</button>
+          </div>
         </div>
-        </div>
-      
-      
-    </header>
-    <div className="search-input-wrapper">
-    <SearchIcon className="search-icon" />
-    <input
-      className="search-input"
-      placeholder="Search games..."
-      type="text"
-    />
-  </div>
-  </div>
+      </header>
+      <SearchBar /> {/* Include the SearchBar component here */}
+    </div>
   );
-};
+}
 
 export default Header;
