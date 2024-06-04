@@ -1,7 +1,30 @@
 .container-game-list {
-  margin-left: 300px; /* Add negative margin to the left */
-  margin-right: 300px; /* Add negative margin to the right */
+  padding: 0 15px; /* Responsive padding */
   margin-top: 50px;
+}
+
+@media (min-width: 576px) {
+  .container-game-list {
+    padding: 0 30px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container-game-list {
+    padding: 0 60px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container-game-list {
+    padding: 0 100px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container-game-list {
+    padding: 0 150px;
+  }
 }
 
 .game-card {
