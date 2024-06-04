@@ -1,0 +1,37 @@
+.paginator-stack {
+    margin: 20px;
+  }
+  
+  @media (max-width: 576px) {
+    .paginator-stack {
+      margin: 10px;
+    }
+  
+    .MuiPagination-root {
+      justify-content: center;
+    }
+  
+    .MuiPaginationItem-root {
+      font-size: 0.75rem; /* Adjust font size for smaller screens */
+      padding: 5px;
+    }
+  }
+  
+  @media (min-width: 577px) and (max-width: 768px) {
+    .paginator-stack {
+      margin: 15px;
+    }
+  
+    .MuiPaginationItem-root {
+      font-size: 0.875rem; /* Slightly larger font size for medium screens */
+      padding: 6px;
+    }
+  }
+  
+  @media (min-width: 769px) {
+    .MuiPaginationItem-root {
+      font-size: 1rem; /* Default font size for larger screens */
+      padding: 8px;
+    }
+  }
+  

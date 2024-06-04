@@ -43,6 +43,8 @@ const GameDetail = () => {
   const { id } = useParams();
   const [game, setGame] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showFullDescription, setShowFullDescription] = useState(false);
+  const [showThankYou, setShowThankYou] = useState(false);
 
   useEffect(() => {
     const fetchGameDetails = async () => {
@@ -58,6 +60,22 @@ const GameDetail = () => {
 
     fetchGameDetails();
   }, [id]);
+
+  const toggleDescription = () => {
+    setShowFullDescription(!showFullDescription);
+  };
+
+  const handleDownloadClick = () => {
+    setShowThankYou(true);
+  };
+
+  const extractYouTubeVideoId = (url) => {
+    const regExp = /^.*(youtu.be\/|v\/|\/u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return match && match[2].length === 11 ? match[2] : null;
+  };
+
+  const youtubeVideoId = game ? extractYouTubeVideoId(game.youtube_link) : null;
 
   return (
     <Container>
@@ -102,7 +120,6 @@ const GameDetail = () => {
                             title={languageKey}
                             alt={languageKey}
                           />
-                          
                         );
                       })}
                     </span>
@@ -111,7 +128,7 @@ const GameDetail = () => {
                     <span className="category">
                       {game.genres.map((genre, index) => (
                         <React.Fragment key={index}>
-                          <a href={`http://localhost:8000/category/${genre.slug}/`} rel="category tag">{genre.name}</a>{index < game.genres.length - 1 && ', '}
+                          <a href={`http://localhost:8000/category/${genre.slug}/`} rel="category tag">{genre}</a>{index < game.genres.length - 1 && ', '}
                         </React.Fragment>
                       ))}
                     </span>
@@ -123,51 +140,57 @@ const GameDetail = () => {
                 <ul className="list">
                   <li>Size: <strong>{game.size}</strong></li>
                   <li>Release Date: <strong>{game.release_date}</strong></li>
-                  <li>Release Group: <strong>{game.release_group}</strong></li>
+                  <li>Cracker: <strong>{game.cracker}</strong></li>
                   <li>Version: <strong>{game.version}</strong></li>
                 </ul>
               </div>
               <div className="col-md-12">
                 <h3 className="description">Description:</h3>
                 <p className="details">
-                  {game.description}
+                  {showFullDescription ? game.description : game.description.split('\n').slice(0, 2).join('\n')}
                 </p>
-                <span id="view_full_description">View Full Description &gt;</span>
-                <br />
-                
-                <br />
-                <p className="details more-details" style={{ maxHeight: 'none' }}>
-                  {game.additional_description}
-                </p>
+                <span id="view_full_description" onClick={toggleDescription} style={{ cursor: 'pointer', color: '#007bff' }}>
+                  {showFullDescription ? 'View Less' : 'View Full Description >'}
+                </span>
                 <br />
                 <center>
                   <a
-                    href={`http://localhost:8000/${game.torrent_path}`}
+                    href={`${game.download_link}`}
                     id="download_torrent"
                     target="_blank"
                     className="btn full_button"
+                    onClick={handleDownloadClick}
                   >
                     DOWNLOAD TORRENT <span className="glyphicon glyphicon-download-alt" style={{ marginLeft: '10px' }}></span>
                   </a>
                 </center>
-                <div className="thank_you">
-                  <center>
-                    <p>Your file has been downloaded!</p>
-                    <span>The best way to thank us is by sharing this game. Come on... it will only take 5 seconds!</span>
-                    <img id="helping" src="http://localhost:8000/path_to_image/help_down.gif" alt="Help Down" />
-                    <div className="social_buttons">
-                      <span rel="nofollow" onClick={() => window.open(`https://www.facebook.com/sharer.php?u=http://localhost:8000/games-pc/${game.slug}/`, 'mywin', 'width=500,height=500')} className="buttonsocial fa fa-facebook"></span>
-                      <span rel="nofollow" onClick={() => window.open(`https://twitter.com/share?url=http://localhost:8000/games-pc/${game.slug}/`, 'mywin', 'width=500,height=500')} className="buttonsocial fa fa-twitter"></span>
-                      <span rel="nofollow" onClick={() => window.open(`https://plus.google.com/share?url=http://localhost:8000/games-pc/${game.slug}/`, 'mywin', 'width=500,height=500')} className="buttonsocial fa fa-google"></span>
-                      <span rel="nofollow" onClick={() => window.open(`https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:8000/games-pc/${game.slug}/&title=${game.title}&summary=&source=`, 'mywin', 'width=500,height=500')} className="buttonsocial fa fa-linkedin"></span>
-                    </div>
-                  </center>
-                </div>
-                <div className="videoWrapperOuter">
-                  <div className="videoWrapperInner">
-                    <iframe src={`https://www.youtube.com/embed/${game.youtube_video_id}`} frameBorder="0" allowFullScreen title={game.title}></iframe>
+                {showThankYou && (
+                  <div className="thank_you">
+                    <center>
+                      <p>Your file has been downloaded!</p>
+                      <span>The best way to thank us is by sharing this game. Come on... it will only take 5 seconds!</span>
+                      <img id="helping" src="http://localhost:8000/path_to_image/help_down.gif" alt="Help Down" />
+                      <div className="social_buttons">
+                        <span rel="nofollow" onClick={() => window.open(`https://www.facebook.com/sharer.php?u=http://localhost:8000/games-pc/${game.slug}/`, 'mywin', 'width=500,height=500')} className="buttonsocial fa fa-facebook"></span>
+                        <span rel="nofollow" onClick={() => window.open(`https://twitter.com/share?url=http://localhost:8000/games-pc/${game.slug}/`, 'mywin', 'width=500,height=500')} className="buttonsocial fa fa-twitter"></span>
+                        <span rel="nofollow" onClick={() => window.open(`https://plus.google.com/share?url=http://localhost:8000/games-pc/${game.slug}/`, 'mywin', 'width=500,height=500')} className="buttonsocial fa fa-google"></span>
+                        <span rel="nofollow" onClick={() => window.open(`https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:8000/games-pc/${game.slug}/&title=${game.title}&summary=&source=`, 'mywin', 'width=500,height=500')} className="buttonsocial fa fa-linkedin"></span>
+                      </div>
+                    </center>
                   </div>
-                </div>
+                )}
+                {youtubeVideoId && (
+                  <div className="videoWrapperOuter">
+                    <div className="videoWrapperInner">
+                      <iframe
+                        src={`https://www.youtube.com/embed/${youtubeVideoId}`}
+                        frameBorder="0"
+                        allowFullScreen
+                        title={game.title}
+                      ></iframe>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
