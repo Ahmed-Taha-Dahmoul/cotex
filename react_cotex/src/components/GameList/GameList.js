@@ -20,7 +20,7 @@ const GameList = () => {
   const fetchGames = async (page) => {
     setLoading(true);
     try {
-      const response = await axios.get(`${apiBaseUrl}api/games/?page=${page}`);
+      const response = await axios.get(`http://127.0.0.1:8000/api/games/?page=${page}`);
       setGames(response.data.results);
       setTotalPages(Math.ceil(response.data.count / 30));
       setLoading(false);
