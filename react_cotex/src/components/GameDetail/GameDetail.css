@@ -1,124 +1,179 @@
 .body_content {
-    padding: 20px;
-    background-color: #c1c1c1;
-    margin: 4%;
-  }
-  
-  .main_title {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-  
-  .windowsflag {
-    width: 20px;  /* Adjust this value to make the image smaller or larger */
-    height: auto;
-    margin-left: 7px;
-  }
-  .row.game-page {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  
-  .post_flag {
-    margin-right: 6px;
-  }
-  .col-md-3, .col-md-6, .col-md-9, .col-md-12 {
-    padding: 15px;
-  }
-  
-  .game-img img {
-    width: 100%;
-    border-radius: 8px;
-  }
-  
-  .listencio {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .listencio li {
-    margin-bottom: 10px;
-  }
-  
-  .plataforma img {
-    margin-left: 10px;
-  }
-  
-  .cationen a {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  .cationen a:hover {
-    text-decoration: underline;
-  }
-  
-  .descriptinen {
-    margin-top: 20px;
-  }
-  
-  .mantekol {
-    margin-top: 10px;
-    line-height: 1.6;
-  }
-  
-  #loked {
-    cursor: pointer;
-    color: #007bff;
-    text-decoration: underline;
-  }
-  
-  .btn.full_button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-  }
-  
-  .btn.full_button:hover {
-    background-color: #0056b3;
-  }
-  
-  .retruk {
-    margin-top: 20px;
-    padding: 20px;
-    background-color: #e9ecef;
-    border-radius: 8px;
-  }
-  
-  .socia_boxen {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 10px;
-  }
-  
-  .buttonsocial {
-    cursor: pointer;
-    font-size: 24px;
-    color: #007bff;
-  }
-  
-  .videoWrapperOuter {
-    margin-top: 20px;
-  }
-  
-  .videoWrapperInner {
-    position: relative;
-    padding-bottom: 56.25%; /* 16:9 */
-    height: 0;
-  }
-  
-  .videoWrapperInner iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
-  }
-  
+  padding: 20px;
+  background-color: #c1c1c1;
+  margin: 4%;
+}
+
+.main_title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.windowsflag {
+  width: 20px;  /* Adjust this value to make the image smaller or larger */
+  height: auto;
+  margin-left: 7px;
+}
+
+.row.game-page {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.post_flag {
+  margin-right: 6px;
+}
+
+.col-md-3,
+.col-md-6,
+.col-md-9,
+.col-md-12 {
+  padding: 15px;
+}
+
+.game-img img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.listencio {
+  list-style: none;
+  padding: 0;
+}
+
+.listencio li {
+  margin-bottom: 10px;
+}
+
+.plataforma img {
+  margin-left: 10px;
+}
+
+.cationen a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.cationen a:hover {
+  text-decoration: underline;
+}
+
+.descriptinen {
+  margin-top: 20px;
+}
+
+.mantekol {
+  margin-top: 10px;
+  line-height: 1.6;
+}
+
+#loked {
+  cursor: pointer;
+  color: #007bff;
+  text-decoration: underline;
+}
+
+.button {
+  --main-focus: #2d8cf0;
+  --font-color: #323232;
+  --bg-color-sub: #dedede;
+  --bg-color: #eee;
+  --main-color: #323232;
+  position: relative;
+  width: 200px;
+  height: 60px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border: 2px solid var(--main-color);
+  box-shadow: 4px 4px var(--main-color);
+  background-color: var(--bg-color);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.button,
+.button__icon,
+.button__text {
+  transition: all 0.3s;
+}
+
+.button .button__text {
+  transform: translateX(22px);
+  color: var(--font-color);
+  font-weight: 600;
+}
+
+.button .button__icon {
+  position: absolute;
+  transform: translateX(140px);
+  height: 100%;
+  width: 50px;
+  background-color: var(--bg-color-sub);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button .svg {
+  width: 20px;
+  fill: var(--main-color);
+}
+
+.button:hover {
+  background: var(--bg-color);
+}
+
+.button:hover .button__text {
+  color: transparent;
+}
+
+.button:hover .button__icon {
+  width: 200px;
+  transform: translateX(-10px);
+}
+
+.button:active {
+  transform: translate(8px, 8px);
+  box-shadow: 0px 0px var(--main-color);
+}
+
+.retruk {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #e9ecef;
+  border-radius: 8px;
+}
+
+.socia_boxen {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.buttonsocial {
+  cursor: pointer;
+  font-size: 24px;
+  color: #007bff;
+}
+
+.videoWrapperOuter {
+  margin-top: 20px;
+}
+
+.videoWrapperInner {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 */
+  height: 0;
+}
+
+.videoWrapperInner iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
