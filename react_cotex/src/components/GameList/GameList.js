@@ -4,6 +4,8 @@ import { Row, Col, Skeleton } from 'antd';
 import { Link } from 'react-router-dom';
 import Paginator from '../Paginator/Paginator';
 import './GameList.css';
+const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+
 
 const GameList = () => {
   const [games, setGames] = useState([]);
@@ -18,7 +20,7 @@ const GameList = () => {
   const fetchGames = async (page) => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://localhost:8000/api/games/?page=${page}`);
+      const response = await axios.get(`${apiBaseUrl}api/games/?page=${page}`);
       setGames(response.data.results);
       setTotalPages(Math.ceil(response.data.count / 30));
       setLoading(false);
