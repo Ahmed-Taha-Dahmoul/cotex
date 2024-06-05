@@ -5,21 +5,21 @@ import { Container, Spinner } from 'react-bootstrap';
 import './GameDetail.css';
 import windowsflag from './windows logo.svg';
 
-import Arabic from './Arabic.png';
-import Brazil from './Brazil.png';
-import Chinese from './Chinese.png';
-import Coreano from './Coreano.png';
-import Czech from './Czech.png';
-import English from './English.png';
-import Español from './Espanol.png';
-import French from './French.png';
-import German from './German.png';
-import Italian from './Italian.png';
-import Japanese from './Japanese.png';
-import Polaco from './Polaco.png';
-import Portuguese from './Portuguese.png';
-import Russian from './Russian.png';
-import Turkish from './Turkish.png';
+import Arabic from './languages_logo/Arabic.png';
+import Brazil from './languages_logo/Brazil.png';
+import Chinese from './languages_logo/Chinese.png';
+import Coreano from './languages_logo/Coreano.png';
+import Czech from './languages_logo/Czech.png';
+import English from './languages_logo/English.png';
+import Español from './languages_logo/Espanol.png';
+import French from './languages_logo/French.png';
+import German from './languages_logo/German.png';
+import Italian from './languages_logo/Italian.png';
+import Japanese from './languages_logo/Japanese.png';
+import Polaco from './languages_logo/Polaco.png';
+import Portuguese from './languages_logo/Portuguese.png';
+import Russian from './languages_logo/Russian.png';
+import Turkish from './languages_logo/Turkish.png';
 
 const languageImages = {
   Arabic,
@@ -125,7 +125,6 @@ const GameDetail = () => {
         <Spinner animation="border" role="status">
           <span className="sr-only">Loading...</span>
         </Spinner>
-        
       ) : (
         <div className="body_content">
           <h1 className="main_title">Download {game.title}</h1>
@@ -134,8 +133,8 @@ const GameDetail = () => {
               <img
                 className="post_image"
                 src={`http://localhost:8000/${game.image_path}`}
-                alt={`Download ${game.title}`}
-                title={`Download ${game.title}`}
+                alt={`Download {game.title}`}
+                title={`Download {game.title}`}
               />
             </div>
             <div className="col-md-9">
@@ -196,38 +195,48 @@ const GameDetail = () => {
                   {showFullDescription ? 'View Less' : 'View Full Description >'}
                 </span>
                 
-                  <>
-                    {minimumRequirements && (
-                      <div className="requirements">
-                        <h4>Minimum Requirements</h4>
-                        <pre>{formatText(minimumRequirements)}</pre>
-                      </div>
-                    )}
-                    {recommendedRequirements && (
-                      <div className="requirements">
-                        <h4>Recommended Requirements</h4>
-                        <pre>{formatText(recommendedRequirements)}</pre>
-                      </div>
-                    )}
-                    {installationInstructions && (
-                      <div className="instructions">
-                        <h4>Installation Instructions</h4>
-                        <pre>{formatText(installationInstructions)}</pre>
-                      </div>
-                    )}
-                  </>
+                <>
+                  {minimumRequirements && (
+                    <div className="requirements">
+                      <h4>Minimum Requirements</h4>
+                      <pre>{formatText(minimumRequirements)}</pre>
+                    </div>
+                  )}
+                  {recommendedRequirements && (
+                    <div className="requirements">
+                      <h4>Recommended Requirements</h4>
+                      <pre>{formatText(recommendedRequirements)}</pre>
+                    </div>
+                  )}
+                  {installationInstructions && (
+                    <div className="instructions">
+                      <h4>Installation Instructions</h4>
+                      <pre>{formatText(installationInstructions)}</pre>
+                    </div>
+                  )}
+                </>
                 
                 <br />
                 <center>
-                  <a
-                    href={`${game.download_link}`}
-                    id="download_torrent"
-                    target="_blank"
-                    className="btn full_button"
-                    onClick={handleDownloadClick}
-                  >
-                    DOWNLOAD TORRENT <span className="glyphicon glyphicon-download-alt" style={{ marginLeft: '10px' }}></span>
-                  </a>
+                <button
+                  className="button"
+                  type="button"
+                  onClick={() => {
+                    handleDownloadClick();
+                    window.location.href = `${game.download_link}`;
+                  }}
+                  download={`${game.title}.torrent`}
+                >
+                  <span className="button__text">Download</span>
+                  <span className="button__icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 35" id="bdd05811-e15d-428c-bb53-8661459f9307" data-name="Layer 2" className="svg">
+                      <path d="M17.5,22.131a1.249,1.249,0,0,1-1.25-1.25V2.187a1.25,1.25,0,0,1,2.5,0V20.881A1.25,1.25,0,0,1,17.5,22.131Z"></path>
+                      <path d="M17.5,22.693a3.189,3.189,0,0,1-2.262-.936L8.487,15.006a1.249,1.249,0,0,1,1.767-1.767l6.751,6.751a.7.7,0,0,0,.99,0l6.751-6.751a1.25,1.25,0,0,1,1.768,1.767l-6.752,6.751A3.191,3.191,0,0,1,17.5,22.693Z"></path>
+                      <path d="M31.436,34.063H3.564A3.318,3.318,0,0,1,.25,30.749V22.011a1.25,1.25,0,0,1,2.5,0v8.738a.815.815,0,0,0,.814.814H31.436a.815.815,0,0,0,.814-.814V22.011a1.25,1.25,0,1,1,2.5,0v8.738A3.318,3.318,0,0,1,31.436,34.063Z"></path>
+                    </svg>
+                  </span>
+                </button>
+
                 </center>
                 {showThankYou && (
                   <div className="thank_you">
@@ -266,3 +275,4 @@ const GameDetail = () => {
 };
 
 export default GameDetail;
+
