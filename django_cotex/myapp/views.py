@@ -4,7 +4,6 @@ from .models import Game
 from .serializers import GameSerializer , Game_title_cracker_version_Serializer
 from rest_framework.generics import RetrieveAPIView
 from django.db.models import Q
-from django.db.models import Q
 
 
 class GameAPIView(views.APIView):

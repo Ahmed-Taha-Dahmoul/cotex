@@ -125,6 +125,7 @@ const GameDetail = () => {
         <Spinner animation="border" role="status">
           <span className="sr-only">Loading...</span>
         </Spinner>
+        
       ) : (
         <div className="body_content">
           <h1 className="main_title">Download {game.title}</h1>
