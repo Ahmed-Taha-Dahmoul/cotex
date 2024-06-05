@@ -117,3 +117,4 @@ urlpatterns = [
     # Your existing URL patterns go here
 ] + static(MEDIA_URL, document_root=MEDIA_ROOT)
 
+
