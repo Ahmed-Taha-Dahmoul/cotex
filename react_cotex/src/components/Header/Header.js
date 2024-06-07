@@ -36,13 +36,15 @@ function Header() {
     if (userLoggedIn) {
       setIsLoggedIn(true);
     }
-  }, []);
+  }, []); // Empty dependency array to run only once when component mounts
 
   const handleLogout = () => {
-    // Clear user authentication status and redirect to logout page or perform other logout actions
+    // Clear user authentication status
     localStorage.removeItem('token');
     setIsLoggedIn(false);
     // Redirect to logout page or perform other actions after logout
+    // For example, redirecting to the home page
+    window.location.href = '/'; // Redirect to home page
   };
 
   return (
@@ -76,7 +78,9 @@ function Header() {
                 <Link to="/signup" className="btn btn-signin">
                   Sign Up
                 </Link>
-                <button className="btn btn-login">Log In</button>
+                <Link to="/login" className="btn btn-login">
+                  Log In
+                </Link>
               </>
             )}
           </div>
