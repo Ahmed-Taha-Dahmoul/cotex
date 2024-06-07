@@ -5,7 +5,7 @@ from .models import CustomUser
 
 class CustomUserAdmin(BaseUserAdmin):
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
+        (None, {'fields': ('email', 'password','profile_pic')}),
         (_('Personal info'), {'fields': ('username',)}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         (_('Important dates'), {'fields': ('last_login',)}),  # Remove date_joined

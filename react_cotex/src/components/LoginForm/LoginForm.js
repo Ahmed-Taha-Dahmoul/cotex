@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import './styles.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 
 const LoginForm = ({ setIsLoggedIn }) => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -21,12 +23,26 @@ const LoginForm = ({ setIsLoggedIn }) => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:8000/auth/login/', formData);
-      console.log(response.data);
+      const userData = response.data;
 
       // Store the token in local storage
-      localStorage.setItem('token', response.data.access);
+      localStorage.setItem('token', userData.access);
 
-      // Update isLoggedIn state using the function passed from the parent component
+      // Fetch user profile data (assuming you have an endpoint to get the user profile)
+      const profileResponse = await axios.get('http://localhost:8000/auth/profile/', {
+        headers: {
+          Authorization: `Bearer ${userData.access}`
+        }
+      });
+      const profileData = profileResponse.data;
+
+      // Store profile data in local storage
+      localStorage.setItem('email', profileData.email);
+      localStorage.setItem('profile_pic', profileData.profile_pic);
+      localStorage.setItem('username', profileData.username);
+
+      // Update isLoggedIn state and user data using the context
+      login(profileData);
       setIsLoggedIn(true);
 
       // Navigate to home page

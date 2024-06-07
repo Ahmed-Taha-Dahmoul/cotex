@@ -207,4 +207,27 @@
     width: 100%;
     padding: 0.5rem;
   }
+  
+  
+  
+  
+}
+
+.profile-container {
+  display: flex;
+  align-items: center;
+}
+
+.profile-circle {
+  width: 36px; /* Set the size of the circle */
+  height: 36px; /* Set the size of the circle */
+  border-radius: 50%; /* Make it a circle */
+  overflow: hidden; /* Hide overflow */
+  margin-right: 10px;
+}
+
+.profile-pic {
+  width: 100% !important; /* Make the image fill the circle */
+  height: 100% !important; /* Make the image fill the circle */
+  object-fit: cover; /* Maintain aspect ratio and cover */
 }
