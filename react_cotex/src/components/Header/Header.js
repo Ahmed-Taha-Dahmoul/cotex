@@ -3,15 +3,17 @@ import { Link } from 'react-router-dom';
 import './Header.css';
 import logo from './logo.png';
 import SearchBar from '../SearchBar/SearchBar';
+import { useAuth } from '../../contexts/AuthContext';
 
 function Header() {
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
   const [scrollCount, setScrollCount] = useState(0);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // State to manage user's login status
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { logout } = useAuth();
+  const [profilePic, setProfilePic] = useState(null);
 
   useEffect(() => {
-    // Your scroll handling logic
     const handleScroll = () => {
       const currentScrollPos = window.pageYOffset;
       setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 10);
@@ -31,20 +33,20 @@ function Header() {
   }, [prevScrollPos, scrollCount]);
 
   useEffect(() => {
-    // Check if the user is already logged in (for example, by checking local storage)
     const userLoggedIn = localStorage.getItem('token');
     if (userLoggedIn) {
       setIsLoggedIn(true);
+      setProfilePic(localStorage.getItem('profile_pic'));
     }
-  }, []); // Empty dependency array to run only once when component mounts
+  }, []);
 
   const handleLogout = () => {
-    // Clear user authentication status
     localStorage.removeItem('token');
+    localStorage.removeItem('profile_pic');
+    localStorage.removeItem('username');
     setIsLoggedIn(false);
-    // Redirect to logout page or perform other actions after logout
-    // For example, redirecting to the home page
-    window.location.href = '/'; // Redirect to home page
+    logout();
+    window.location.href = '/';
   };
 
   return (
@@ -55,32 +57,27 @@ function Header() {
             <img alt="Tunisian Flag" className="logo-img" src={logo} />
           </Link>
           <nav className="nav-links">
-            <Link className="nav-link" to="/action">
-              Action
-            </Link>
-            <Link className="nav-link" to="/adventure">
-              Adventure
-            </Link>
-            <Link className="nav-link" to="/simulation">
-              Simulation
-            </Link>
-            <Link className="nav-link" to="/multiplayer">
-              Multiplayer
-            </Link>
+            <Link className="nav-link" to="/action">Action</Link>
+            <Link className="nav-link" to="/adventure">Adventure</Link>
+            <Link className="nav-link" to="/simulation">Simulation</Link>
+            <Link className="nav-link" to="/multiplayer">Multiplayer</Link>
           </nav>
           <div className="search-container">
             {isLoggedIn ? (
-              <button className="btn btn-logout" onClick={handleLogout}>
-                Log Out
-              </button>
+              <div className="profile-container">
+                <div className="profile-circle">
+                  {profilePic ? (
+                    <img src={`http://localhost:8000/${profilePic}`} alt="Profile" className="profile-pic" />
+                  ) : (
+                    <img src="default-profile-pic.jpg" alt="Default Profile" className="profile-pic" />
+                  )}
+                </div>
+                <button className="btn btn-logout" onClick={handleLogout}>Log Out</button>
+              </div>
             ) : (
               <>
-                <Link to="/signup" className="btn btn-signin">
-                  Sign Up
-                </Link>
-                <Link to="/login" className="btn btn-login">
-                  Log In
-                </Link>
+                <Link to="/signup" className="btn btn-signin">Sign Up</Link>
+                <Link to="/login" className="btn btn-login">Log In</Link>
               </>
             )}
           </div>

@@ -22,7 +22,7 @@ def download_and_save_images():
                 # Check if image_path is not null (meaning the image is not downloaded yet)
                 if not game.image_path:
                     # Attempt to download the image multiple times
-                    max_attempts = 5  # Number of attempts
+                    max_attempts = 3  # Number of attempts
                     attempt_count = 1
                     while attempt_count <= max_attempts:
                         response = requests.get(image_url)

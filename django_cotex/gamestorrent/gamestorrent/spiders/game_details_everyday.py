@@ -121,7 +121,7 @@ class GameDetailsSpider(scrapy.Spider):
     def translate_to_english(self, text):
         if not text:
             return ''
-        translated_text = self.translator.translate(text, src='auto', dest='en')
+        translated_text = self.translator.translate(text, src='es', dest='en')
         return translated_text.text
 
     def convert_date_format(self, raw_date):

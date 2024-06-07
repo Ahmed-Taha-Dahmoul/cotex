@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+import os
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, username, password=None, **extra_fields):
@@ -9,6 +10,12 @@ class CustomUserManager(BaseUserManager):
         email = self.normalize_email(email)
         user = self.model(email=email, username=username, **extra_fields)
         user.set_password(password)
+        
+        # Set default profile picture based on the first letter of the username
+        first_letter = username[0].upper()
+        profile_pic_path = f'profile_letters/{first_letter}.png'
+        user.profile_pic = profile_pic_path
+        
         user.save(using=self._db)
         return user
 
@@ -26,6 +33,7 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=255)
+    profile_pic = models.ImageField(default='profile_letters/default.png')
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 

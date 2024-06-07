@@ -38,3 +38,20 @@ class UserLoginSerializer(serializers.Serializer):
 
     def save(self, **kwargs):
         return self.instance
+    
+
+
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['email', 'username', 'profile_pic']
+        read_only_fields = ['email']
+
+    def update(self, instance, validated_data):
+        instance.username = validated_data.get('username', instance.username)
+        instance.profile_pic = validated_data.get('profile_pic', instance.profile_pic)
+        instance.save()
+        return instance
+
