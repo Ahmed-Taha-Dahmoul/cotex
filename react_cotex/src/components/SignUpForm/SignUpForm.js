@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import './styles.css';
-import { FaGoogle, FaFacebook, FaTwitter } from 'react-icons/fa'; // Import icons from react-icons
+import { FaGoogle, FaFacebook, FaTwitter } from 'react-icons/fa';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
+import { useNavigate } from 'react-router-dom';
 
 const SignUpForm = () => {
   const [formData, setFormData] = useState({
@@ -10,7 +10,7 @@ const SignUpForm = () => {
     email: '',
     password: ''
   });
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -24,15 +24,16 @@ const SignUpForm = () => {
     try {
       const response = await axios.post('http://localhost:8000/auth/register/', formData);
       console.log(response.data);
-      // Handle successful registration
-      // Assuming the response contains a token after successful sign-up
       const token = response.data.token;
 
-      // Store the token in local storage or a cookie for future requests
+      // Store the token in local storage
       localStorage.setItem('token', token);
 
-      // Redirect to home page or any other page after successful sign-up and login
-      navigate('/'); // Redirect to home page
+      // Redirect to home page
+      navigate('/');
+
+      // Refresh the page after navigating to the home page
+      window.location.reload();
 
     } catch (error) {
       console.error(error);
