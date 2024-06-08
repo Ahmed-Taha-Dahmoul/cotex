@@ -3,58 +3,42 @@ import { Link } from 'react-router-dom';
 import './Header.css';
 import logo from './logo.png';
 import SearchBar from '../SearchBar/SearchBar';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../AuthContext';
 
 function Header() {
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
-  const [scrollCount, setScrollCount] = useState(0);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { logout } = useAuth();
-  const [profilePic, setProfilePic] = useState(null);
+  const { user, logout, isLoggedIn } = useAuth();
+  const [profilePic, setProfilePic] = useState('');
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollPos = window.pageYOffset;
       setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 10);
-      if (prevScrollPos > currentScrollPos && scrollCount > 3) {
-        setScrollCount(0);
-      } else if (prevScrollPos < currentScrollPos) {
-        setScrollCount((prevCount) => prevCount + 1);
-      }
       setPrevScrollPos(currentScrollPos);
     };
 
     window.addEventListener('scroll', handleScroll);
 
+    // Cleanup
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [prevScrollPos, scrollCount]);
+  }, [prevScrollPos]);
 
   useEffect(() => {
-    const userLoggedIn = localStorage.getItem('token');
-    if (userLoggedIn) {
-      setIsLoggedIn(true);
-      setProfilePic(localStorage.getItem('profile_pic'));
-    }
+    // Get profile picture path from local storage
+    const storedProfilePic = localStorage.getItem('profile_pic');
+    setProfilePic(storedProfilePic);
+    
   }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('profile_pic');
-    localStorage.removeItem('username');
-    setIsLoggedIn(false);
-    logout();
-    window.location.href = '/';
-  };
 
   return (
     <div className="search">
       <header className={`header ${visible ? 'header-visible' : 'header-hidden'}`}>
         <div className="header-container">
           <Link className="logo" to="/">
-            <img alt="Tunisian Flag" className="logo-img" src={logo} />
+            <img alt="Logo" className="logo-img" src={logo} />
           </Link>
           <nav className="nav-links">
             <Link className="nav-link" to="/action">Action</Link>
@@ -63,7 +47,7 @@ function Header() {
             <Link className="nav-link" to="/multiplayer">Multiplayer</Link>
           </nav>
           <div className="search-container">
-            {isLoggedIn ? (
+            {isLoggedIn() ? (
               <div className="profile-container">
                 <div className="profile-circle">
                   {profilePic ? (
@@ -72,11 +56,11 @@ function Header() {
                     <img src="default-profile-pic.jpg" alt="Default Profile" className="profile-pic" />
                   )}
                 </div>
-                <button className="btn btn-logout" onClick={handleLogout}>Log Out</button>
+                <button className="btn btn-logout" onClick={logout}>Log Out</button>
               </div>
             ) : (
               <>
-                <Link to="/signup" className="btn btn-signin">Sign Up</Link>
+                <Link to="/signup" className="btn btn-signup">Sign Up</Link>
                 <Link to="/login" className="btn btn-login">Log In</Link>
               </>
             )}
