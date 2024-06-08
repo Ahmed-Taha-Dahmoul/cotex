@@ -1,7 +1,5 @@
+from django.db import models, transaction
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-from django.db import models
-from django.utils.translation import gettext_lazy as _
-import os
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, username, password=None, **extra_fields):
@@ -41,6 +39,12 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
+
+    @transaction.atomic
+    def delete(self, *args, **kwargs):
+        # Delete related tokens before deleting the user
+        self.tokens.all().delete()
+        super().delete(*args, **kwargs)
 
     def __str__(self):
         return self.email
