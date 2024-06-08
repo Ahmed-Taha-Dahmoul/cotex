@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { Container, Spinner } from 'react-bootstrap';
 import './GameDetail.css';
 import windowsflag from './windows logo.svg';
+import CommentSection from '../CommentSection/CommentSection'; // Import CommentSection component
 
 import Arabic from './languages_logo/Arabic.png';
 import Brazil from './languages_logo/Brazil.png';
@@ -142,12 +143,12 @@ const GameDetail = () => {
                 <ul className="list">
                   <li>Name: <strong>{game.title}</strong></li>
                   <li className="platform">Platform: <strong>{game.platform}</strong>
-                    <img
-                      style={{ marginTop: '-9px' }}
-                      className="console windowsflag"
-                      src={windowsflag}
-                      alt={`Games for ${game.platform}`}
-                    />
+                  <img
+                    style={{ marginTop: '-9px' }}
+                    className="console windowsflag"
+                    src={windowsflag}
+                    alt={`Games for ${game.platform}`}
+                  />
                   </li>
                   <li className="language">Languages:
                     <span>
@@ -194,7 +195,7 @@ const GameDetail = () => {
                 <span id="view_full_description" onClick={toggleDescription} style={{ cursor: 'pointer', color: '#007bff' }}>
                   {showFullDescription ? 'View Less' : 'View Full Description >'}
                 </span>
-                
+
                 <>
                   {minimumRequirements && (
                     <div className="requirements">
@@ -215,28 +216,27 @@ const GameDetail = () => {
                     </div>
                   )}
                 </>
-                
+
                 <br />
                 <center>
-                <button
-                  className="button"
-                  type="button"
-                  onClick={() => {
-                    handleDownloadClick();
-                    window.location.href = `${game.download_link}`;
-                  }}
-                  download={`${game.title}.torrent`}
-                >
-                  <span className="button__text">Download</span>
-                  <span className="button__icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 35" id="bdd05811-e15d-428c-bb53-8661459f9307" data-name="Layer 2" className="svg">
-                      <path d="M17.5,22.131a1.249,1.249,0,0,1-1.25-1.25V2.187a1.25,1.25,0,0,1,2.5,0V20.881A1.25,1.25,0,0,1,17.5,22.131Z"></path>
-                      <path d="M17.5,22.693a3.189,3.189,0,0,1-2.262-.936L8.487,15.006a1.249,1.249,0,0,1,1.767-1.767l6.751,6.751a.7.7,0,0,0,.99,0l6.751-6.751a1.25,1.25,0,0,1,1.768,1.767l-6.752,6.751A3.191,3.191,0,0,1,17.5,22.693Z"></path>
-                      <path d="M31.436,34.063H3.564A3.318,3.318,0,0,1,.25,30.749V22.011a1.25,1.25,0,0,1,2.5,0v8.738a.815.815,0,0,0,.814.814H31.436a.815.815,0,0,0,.814-.814V22.011a1.25,1.25,0,1,1,2.5,0v8.738A3.318,3.318,0,0,1,31.436,34.063Z"></path>
-                    </svg>
-                  </span>
-                </button>
-
+                  <button
+                    className="button"
+                    type="button"
+                    onClick={() => {
+                      handleDownloadClick();
+                      window.location.href = `${game.download_link}`;
+                    }}
+                    download={`${game.title}.torrent`}
+                  >
+                    <span className="button__text">Download</span>
+                    <span className="button__icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 35" id="bdd05811-e15d-428c-bb53-8661459f9307" data-name="Layer 2" className="svg">
+                        <path d="M17.5,22.131a1.249,1.249,0,0,1-1.25-1.25V2.187a1.25,1.25,0,0,1,2.5,0V20.881A1.25,1.25,0,0,1,17.5,22.131Z"></path>
+                        <path d="M17.5,22.693a3.189,3.189,0,0,1-2.262-.936L8.487,15.006a1.249,1.249,0,0,1,1.767-1.767l6.751,6.751a.7.7,0,0,0,.99,0l6.751-6.751a1.25,1.25,0,0,1,1.768,1.767l-6.752,6.751A3.191,3.191,0,0,1,17.5,22.693Z"></path>
+                        <path d="M31.436,34.063H3.564A3.318,3.318,0,0,1,.25,30.749V22.011a1.25,1.25,0,0,1,2.5,0v8.738a.815.815,0,0,0,.814.814H31.436a.815.815,0,0,0,.814-.814V22.011a1.                    25,1.25,0,1,1,2.5,0v8.738A3.318,3.318,0,0,1,31.436,34.063Z"></path>
+                      </svg>
+                    </span>
+                  </button>
                 </center>
                 {showThankYou && (
                   <div className="thank_you">
@@ -265,8 +265,15 @@ const GameDetail = () => {
                     </div>
                   </div>
                 )}
+                {/* Comment Section */}
+                
               </div>
             </div>
+          </div>
+          <div className="game-details">
+            {/* Other game details */}
+            {/* Comment Section */}
+            <CommentSection gameId={id} />
           </div>
         </div>
       )}
@@ -276,3 +283,5 @@ const GameDetail = () => {
 
 export default GameDetail;
 
+
+                   

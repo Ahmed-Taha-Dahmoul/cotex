@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'custom_auth',
     'rest_framework_simplejwt',
-    
+    'comments',
     
 ]
 

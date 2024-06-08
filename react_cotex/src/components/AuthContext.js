@@ -72,6 +72,7 @@ export const AuthProvider = ({ children }) => {
           Authorization: `Bearer ${accessToken}`,
         },
       })
+      
       .then(response => setUser(response.data))
       .catch(error => console.error('Failed to fetch user:', error));
     }

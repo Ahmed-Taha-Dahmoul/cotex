@@ -9,7 +9,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('myapp.urls')),
     path('auth/', include('custom_auth.urls')),
-    path('api/token/blacklist/', TokenBlacklistView.as_view(), name='token_blacklist'),
+    path('comments/', include('comments.urls')),
 ]
 
 if settings.DEBUG:
