@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from '../AuthContext';
+import { useAuth } from '../AuthContext'; // Adjust the path if necessary
 import { useNavigate } from 'react-router-dom';
 import './LoginForm.css'; // Import CSS file for styling
 
@@ -12,9 +12,13 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Call login method from AuthContext
-    await login({ email, password });
-    navigate('/'); // Redirect to home page after successful login
-    window.location.reload();
+    const success = await login({ email, password });
+    if (!success) {
+      navigate('/'); // Redirect to home page if login fails
+    } else {
+      // Stay on the current page
+      window.location.reload(); // Optionally reload the page to refresh data
+    }
   };
 
   return (

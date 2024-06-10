@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode'; // Correct import statement
 
 // Create AuthContext
 const AuthContext = createContext();
@@ -17,23 +18,15 @@ export const AuthProvider = ({ children }) => {
       setUser(response.data.user); // Assuming your backend returns the user object
       localStorage.setItem('accessToken', response.data.access);
       localStorage.setItem('refreshToken', response.data.refresh);
+      return true; // Indicate login was successful
     } catch (error) {
       console.error('Login failed:', error.response.data);
+      return false; // Indicate login failed
     }
   };
 
   const logout = async () => {
     try {
-      const refreshToken = localStorage.getItem('refreshToken');
-  
-      if (!refreshToken) {
-        console.error('No refresh token found');
-        return;
-      }
-  
-      const accessToken = localStorage.getItem('accessToken');
-  
-      
       setUser(null);
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
@@ -58,23 +51,32 @@ export const AuthProvider = ({ children }) => {
 
   // Function to check if user is logged in
   const isLoggedIn = () => {
-    return localStorage.getItem('accessToken') !== null;
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) return false; // No access token, user not logged in
+    try {
+      const decoded = jwtDecode(accessToken); // Corrected usage
+      return decoded.exp * 1000 > Date.now(); // Check if token is not expired
+    } catch (error) {
+      console.error('Invalid token:', error);
+      return false; // Token is invalid, user not logged in
+    }
   };
 
   // Automatically log in user if tokens are present
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
-    if (accessToken) {
-      // Optionally, you can verify token and fetch user info from backend
-      // For simplicity, we'll just assume the user is logged in if token exists
+    if (accessToken && isLoggedIn()) {
+      // Token is valid, fetch user info
       axios.get('http://127.0.0.1:8000/auth/user/', {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       })
-      
       .then(response => setUser(response.data))
       .catch(error => console.error('Failed to fetch user:', error));
+    } else {
+      // Token expired or invalid, log the user out
+      logout();
     }
   }, []);
 

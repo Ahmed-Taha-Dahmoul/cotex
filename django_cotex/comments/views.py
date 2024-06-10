@@ -1,60 +1,26 @@
-# comments/views.py
 from rest_framework import generics, status
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from .models import Comment
-from .serializers import (
-    CommentDetailSerializer,
-    CommentLikeDislikeSerializer,
-    CommentReplySerializer,
-)
+from .serializers import CommentDetailSerializer, CommentCreateSerializer
 
-
-
-
-
-
-
-class CommentDetailAPIView(generics.ListAPIView):
+class CommentListAPIView(generics.ListAPIView):
     serializer_class = CommentDetailSerializer
-
     def get_queryset(self):
         game_id = self.request.query_params.get('game')
         if game_id:
-            return Comment.objects.filter(game_id=game_id).select_related('user').order_by('time')
+            queryset = Comment.objects.filter(game_id=game_id).select_related('user').order_by('time')
+            return queryset
         return Comment.objects.none()
 
-
-
-
-
-
-
-class CommentLikeDislikeAPIView(generics.GenericAPIView):
-    queryset = Comment.objects.all()
-    serializer_class = CommentLikeDislikeSerializer
-
-    def post(self, request, pk):
-        comment = self.get_object()
-        action = request.data.get('action')
-
-        if action == 'like':
-            comment.likes += 1
-        elif action == 'dislike':
-            comment.dislikes += 1
-        else:
-            return Response({'error': 'Invalid action'}, status=status.HTTP_400_BAD_REQUEST)
-
-        comment.save()
-        serializer = self.get_serializer(comment)
-        return Response(serializer.data)
-    
-
-
-class CommentReplyCreateAPIView(generics.CreateAPIView):
-    queryset = Comment.objects.all()
-    serializer_class = CommentReplySerializer
+class CommentCreateAPIView(generics.CreateAPIView):
+    serializer_class = CommentCreateSerializer
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
 
     def perform_create(self, serializer):
-        parent_comment_pk = self.kwargs.get('pk')
-        parent_comment = Comment.objects.get(pk=parent_comment_pk)
-        serializer.save(user=self.request.user, parent=parent_comment)
+        serializer.save(user=self.request.user)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)

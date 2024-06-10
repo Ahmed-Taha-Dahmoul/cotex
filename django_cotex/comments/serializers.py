@@ -1,14 +1,7 @@
-# comments/serializers.py
-from rest_framework import serializers
-from .models import Comment
-
-
 from rest_framework import serializers
 from custom_auth.models import CustomUser
 from myapp.models import Game
-
-
-
+from .models import Comment, LikeDislike
 
 class UserSerializer(serializers.ModelSerializer):
     profile_pic = serializers.SerializerMethodField()
@@ -25,23 +18,28 @@ class UserSerializer(serializers.ModelSerializer):
         return profile_pic_url
 
 class CommentDetailSerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)  # Remove the source argument
+    user = UserSerializer(read_only=True)
+    likes_count = serializers.SerializerMethodField()
+    dislikes_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Comment
-        fields = ['id', 'user', 'text', 'time', 'likes', 'dislikes', 'parent']
-        read_only_fields = ['time', 'likes', 'dislikes']
+        fields = ['id', 'user', 'text', 'time', 'likes_count', 'dislikes_count', 'parent']
+        read_only_fields = ['time', 'likes_count', 'dislikes_count']
+
+    def get_likes_count(self, comment):
+        return LikeDislike.objects.filter(comment=comment, like=True).count()
+
+    def get_dislikes_count(self, comment):
+        return LikeDislike.objects.filter(comment=comment, like=False).count()
+    
 
 
+from rest_framework import serializers
+from .models import Comment
 
-
-class CommentLikeDislikeSerializer(serializers.ModelSerializer):
+class CommentCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ['likes', 'dislikes']
+        fields = ['user', 'game', 'text', 'parent']
 
-class CommentReplySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Comment
-        fields = ['id', 'user', 'text', 'time', 'likes', 'dislikes', 'parent']
-        read_only_fields = ['time', 'likes', 'dislikes']
