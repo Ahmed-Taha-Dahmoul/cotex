@@ -33,17 +33,18 @@ const CommentSection = ({ gameId }) => {
 
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!isLoggedIn()) {
       setShowLogin(true);
       return;
     }
-
+  
     try {
       const accessToken = sessionStorage.getItem('accessToken');
       const response = await axios.post(
         'http://localhost:8000/comments/create/',
         {
+          user: user.id,
           game: gameId,
           text: newComment,
           parent: null,
@@ -54,13 +55,40 @@ const CommentSection = ({ gameId }) => {
           },
         }
       );
-
-      setComments([...comments, response.data]);
+  
+      // Retrieve profile pic URI from local storage
+      const profilePicUri = localStorage.getItem('profile_pic');
+  
+      // Prepend the base URL to the profile pic URI
+      const profilePicUrl = `http://localhost:8000/${profilePicUri}`;
+  
+      // Retrieve username from local storage
+      const username = localStorage.getItem('username');
+  
+      // Get current timestamp
+      const currentTime = new Date().toISOString();
+  
+      // Update the new comment object with username, profile pic, and current time
+      const newCommentWithUserInfo = {
+        ...response.data,
+        user: {
+          ...response.data.user,
+          profile_pic: profilePicUrl, // Set the profile pic URL
+          username: username,
+        },
+        time: currentTime, // Set the current time
+      };
+  
+      // Add the new comment to the state
+      setComments([...comments, newCommentWithUserInfo]);
       setNewComment('');
     } catch (error) {
       console.error('Error adding comment:', error);
     }
   };
+  
+  
+
 
   const handleCloseLogin = () => {
     setShowLogin(false);
