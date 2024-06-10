@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
+import {jwtDecode} from 'jwt-decode'; // Corrected import statement
 
 // Create AuthContext
 const AuthContext = createContext();
@@ -15,28 +16,27 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await axios.post('http://127.0.0.1:8000/auth/login/', userData);
       setUser(response.data.user); // Assuming your backend returns the user object
-      localStorage.setItem('accessToken', response.data.access);
-      localStorage.setItem('refreshToken', response.data.refresh);
+      sessionStorage.setItem('accessToken', response.data.access);
+      sessionStorage.setItem('refreshToken', response.data.refresh);
+      // Store user data in localStorage
+      localStorage.setItem('user_id', response.data.user.id);
+      localStorage.setItem('email', response.data.user.email);
+      localStorage.setItem('username', response.data.user.username);
+      localStorage.setItem('profile_pic', response.data.user.profile_pic);
+      return true; // Indicate login was successful
     } catch (error) {
       console.error('Login failed:', error.response.data);
+      return false; // Indicate login failed
     }
   };
 
-  const logout = async () => {
+  const logout = () => {
     try {
-      const refreshToken = localStorage.getItem('refreshToken');
-  
-      if (!refreshToken) {
-        console.error('No refresh token found');
-        return;
-      }
-  
-      const accessToken = localStorage.getItem('accessToken');
-  
-      
       setUser(null);
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
+      sessionStorage.removeItem('accessToken');
+      sessionStorage.removeItem('refreshToken');
+      // Clear user data from localStorage
+      localStorage.removeItem('user_id');
       localStorage.removeItem('email');
       localStorage.removeItem('username');
       localStorage.removeItem('profile_pic');
@@ -49,8 +49,13 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await axios.post('http://127.0.0.1:8000/auth/register/', userData);
       setUser(response.data.user); // Assuming your backend returns the user object
-      localStorage.setItem('accessToken', response.data.access);
-      localStorage.setItem('refreshToken', response.data.refresh);
+      sessionStorage.setItem('accessToken', response.data.access);
+      sessionStorage.setItem('refreshToken', response.data.refresh);
+      // Store user data in localStorage
+      localStorage.setItem('user_id', response.data.user.id);
+      localStorage.setItem('email', response.data.user.email);
+      localStorage.setItem('username', response.data.user.username);
+      localStorage.setItem('profile_pic', response.data.user.profile_pic);
     } catch (error) {
       console.error('Registration failed:', error.response.data);
     }
@@ -58,33 +63,41 @@ export const AuthProvider = ({ children }) => {
 
   // Function to check if user is logged in
   const isLoggedIn = () => {
-    return localStorage.getItem('accessToken') !== null;
+    const accessToken = sessionStorage.getItem('accessToken');
+    if (!accessToken) return false; // No access token, user not logged in
+    try {
+      const decoded = jwtDecode(accessToken); // Corrected usage
+      return decoded.exp * 1000 > Date.now(); // Check if token is not expired
+    } catch (error) {
+      console.error('Invalid token:', error);
+      return false; // Token is invalid, user not logged in
+    }
   };
 
   // Automatically log in user if tokens are present
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
-    if (accessToken) {
-      // Optionally, you can verify token and fetch user info from backend
-      // For simplicity, we'll just assume the user is logged in if token exists
+    const accessToken = sessionStorage.getItem('accessToken');
+    if (accessToken && isLoggedIn()) {
+      // Token is valid, fetch user info
       axios.get('http://127.0.0.1:8000/auth/user/', {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       })
-      .then(response => setUser(response.data))
+      .then(response => {
+        setUser(response.data);
+        // Store user data in localStorage
+        localStorage.setItem('user_id', response.data.id);
+        localStorage.setItem('email', response.data.email);
+        localStorage.setItem('username', response.data.username);
+        localStorage.setItem('profile_pic', response.data.profile_pic);
+      })
       .catch(error => console.error('Failed to fetch user:', error));
+    } else {
+      // Token expired or invalid, log the user out
+      logout();
     }
   }, []);
-
-  // Set localStorage items when user is set
-  useEffect(() => {
-    if (user) {
-      localStorage.setItem('email', user.email);
-      localStorage.setItem('username', user.username);
-      localStorage.setItem('profile_pic', user.profile_pic);
-    }
-  }, [user]);
 
   return (
     <AuthContext.Provider value={{ user, login, logout, register, isLoggedIn }}>
