@@ -265,8 +265,6 @@ const GameDetail = () => {
                     </div>
                   </div>
                 )}
-                {/* Comment Section */}
-                
               </div>
             </div>
           </div>

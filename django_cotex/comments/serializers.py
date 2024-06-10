@@ -35,11 +35,8 @@ class CommentDetailSerializer(serializers.ModelSerializer):
     
 
 
-from rest_framework import serializers
-from .models import Comment
 
-class CommentCreateSerializer(serializers.ModelSerializer):
+class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ['user', 'game', 'text', 'parent']
-
+        fields = ('user', 'game', 'text', 'parent')  # Excluding 'time' as it's auto-generated

@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from .models import Comment
-from .serializers import CommentDetailSerializer, CommentCreateSerializer
+from .serializers import CommentDetailSerializer, CommentSerializer
 
 class CommentListAPIView(generics.ListAPIView):
     serializer_class = CommentDetailSerializer
@@ -14,13 +14,12 @@ class CommentListAPIView(generics.ListAPIView):
             return queryset
         return Comment.objects.none()
 
+
+
+
 class CommentCreateAPIView(generics.CreateAPIView):
-    serializer_class = CommentCreateSerializer
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [JWTAuthentication]
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
+        serializer.save(user=self.request.user)  # Automatically set the user based on the request

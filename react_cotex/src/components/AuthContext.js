@@ -19,6 +19,7 @@ export const AuthProvider = ({ children }) => {
       sessionStorage.setItem('accessToken', response.data.access);
       sessionStorage.setItem('refreshToken', response.data.refresh);
       // Store user data in localStorage
+      localStorage.setItem('user_id', response.data.user.id);
       localStorage.setItem('email', response.data.user.email);
       localStorage.setItem('username', response.data.user.username);
       localStorage.setItem('profile_pic', response.data.user.profile_pic);
@@ -35,6 +36,7 @@ export const AuthProvider = ({ children }) => {
       sessionStorage.removeItem('accessToken');
       sessionStorage.removeItem('refreshToken');
       // Clear user data from localStorage
+      localStorage.removeItem('user_id');
       localStorage.removeItem('email');
       localStorage.removeItem('username');
       localStorage.removeItem('profile_pic');
@@ -50,6 +52,7 @@ export const AuthProvider = ({ children }) => {
       sessionStorage.setItem('accessToken', response.data.access);
       sessionStorage.setItem('refreshToken', response.data.refresh);
       // Store user data in localStorage
+      localStorage.setItem('user_id', response.data.user.id);
       localStorage.setItem('email', response.data.user.email);
       localStorage.setItem('username', response.data.user.username);
       localStorage.setItem('profile_pic', response.data.user.profile_pic);
@@ -84,6 +87,7 @@ export const AuthProvider = ({ children }) => {
       .then(response => {
         setUser(response.data);
         // Store user data in localStorage
+        localStorage.setItem('user_id', response.data.id);
         localStorage.setItem('email', response.data.email);
         localStorage.setItem('username', response.data.username);
         localStorage.setItem('profile_pic', response.data.profile_pic);
