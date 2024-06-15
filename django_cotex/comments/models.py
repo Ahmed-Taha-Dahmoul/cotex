@@ -7,7 +7,7 @@ class Comment(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
     text = models.TextField()
-    time = models.DateTimeField()  # Remove auto_now_add=True
+    time = models.DateTimeField()
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
 
     def __str__(self):
@@ -17,6 +17,12 @@ class Comment(models.Model):
         if not self.id:  # If it's a new comment
             self.time = timezone.now()  # Set the current time
         return super().save(*args, **kwargs)
+
+    def parent_info(self):
+        if self.parent:
+            return f"Reply to: {self.parent.user.email} - {self.parent.text[:30]}..."
+        return "No Parent"
+    parent_info.short_description = 'Parent Comment'
 
 class LikeDislike(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
