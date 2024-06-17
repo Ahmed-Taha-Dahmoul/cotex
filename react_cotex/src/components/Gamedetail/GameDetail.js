@@ -135,8 +135,8 @@ const GameDetail = () => {
               <img
                 className="post_image"
                 src={`${config.API_URL}/${game.image_path}`}
-                alt={`Download {game.title}`}
-                title={`Download {game.title}`}
+                alt={`Download ${game.title}`}
+                title={`Download ${game.title}`}
               />
             </div>
             <div className="col-md-9">
