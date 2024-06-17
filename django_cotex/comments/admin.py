@@ -1,11 +1,13 @@
 from django.contrib import admin
 from .models import Comment, LikeDislike
+from .forms import CommentForm
 
 class LikeDislikeInline(admin.TabularInline):
     model = LikeDislike
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('user', 'game', 'time', 'get_likes', 'get_dislikes')  # Include custom methods to display likes and dislikes
+    form = CommentForm
+    list_display = ('user', 'game', 'time', 'parent_info', 'get_likes', 'get_dislikes')  # Include custom method to display parent info
     list_filter = ('game',)  # Add filter by game
     search_fields = ('user__email', 'game__title', 'text')  # Add search fields
     inlines = [LikeDislikeInline]  # Inline likes and dislikes

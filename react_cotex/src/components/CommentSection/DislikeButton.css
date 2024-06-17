@@ -1,0 +1,30 @@
+.dislike-container {
+    position: absolute;
+    top: 35px;
+    right: 5px;
+  }
+  
+  .dislike-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  
+  .dislike-container svg {
+    position: relative;
+    height: 30px;
+    width: 30px;
+    transition: all 0.3s;
+    fill: #666;
+  }
+  
+  .dislike-container svg:hover {
+    transform: scale(1.1) rotate(-10deg);
+  }
+  
+  .dislike-container input:checked ~ svg {
+    fill: rgb(185, 51, 51);
+  }
+  

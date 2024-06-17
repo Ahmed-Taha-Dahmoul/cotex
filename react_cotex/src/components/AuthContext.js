@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import {jwtDecode} from 'jwt-decode'; // Corrected import statement
-
+import config from '../config';
 // Create AuthContext
 const AuthContext = createContext();
 
@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (userData) => {
     try {
-      const response = await axios.post('http://127.0.0.1:8000/auth/login/', userData);
+      const response = await axios.post(`${config.API_URL}/auth/login/`, userData);
       setUser(response.data.user); // Assuming your backend returns the user object
       sessionStorage.setItem('accessToken', response.data.access);
       sessionStorage.setItem('refreshToken', response.data.refresh);
@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      const response = await axios.post('http://127.0.0.1:8000/auth/register/', userData);
+      const response = await axios.post(`${config.API_URL}/auth/register/`, userData);
       setUser(response.data.user); // Assuming your backend returns the user object
       sessionStorage.setItem('accessToken', response.data.access);
       sessionStorage.setItem('refreshToken', response.data.refresh);
@@ -79,7 +79,7 @@ export const AuthProvider = ({ children }) => {
     const accessToken = sessionStorage.getItem('accessToken');
     if (accessToken && isLoggedIn()) {
       // Token is valid, fetch user info
-      axios.get('http://127.0.0.1:8000/auth/user/', {
+      axios.get(`${config.API_URL}/auth/user/`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

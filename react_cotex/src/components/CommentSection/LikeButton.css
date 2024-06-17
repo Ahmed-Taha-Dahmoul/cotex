@@ -1,0 +1,30 @@
+.like-container {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
+  
+  .like-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  
+  .like-container svg {
+    position: relative;
+    height: 30px;
+    width: 30px;
+    transition: all 0.3s;
+    fill: #666;
+  }
+  
+  .like-container svg:hover {
+    transform: scale(1.1) rotate(-10deg);
+  }
+  
+  .like-container input:checked ~ svg {
+    fill: #2196f3;
+  }
+  
