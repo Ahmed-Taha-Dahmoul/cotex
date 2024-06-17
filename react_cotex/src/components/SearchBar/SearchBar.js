@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './SearchBar.css'; // Add CSS styling for the search bar if needed
 import SearchIcon from './SearchIcon'; // Adjust the path if necessary
+import config from '../../config';
+
 
 function SearchBar() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -13,7 +15,7 @@ function SearchBar() {
     const fetchSearchResults = async () => {
       if (searchTerm.trim() !== '') {
         try {
-          const response = await axios.get(`http://127.0.0.1:8000/api/search/?q=${searchTerm}`);
+          const response = await axios.get(`${config.API_URL}/api/search/?q=${searchTerm}`);
           if (Array.isArray(response.data)) {
             setSearchResults(response.data);
           } else {

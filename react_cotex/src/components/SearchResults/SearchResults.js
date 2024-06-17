@@ -5,6 +5,7 @@ import { Row, Col, Skeleton } from 'antd';
 import { Link } from 'react-router-dom';
 import Paginator from '../Paginator/Paginator';
 import './SearchResults.css';
+import config from '../../config';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -25,7 +26,7 @@ const SearchResults = () => {
   const fetchSearchResults = async (term, page) => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/search/?q=${term}&page=${page}`);
+      const response = await axios.get(`${config.API_URL}/api/search/?q=${term}&page=${page}`);
       if (response.data && Array.isArray(response.data.results)) {
         setSearchResults(response.data.results);
         setTotalPages(Math.ceil(response.data.count / 30));
@@ -70,7 +71,7 @@ const SearchResults = () => {
               <Link to={`/games/${game.id}`}>
                 <div className="game-card">
                   <div className="game-cover">
-                    <img alt="Game Cover" src={`http://127.0.0.1:8000/${game.image_path}`} />
+                    <img alt="Game Cover" src={`${config.API_URL}/${game.image_path}`} />
                   </div>
                   <div className="game-info">
                     <h3 className="game-title">{game.title}</h3>

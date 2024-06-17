@@ -6,6 +6,7 @@ import LoginForm from '../LoginForm/LoginForm';
 import LikeButton from './LikeButton';
 import DislikeButton from './DislikeButton';
 import ReplyForm from './ReplyForm'; // Import the ReplyForm component
+import config from '../../config';
 
 const CommentSection = ({ gameId }) => {
   const { isLoggedIn, user } = useAuth();
@@ -17,7 +18,7 @@ const CommentSection = ({ gameId }) => {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/comments/?game=${gameId}`);
+        const response = await axios.get(`${config.API_URL}/comments/?game=${gameId}`);
         setComments(response.data.results);
       } catch (error) {
         console.error('Error fetching comments:', error);

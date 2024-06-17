@@ -4,6 +4,7 @@ import './Header.css';
 import logo from './logo.png';
 import SearchBar from '../SearchBar/SearchBar';
 import { useAuth } from '../AuthContext';
+import config from '../../config';
 
 function Header() {
   const [prevScrollPos, setPrevScrollPos] = useState(0);
@@ -51,7 +52,7 @@ function Header() {
               <div className="profile-container">
                 <div className="profile-circle">
                   {profilePic ? (
-                    <img src={`http://localhost:8000/${profilePic}`} alt="Profile" className="profile-pic" />
+                    <img src={`${config.API_URL}/${profilePic}`} alt="Profile" className="profile-pic" />
                   ) : (
                     <img src="default-profile-pic.jpg" alt="Default Profile" className="profile-pic" />
                   )}

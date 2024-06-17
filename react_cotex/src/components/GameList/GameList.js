@@ -4,8 +4,7 @@ import { Row, Col, Skeleton } from 'antd';
 import { Link } from 'react-router-dom';
 import Paginator from '../Paginator/Paginator';
 import './GameList.css';
-const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
-
+import config from '../../config';
 
 const GameList = () => {
   const [games, setGames] = useState([]);
@@ -19,13 +18,21 @@ const GameList = () => {
 
   const fetchGames = async (page) => {
     setLoading(true);
+    console.log('Fetching games for page:', page);  // Added log
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/games/?page=${page}`);
-      setGames(response.data.results);
-      setTotalPages(Math.ceil(response.data.count / 30));
+      const response = await axios.get(`${config.API_URL}/api/games/?page=${page}`);
+      console.log('Response received:', response.data);  // Added log
+      if (response.data && response.data.results) {
+        setGames(response.data.results);
+        setTotalPages(Math.ceil(response.data.count / 30));
+      } else {
+        setGames([]);
+        setTotalPages(1);
+      }
       setLoading(false);
     } catch (error) {
-      console.error("There was an error fetching the games!", error);
+      console.error('There was an error fetching the games!', error);  // Modified log
+      setGames([]);
       setLoading(false);
     }
   };
@@ -37,7 +44,6 @@ const GameList = () => {
   };
 
   return (
-    
     <div className="container-game-list">
       <div className="d-flex justify-content-center mt-4">
         <Paginator
@@ -47,27 +53,35 @@ const GameList = () => {
         />
       </div>
       <Row gutter={[16, 16]}>
-        {games.map((game) => (
-          <Col key={game.id} xs={24} sm={12} md={8} lg={6} xl={4} style={{ padding: '0 8px' }}>
-            <Link to={`/games/${game.id}`}>
+        {loading ? (
+          [...Array(24)].map((_, index) => (
+            <Col key={index} xs={24} sm={12} md={8} lg={6} xl={4} style={{ padding: '0 8px' }}>
               <div className="game-card">
-                <div className="game-cover">
-                  <Skeleton loading={loading} active>
-                    <img alt="Game Cover" src={`http://localhost:8000/${game.image_path}`} />
-                  </Skeleton>
-                </div>
-                <div className="game-info">
-                  <h3 className="game-title">{game.title}</h3>
-                  <p className="game-description">{game.description}</p>
-                  <div className="game-actions">
-                    <span>Download</span>
-                    <Link to={`/games/${game.id}`}>Details</Link>
+                <Skeleton active />
+              </div>
+            </Col>
+          ))
+        ) : (
+          games.map((game) => (
+            <Col key={game.id} xs={24} sm={12} md={8} lg={6} xl={4} style={{ padding: '0 8px' }}>
+              <Link to={`/games/${game.id}`}>
+                <div className="game-card">
+                  <div className="game-cover">
+                    <img alt="Game Cover" src={`${config.API_URL}/${game.image_path}`} />
+                  </div>
+                  <div className="game-info">
+                    <h3 className="game-title">{game.title}</h3>
+                    <p className="game-description">{game.description}</p>
+                    <div className="game-actions">
+                      <span>Download</span>
+                      <Link to={`/games/${game.id}`}>Details</Link>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Link>
-          </Col>
-        ))}
+              </Link>
+            </Col>
+          ))
+        )}
       </Row>
       <div className="d-flex justify-content-center mt-4">
         <Paginator

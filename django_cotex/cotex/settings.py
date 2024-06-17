@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-(@377r@45a1(l2qw#pubd&n9%46iyba94_j_j(-u%1n!f!#$=r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -64,6 +64,8 @@ ROOT_URLCONF = 'cotex.urls'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

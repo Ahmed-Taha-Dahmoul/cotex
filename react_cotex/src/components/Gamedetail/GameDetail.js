@@ -5,6 +5,7 @@ import { Container, Spinner } from 'react-bootstrap';
 import './GameDetail.css';
 import windowsflag from './windows logo.svg';
 import CommentSection from '../CommentSection/CommentSection'; // Import CommentSection component
+import config from '../../config';
 
 import Arabic from './languages_logo/Arabic.png';
 import Brazil from './languages_logo/Brazil.png';
@@ -50,7 +51,7 @@ const GameDetail = () => {
   useEffect(() => {
     const fetchGameDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/games/${id}/`);
+        const response = await axios.get(`${config.API_URL}/api/games/${id}/`);
         setGame(response.data);
         setLoading(false);
       } catch (error) {
@@ -133,7 +134,7 @@ const GameDetail = () => {
             <div className="col-md-3 game-img">
               <img
                 className="post_image"
-                src={`http://localhost:8000/${game.image_path}`}
+                src={`${config.API_URL}/${game.image_path}`}
                 alt={`Download {game.title}`}
                 title={`Download {game.title}`}
               />
@@ -171,7 +172,7 @@ const GameDetail = () => {
                     <span className="category">
                       {game.genres.map((genre, index) => (
                         <React.Fragment key={index}>
-                          <a href={`http://localhost:8000/category/${genre.slug}/`} rel="category tag">{genre}</a>{index < game.genres.length - 1 && ', '}
+                          <a href={`${config.API_URL}/category/${genre.slug}/`} rel="category tag">{genre}</a>{index < game.genres.length - 1 && ', '}
                         </React.Fragment>
                       ))}
                     </span>
@@ -243,7 +244,7 @@ const GameDetail = () => {
                     <center>
                       <p>Your file has been downloaded!</p>
                       <span>The best way to thank us is by sharing this game. Come on... it will only take 5 seconds!</span>
-                      <img id="helping" src="http://localhost:8000/path_to_image/help_down.gif" alt="Help Down" />
+                      <img id="helping" src="${config.API_URL}/path_to_image/help_down.gif" alt="Help Down" />
                       <div className="social_buttons">
                         <span rel="nofollow" onClick={() => window.open(`https://www.facebook.com/sharer.php?u=http://localhost:8000/games-pc/${game.slug}/`, 'mywin', 'width=500,height=500')} className="buttonsocial fa fa-facebook"></span>
                         <span rel="nofollow" onClick={() => window.open(`https://twitter.com/share?url=http://localhost:8000/games-pc/${game.slug}/`, 'mywin', 'width=500,height=500')} className="buttonsocial fa fa-twitter"></span>
