@@ -96,7 +96,7 @@
 }
 
 .comment-form {
-  margin-top: 20px;
+  margin-bottom: 20px; /* Adjust margin to separate form from comments */
   display: flex;
   align-items: center;
 }
