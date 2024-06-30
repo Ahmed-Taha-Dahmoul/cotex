@@ -179,3 +179,10 @@
   height: 100%;
   border: 0;
 }
+
+.discord-widget-container {
+  position: absolute;
+  top: 200px;
+  right: 40px;
+  z-index: 1000; /* Adjust as needed */
+}

@@ -9,15 +9,21 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
+  // Function to store the current URL in localStorage
+  const storeLastVisitedPage = () => {
+    localStorage.setItem('lastVisitedPage', window.location.pathname);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Call login method from AuthContext
     const success = await login({ email, password });
-    if (!success) {
-      navigate('/'); // Redirect to home page if login fails
-    } else {
-      // Stay on the current page
+    if (success) {
+      const lastVisitedPage = localStorage.getItem('lastVisitedPage') || '/';
+      navigate(lastVisitedPage); // Redirect to last visited page
       window.location.reload(); // Optionally reload the page to refresh data
+    } else {
+      navigate('/'); // Redirect to home page if login fails
     }
   };
 
@@ -32,7 +38,7 @@ const LoginForm = () => {
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
         </div>
         <div className="form-group">
-          <button type="submit">Login</button>
+          <button type="submit" onClick={storeLastVisitedPage}>Login</button>
         </div>
       </form>
     </div>

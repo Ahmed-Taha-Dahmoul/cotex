@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import './Header.css';
 import logo from './logo.png';
 import SearchBar from '../SearchBar/SearchBar';
@@ -11,6 +11,7 @@ function Header() {
   const [visible, setVisible] = useState(true);
   const { user, logout, isLoggedIn } = useAuth();
   const [profilePic, setProfilePic] = useState('');
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,6 +34,11 @@ function Header() {
     setProfilePic(storedProfilePic);
     
   }, []);
+
+  const handleLoginClick = () => {
+    // Store current page URL in localStorage
+    localStorage.setItem('lastVisitedPage', location.pathname);
+  };
 
   return (
     <div className="search">
@@ -62,7 +68,7 @@ function Header() {
             ) : (
               <>
                 <Link to="/signup" className="btn btn-signup">Sign Up</Link>
-                <Link to="/login" className="btn btn-login">Log In</Link>
+                <Link to="/login" className="btn btn-login" onClick={handleLoginClick}>Log In</Link>
               </>
             )}
           </div>

@@ -6,6 +6,8 @@ import './GameDetail.css';
 import windowsflag from './windows logo.svg';
 import CommentSection from '../CommentSection/CommentSection'; // Import CommentSection component
 import config from '../../config';
+import DiscordWidget from '../DiscordComponent/DiscordComponent';
+
 
 import Arabic from './languages_logo/Arabic.png';
 import Brazil from './languages_logo/Brazil.png';
@@ -276,6 +278,11 @@ const GameDetail = () => {
           </div>
         </div>
       )}
+
+      <div className="discord-widget-container">
+        <h2>Game Community</h2>
+        <DiscordWidget />
+      </div>
     </Container>
   );
 };
