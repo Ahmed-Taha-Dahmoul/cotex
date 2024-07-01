@@ -1,3 +1,4 @@
+/* Existing CSS */
 .body_content {
   padding: 20px;
   background-color: #c1c1c1;
@@ -181,8 +182,17 @@
 }
 
 .discord-widget-container {
-  position: absolute;
+  position: fixed;
   top: 200px;
   right: 40px;
   z-index: 1000; /* Adjust as needed */
+  transition: opacity 0.3s ease-in-out; /* Smooth transition */
+  opacity: 1; /* Initial state */
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+  .discord-widget-container {
+    display: none;
+  }
 }

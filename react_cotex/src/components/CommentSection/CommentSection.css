@@ -27,7 +27,7 @@
   margin-left: 20px; /* Add margin for nested replies */
 }
 
-.comment-item .comment-info {
+.comment-info {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -162,4 +162,41 @@
 
 .close-button:hover {
   color: #ff0000;
+}
+
+.comment-actions {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.like-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Add spacing between like and dislike buttons */
+}
+
+.like-button, .dislike-button {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.like-button .count, .dislike-button .count {
+  margin-left: 5px;
+  font-size: 14px;
+  color: #666;
+}
+
+.like-button:hover .count, .dislike-button:hover .count {
+  color: #2196f3;
+}
+
+.like-button:hover, .dislike-button:hover {
+  color: #2196f3;
+}
+
+.like-button .icon, .dislike-button .icon {
+  font-size: 18px;
 }

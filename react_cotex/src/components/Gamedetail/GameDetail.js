@@ -8,7 +8,6 @@ import CommentSection from '../CommentSection/CommentSection'; // Import Comment
 import config from '../../config';
 import DiscordWidget from '../DiscordComponent/DiscordComponent';
 
-
 import Arabic from './languages_logo/Arabic.png';
 import Brazil from './languages_logo/Brazil.png';
 import Chinese from './languages_logo/Chinese.png';
@@ -64,6 +63,24 @@ const GameDetail = () => {
 
     fetchGameDetails();
   }, [id]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const widget = document.querySelector('.discord-widget-container');
+      if (window.innerWidth <= 768) {
+        widget.style.opacity = '0';
+      } else {
+        widget.style.opacity = '1';
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Initial check
+    handleResize();
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const toggleDescription = () => {
     setShowFullDescription(!showFullDescription);
@@ -280,7 +297,7 @@ const GameDetail = () => {
       )}
 
       <div className="discord-widget-container">
-        <h2>Game Community</h2>
+        <h2>Join Our Discord Server</h2>
         <DiscordWidget />
       </div>
     </Container>
@@ -288,6 +305,3 @@ const GameDetail = () => {
 };
 
 export default GameDetail;
-
-
-                   
