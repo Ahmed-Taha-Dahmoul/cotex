@@ -154,6 +154,8 @@ const CommentSection = ({ gameId }) => {
       const newCommentData = processCommentData(response.data);
       setComments([newCommentData, ...comments]);
       setNewComment('');
+
+      window.location.reload();
     } catch (error) {
       console.error('Error adding comment:', error);
     }
@@ -185,6 +187,8 @@ const CommentSection = ({ gameId }) => {
         const newCommentData = processCommentData(response.data);
         setComments([newCommentData, ...comments]);
         setReplyingTo(null);
+
+        window.location.reload();
       } catch (error) {
         console.error('Error replying to comment:', error);
       }
