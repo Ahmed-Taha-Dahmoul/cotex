@@ -1,3 +1,4 @@
+/* CommentSection.css */
 .comment-section {
   margin-top: 20px;
   border: 1px solid #ccc;
@@ -68,22 +69,18 @@
   margin-bottom: 5px;
 }
 
-.reply-icon {
-  width: 20px; /* Set the width of the reply icon */
-  height: 20px; /* Set the height of the reply icon */
-  margin-right: 5px; /* Add margin to separate from the text */
-}
-
 .reply-button {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   color: #666;
   cursor: pointer;
+  margin-right: 10px; /* Add margin to separate from the three-dots-menu */
 }
 
-.reply-button:hover .reply-icon {
-  color: #2196f3; /* Change icon color on hover */
+.reply-button:hover {
+  text-decoration: underline; /* Underline text on hover */
 }
+
 
 .reply-button:hover .reply-text {
   text-decoration: underline; /* Underline text on hover */
