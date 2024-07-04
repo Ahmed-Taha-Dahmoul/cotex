@@ -18,6 +18,10 @@ const CommentSection = ({ gameId }) => {
   const [likedComments, setLikedComments] = useState(new Set());
   const [dislikedComments, setDislikedComments] = useState(new Set());
 
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [reportReason, setReportReason] = useState('');
+  const [reportCommentId, setReportCommentId] = useState(null); // State to store commentId for reporting
+
   const fetchComments = async () => {
     const accessToken = sessionStorage.getItem('accessToken');
     const headers = {};
@@ -58,6 +62,11 @@ const CommentSection = ({ gameId }) => {
   }, [gameId]);
 
   const handleLikeToggle = async (commentId) => {
+    if (!isLoggedIn()) {
+      setShowLogin(true);
+      return;
+    }
+
     try {
       const accessToken = sessionStorage.getItem('accessToken');
       await axios.put(
@@ -84,7 +93,6 @@ const CommentSection = ({ gameId }) => {
         }
         return newLikedComments;
       });
-      // Call fetchComments or any other function to update comments
       fetchComments();
     } catch (error) {
       console.error('Error toggling like:', error);
@@ -92,6 +100,11 @@ const CommentSection = ({ gameId }) => {
   };
 
   const handleDislikeToggle = async (commentId) => {
+    if (!isLoggedIn()) {
+      setShowLogin(true);
+      return;
+    }
+
     try {
       const accessToken = sessionStorage.getItem('accessToken');
       await axios.put(
@@ -103,14 +116,13 @@ const CommentSection = ({ gameId }) => {
           },
         }
       );
-  
+
       setDislikedComments((prevDislikedComments) => {
         const newDislikedComments = new Set(prevDislikedComments);
         if (newDislikedComments.has(commentId)) {
           newDislikedComments.delete(commentId);
         } else {
           newDislikedComments.add(commentId);
-          // Remove from likedComments if it was liked before
           setLikedComments((prevLikedComments) => {
             const newLikedComments = new Set(prevLikedComments);
             newLikedComments.delete(commentId);
@@ -119,8 +131,7 @@ const CommentSection = ({ gameId }) => {
         }
         return newDislikedComments;
       });
-  
-      // Call fetchComments or any other function to update comments
+
       fetchComments();
     } catch (error) {
       console.error('Error toggling dislike:', error);
@@ -183,189 +194,243 @@ const CommentSection = ({ gameId }) => {
           },
         }
       );
-  
-        const newCommentData = processCommentData(response.data);
-        setComments([newCommentData, ...comments]);
-        setReplyingTo(null);
 
-        window.location.reload();
-      } catch (error) {
-        console.error('Error replying to comment:', error);
-      }
-    };
-  
-    const handleCloseLogin = () => {
-      setShowLogin(false);
-    };
-  
-    const handleReply = (commentId) => {
-      setReplyingTo(commentId);
-    };
-  
-    const handleCancelReply = () => {
+      const newCommentData = processCommentData(response.data);
+      setComments([newCommentData, ...comments]);
       setReplyingTo(null);
-    };
 
-    const handleReport = (commentId) => {
-      // Handle report logic here
-      console.log('Report comment:', commentId);
-    };
-  
-    const processCommentData = (commentData) => {
-      const profilePicUri = localStorage.getItem('profile_pic');
-      const profilePicUrl = `${config.API_URL}/${profilePicUri}`;
-      const username = localStorage.getItem('username');
-      const currentTime = new Date().toISOString();
-      return {
-        ...commentData,
-        user: {
-          ...commentData.user,
-          profile_pic: profilePicUrl,
-          username: username,
-        },
-        time: currentTime,
+      window.location.reload();
+    } catch (error) {
+      console.error('Error replying to comment:', error);
+    }
+  };
+
+  const handleCloseLogin = () => {
+    setShowLogin(false);
+  };
+
+  const handleReply = (commentId) => {
+    setReplyingTo(commentId);
+  };
+
+  const handleCancelReply = () => {
+    setReplyingTo(null);
+  };
+
+  const handleOpenReportModal = (commentId) => {
+    setShowReportModal(true);
+    setReportCommentId(commentId); // Store commentId when opening modal
+  };
+
+  const handleCloseReportModal = () => {
+    setShowReportModal(false);
+    setReportReason(''); // Clear reason input when closing modal
+    setReportCommentId(null); // Clear commentId when closing modal
+  };
+
+  const handleReport = async () => {
+    if (!isLoggedIn() || !reportCommentId) {
+      setShowLogin(true);
+      return;
+    }
+
+    // Optionally, you can handle validation for report reason here before submitting
+
+    try {
+      const accessToken = sessionStorage.getItem('accessToken');
+      const reportData = {
+        reason: reportReason, // Use the state variable for reason
       };
+
+      const response = await axios.post(
+        `${config.API_URL}/comments/${reportCommentId}/report/`,
+        reportData,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      console.log('Report submitted:', response.data);
+      handleCloseReportModal(); // Close modal after successful submission
+    } catch (error) {
+      console.error('Error reporting comment:', error.response ? error.response.data : error.message);
+    }
+  };
+
+
+  const processCommentData = (commentData) => {
+    const profilePicUri = localStorage.getItem('profile_pic');
+    const profilePicUrl = `${config.API_URL}/${profilePicUri}`;
+    const username = localStorage.getItem('username');
+    const currentTime = new Date().toISOString();
+    return {
+      ...commentData,
+      user: {
+        ...commentData.user,
+        profile_pic: profilePicUrl,
+        username: username,
+      },
+      time: currentTime,
     };
-  
-    const renderMainComments = () => {
-      return comments
-        .filter((comment) => !comment.parent)
-        .map((comment) => (
-          <li key={comment.id} className="comment-item">
-            <div className="comment-info">
-              <div className="user-avatar">
-                <img src={comment.user.profile_pic} alt="Profile" />
-              </div>
-              <div className="user-details">
-                <strong className="user-username">{comment.user.username}</strong>
-                <span className="comment-time">{new Date(comment.time).toLocaleString()}</span>
-              </div>
+  };
+
+  const renderMainComments = () => {
+    return comments
+      .filter((comment) => !comment.parent)
+      .map((comment) => (
+        <li key={comment.id} className="comment-item">
+          <div className="comment-info">
+            <div className="user-avatar">
+              <img src={comment.user.profile_pic} alt="Profile" />
             </div>
-            <div className="comment-content">
-              <p>{comment.text}</p>
-              <div className="reply-button" onClick={() => handleReply(comment.id)}>
-                Reply
-              </div>
-              <ThreeDotsMenu onReport={() => handleReport(comment.id)} />
+            <div className="user-details">
+              <strong className="user-username">{comment.user.username}</strong>
+              <span className="comment-time">{new Date(comment.time).toLocaleString()}</span>
             </div>
-            <div className="comment-actions">
+          </div>
+          <div className="comment-content">
+            <p>{comment.text}</p>
+            <div className="reply-button" onClick={() => handleReply(comment.id)}>
+              Reply
+            </div>
+            <ThreeDotsMenu onReport={() => handleOpenReportModal(comment.id)} />
+          </div>
+          <div className="comment-actions">
+            <div className="like-container">
+              <LikeButton
+                commentId={comment.id}
+                handleLikeToggle={handleLikeToggle}
+                isLiked={likedComments.has(comment.id)}
+                likesCount={comment.likes_count}
+                updateLikesCount={fetchComments}
+              />
+              <DislikeButton
+                commentId={comment.id}
+                handleDislikeToggle={handleDislikeToggle}
+                isDisliked={dislikedComments.has(comment.id)}
+                dislikesCount={comment.dislikes_count}
+                updateDislikesCount={fetchComments}
+              />
+            </div>
+          </div>
+          <ul className="replies">
+            {renderReplyComments(comment.id)}
+          </ul>
+          {replyingTo === comment.id && (
+            <ReplyForm onSubmit={(text) => handleCommentReply(text, comment.id)} onCancel={handleCancelReply} />
+          )}
+        </li>
+      ));
+  };
+
+  const renderReplyComments = (parentId) => {
+    return comments
+      .filter((comment) => comment.parent === parentId)
+      .map((comment) => (
+        <li key={comment.id} className="comment-item">
+          <div className="comment-info">
+            <div className="user-avatar">
+              <img src={comment.user.profile_pic} alt="Profile" />
+            </div>
+            <div className="user-details">
+              <strong className="user-username">{comment.user.username}</strong>
+              <span className="comment-time">{new Date(comment.time).toLocaleString()}</span>
+            </div>
+          </div>
+          <div className="comment-content">
+            <p>{comment.text}</p>
+            <div className="reply-button" onClick={() => handleReply(comment.id)}>
+              Reply
+            </div>
+            <ThreeDotsMenu onReport={() => handleOpenReportModal(comment.id)} />
+            <div className="like-wrapper">
               <div className="like-container">
+                <span className="like-count">{comment.likes_count}</span>
                 <LikeButton
                   commentId={comment.id}
                   handleLikeToggle={handleLikeToggle}
                   isLiked={likedComments.has(comment.id)}
-                  likesCount={comment.likes_count}
-                  updateLikesCount={fetchComments} // Pass fetchComments or any other function to update likes count
-                  />
-                  <DislikeButton
+                  updateLikesCount={fetchComments}
+                />
+              </div>
+              <div className="dislike-container">
+                <span className="dislike-count">{comment.dislikes_count}</span>
+                <DislikeButton
                   commentId={comment.id}
                   handleDislikeToggle={handleDislikeToggle}
                   isDisliked={dislikedComments.has(comment.id)}
-                  dislikesCount={comment.dislikes_count}
-                  updateDislikesCount={fetchComments} // Pass fetchComments or any other function to update dislikes count
-                  />
-                  </div>
-                  </div>
-                  <ul className="replies">
-                  {renderReplyComments(comment.id)}
-                  </ul>
-                  {replyingTo === comment.id && (
-                  <ReplyForm onSubmit={(text) => handleCommentReply(text, comment.id)} onCancel={handleCancelReply} />
-                  )}
-                  </li>
-                  ));
-                  };
-                  const renderReplyComments = (parentId) => {
-                    return comments
-                      .filter((comment) => comment.parent === parentId)
-                      .map((comment) => (
-                        <li key={comment.id} className="comment-item">
-                          <div className="comment-info">
-                            <div className="user-avatar">
-                              <img src={comment.user.profile_pic} alt="Profile" />
-                            </div>
-                            <div className="user-details">
-                              <strong className="user-username">{comment.user.username}</strong>
-                              <span className="comment-time">{new Date(comment.time).toLocaleString()}</span>
-                            </div>
-                          </div>
-                          <div className="comment-content">
-                            <p>{comment.text}</p>
-                            <div className="reply-button" onClick={() => handleReply(comment.id)}>
-                              Reply
-                            </div>
-                            <ThreeDotsMenu onReport={() => handleReport(comment.id)} />
-                            <div className="like-wrapper">
-                              <div className="like-container">
-                                <span className="like-count">{comment.likes_count}</span>
-                                <LikeButton
-                                  commentId={comment.id}
-                                  handleLikeToggle={handleLikeToggle}
-                                  isLiked={likedComments.has(comment.id)}
-                                  updateLikesCount={fetchComments} // Pass fetchComments or any other function to update likes count
-                                />
-                              </div>
-                              <div className="dislike-container">
-                                <span className="dislike-count">{comment.dislikes_count}</span>
-                                <DislikeButton
-                                  commentId={comment.id}
-                                  handleDislikeToggle={handleDislikeToggle}
-                                  isDisliked={dislikedComments.has(comment.id)}
-                                  updateDislikesCount={fetchComments} // Pass fetchComments or any other function to update dislikes count
-                                />
-                              </div>
-                            </div>
-                          </div>
-                          <ul className="replies">
-                            {renderReplyComments(comment.id)}
-                          </ul>
-                          {replyingTo === comment.id && (
-                            <ReplyForm onSubmit={(text) => handleCommentReply(text, comment.id)} onCancel={handleCancelReply} />
-                          )}
-                        </li>
-                      ));
-                  };
-                  
-                  const renderCommentForm = () => {
-                    if (!isLoggedIn()) {
-                      return (
-                        <div className="login-required">
-                          Please <button onClick={() => setShowLogin(true)}>login</button> to comment.
-                        </div>
-                      );
-                    }
-                    return (
-                      <form className="comment-form" onSubmit={handleCommentSubmit}>
-                        <input
-                          type="text"
-                          value={newComment}
-                          onChange={(e) => setNewComment(e.target.value)}
-                          placeholder="Add a comment..."
-                        />
-                        <button type="submit">Submit</button>
-                      </form>
-                    );
-                  };
-                  
-                  return (
-                    <div className="comment-section">
-                      <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Comments</h2>
-                      {renderCommentForm()}
-                      <ul className="comment-list">
-                        {renderMainComments()}
-                      </ul>
-                      {showLogin && (
-                        <div className="login-modal">
-                          <div className="login-modal-content">
-                            <button className="close-button" onClick={handleCloseLogin}>X</button>
-                            <LoginForm />
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  );
-                  
+                  updateDislikesCount={fetchComments}
+                />
+              </div>
+            </div>
+          </div>
+          <ul className="replies">
+            {renderReplyComments(comment.id)}
+          </ul>
+          {replyingTo === comment.id && (
+            <ReplyForm onSubmit={(text) => handleCommentReply(text, comment.id)} onCancel={handleCancelReply} />
+          )}
+        </li>
+      ));
+  };
 
-                };
+  const renderCommentForm = () => {
+    if (!isLoggedIn()) {
+      return (
+        <div className="login-required">
+          Please <button onClick={() => setShowLogin(true)}>login</button> to comment.
+        </div>
+      );
+    }
+    return (
+      <form className="comment-form" onSubmit={handleCommentSubmit}>
+        <input
+          type="text"
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+          placeholder="Add a comment..."
+        />
+        <button type="submit">Submit</button>
+      </form>
+    );
+  };
 
-                export default CommentSection;
+  return (
+    <div className="comment-section">
+      <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Comments</h2>
+      {renderCommentForm()}
+      <ul className="comment-list">
+        {renderMainComments()}
+      </ul>
+      {showLogin && (
+        <div className="login-modal">
+          <div className="login-modal-content">
+            <button className="close-button" onClick={handleCloseLogin}>X</button>
+            <LoginForm />
+          </div>
+        </div>
+      )}
+
+      {/* Report modal */}
+      {showReportModal && (
+        <div className="report-modal">
+          <div className="report-modal-content">
+            <button className="close-button" onClick={handleCloseReportModal}>X</button>
+            <h3>Report Comment</h3>
+            <textarea
+              value={reportReason}
+              onChange={(e) => setReportReason(e.target.value)}
+              placeholder="Enter reason for report..."
+            />
+            <button onClick={handleReport}>Submit</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default CommentSection;

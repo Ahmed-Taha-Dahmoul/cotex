@@ -35,3 +35,12 @@ class LikeDislike(models.Model):
     def __str__(self):
         reaction = "No Reaction" if self.like is None else "Like" if self.like else "Dislike"
         return f"{reaction} by {self.user.email} on {self.comment}"
+
+class CommentReport(models.Model):
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='reports')
+    reported_by = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='comment_reports')
+    reason = models.TextField()
+    time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Report by {self.reported_by.email} on {self.comment}"

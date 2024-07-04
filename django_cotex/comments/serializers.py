@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from custom_auth.models import CustomUser
 from myapp.models import Game
-from .models import Comment, LikeDislike
+from .models import Comment, LikeDislike, CommentReport
 
 class UserSerializer(serializers.ModelSerializer):
     profile_pic = serializers.SerializerMethodField()
@@ -18,15 +18,11 @@ class UserSerializer(serializers.ModelSerializer):
         return profile_pic_url
 
 
-
-
-
 class CommentDetailSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
     likes_count = serializers.SerializerMethodField()
     dislikes_count = serializers.SerializerMethodField()
     liked_disliked_by_user = serializers.SerializerMethodField()
-    
 
     class Meta:
         model = Comment
@@ -47,9 +43,7 @@ class CommentDetailSerializer(serializers.ModelSerializer):
                 return like_dislike.like  # Return True if like, False if dislike, None if no reaction
             except LikeDislike.DoesNotExist:
                 return None  # Return None if no reaction exists
-        return None # Return None if user is not authenticated
-
-    
+        return None  # Return None if user is not authenticated
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -58,5 +52,8 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = ('user', 'game', 'text', 'parent')  # Excluding 'time' as it's auto-generated
 
 
-
-
+class CommentReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CommentReport
+        fields = ['id', 'comment', 'reported_by', 'reason', 'time']
+        read_only_fields = ['time', 'reported_by', 'comment']
