@@ -414,18 +414,19 @@ const CommentSection = ({ gameId }) => {
         </div>
       )}
 
-      {/* Report modal */}
-      {showReportModal && (
-        <div className="report-modal">
-          <div className="report-modal-content">
-            <button className="close-button" onClick={handleCloseReportModal}>X</button>
+       {showReportModal && (
+        <div className="report-modal-overlay">
+          <div className="report-modal">
             <h3>Report Comment</h3>
             <textarea
               value={reportReason}
               onChange={(e) => setReportReason(e.target.value)}
-              placeholder="Enter reason for report..."
-            />
-            <button onClick={handleReport}>Submit</button>
+              placeholder="Reason for reporting..."
+            ></textarea>
+            <div className="modal-buttons">
+              <button onClick={handleCloseReportModal}>Cancel</button>
+              <button onClick={handleReport}>Submit</button>
+            </div>
           </div>
         </div>
       )}

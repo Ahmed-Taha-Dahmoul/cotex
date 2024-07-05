@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate, login, logout 
 from .serializers import UserSerializer, RegisterSerializer, LoginSerializer
-from .serializers import CustomUserSerializer
+from .serializers import CustomUserSerializer , CustomUserSerializer_all
 
 
 
@@ -54,3 +54,15 @@ class UserInfoView(APIView):
         user = request.user
         serializer = CustomUserSerializer(user)
         return Response(serializer.data)
+    
+
+
+
+class ProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        serializer = CustomUserSerializer_all(user)
+        return Response(serializer.data)
+

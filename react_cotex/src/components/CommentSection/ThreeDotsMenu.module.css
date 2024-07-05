@@ -1,9 +1,9 @@
-.three-dots-menu {
+.threeDotsMenu {
   position: relative;
   display: inline-block;
 }
 
-.three-dots-button {
+.threeDotsButton {
   background: none;
   border: none;
   font-size: 1.5em;
@@ -11,7 +11,7 @@
   color: #666; /* Change color for better appearance */
 }
 
-.three-dots-button:hover {
+.threeDotsButton:hover {
   color: #2196f3; /* Change color on hover */
 }
 
@@ -25,20 +25,20 @@
   z-index: 1000;
 }
 
-.menu-item {
+.menuItem {
   padding: 8px 16px;
   cursor: pointer;
   white-space: nowrap;
 }
 
-.menu-item:hover {
+.menuItem:hover {
   background: #f0f0f0;
 }
 
-.menu-item.report {
+.report {
   color: red; /* Make the report option red */
 }
 
-.menu-item.report:hover {
+.report:hover {
   background: #ffe5e5; /* Change background color on hover */
 }

@@ -1,6 +1,5 @@
-// ThreeDotsMenu.js
 import React, { useState, useRef, useEffect } from 'react';
-import './ThreeDotsMenu.css';
+import styles from './ThreeDotsMenu.module.css';
 
 const ThreeDotsMenu = ({ onReport }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -23,14 +22,12 @@ const ThreeDotsMenu = ({ onReport }) => {
     };
   }, []);
 
-  console.log('ThreeDotsMenu rendered');
-
   return (
-    <div className="three-dots-menu" ref={menuRef}>
-      <button onClick={handleMenuToggle} className="three-dots-button">⋮</button>
+    <div className={styles.threeDotsMenu} ref={menuRef}>
+      <button onClick={handleMenuToggle} className={styles.threeDotsButton}>⋮</button>
       {isMenuOpen && (
-        <div className="menu">
-          <button onClick={onReport} className="menu-item">Report this comment</button>
+        <div className={styles.menu}>
+          <button onClick={onReport} className={`${styles.menuItem} ${styles.report}`}>Report this comment</button>
         </div>
       )}
     </div>
