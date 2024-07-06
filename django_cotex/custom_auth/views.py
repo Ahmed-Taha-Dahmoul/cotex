@@ -58,6 +58,14 @@ class UserInfoView(APIView):
 
 
 
+
+
+
+
+
+
+
+
 class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -65,4 +73,16 @@ class ProfileView(APIView):
         user = request.user
         serializer = CustomUserSerializer_all(user)
         return Response(serializer.data)
+
+    def put(self, request):
+        user = request.user
+        serializer = CustomUserSerializer_all(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        print(serializer.errors)  # Log the errors to the console
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 

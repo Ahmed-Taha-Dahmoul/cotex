@@ -45,7 +45,6 @@
 }
 
 .logo-img {
-   /* Adjust the size as needed */
   height: 48px; /* Adjust the size as needed */
   object-fit: cover;
 }
@@ -91,7 +90,6 @@
   width: 1.25rem;
   height: 1.25rem;
   color: var(--search-placeholder-color);
-  
 }
 
 .search-input {
@@ -99,7 +97,6 @@
   padding: 0.5rem 1rem 0.5rem 2.5rem;
   background-color: white;
   border: black solid 1px;
-  
   color: black;
   font-size: 0.875rem;
   outline: none;
@@ -207,10 +204,6 @@
     width: 100%;
     padding: 0.5rem;
   }
-  
-  
-  
-  
 }
 
 .profile-container {
@@ -219,8 +212,8 @@
 }
 
 .profile-circle {
-  width: 36px; /* Set the size of the circle */
-  height: 36px; /* Set the size of the circle */
+  width: 48px; /* Increased size */
+  height: 48px; /* Increased size */
   border-radius: 50%; /* Make it a circle */
   overflow: hidden; /* Hide overflow */
   margin-right: 10px;

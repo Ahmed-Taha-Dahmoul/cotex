@@ -5,7 +5,17 @@ import './Profile.css';
 import config from '../../config';
 
 const Profile = () => {
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState({
+    full_name: '',
+    email: '',
+    phone: '',
+    street: '',
+    city: '',
+    state: '',
+    zip_code: '',
+    about: ''
+  });
+  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -14,22 +24,55 @@ const Profile = () => {
         if (!accessToken) {
           throw new Error('Access token not found.');
         }
-  
+
         const response = await axios.get(`${config.API_URL}/auth/profile/`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         });
-        
+
         setProfile(response.data);
-        console.log('Profile fetched:', response.data);
       } catch (error) {
         console.error('Failed to fetch profile:', error.message);
       }
     };
-  
+
     fetchProfile();
   }, []);
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setProfile((prevState) => ({
+      ...prevState,
+      [id]: value,
+    }));
+  };
+
+  const handleUpdate = async () => {
+    try {
+      const accessToken = sessionStorage.getItem('accessToken');
+      if (!accessToken) {
+        throw new Error('Access token not found.');
+      }
+
+      console.log('Updating profile with data:', profile);  // Log the profile data
+
+      const response = await axios.put(`${config.API_URL}/auth/profile/`, profile, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      console.log('Profile updated:', response.data);
+      setSuccessMessage('Profile updated successfully!');
+      // Clear the success message after 3 seconds
+      setTimeout(() => {
+        setSuccessMessage('');
+      }, 3000);
+    } catch (error) {
+      console.error('Failed to update profile:', error.response.data);  // Log the error response
+    }
+  };
 
   if (!profile) {
     return <div>Loading...</div>;
@@ -37,6 +80,11 @@ const Profile = () => {
 
   return (
     <div className="container">
+      {successMessage && (
+        <div className="alert alert-success" role="alert">
+          {successMessage}
+        </div>
+      )}
       <div className="row gutters">
         <div className="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
           <div className="card h-100">
@@ -54,7 +102,7 @@ const Profile = () => {
                 </div>
                 <div className="about">
                   <h5>About</h5>
-                  <p>{profile.about }</p>
+                  <p>{profile.about}</p>
                 </div>
               </div>
             </div>
@@ -69,25 +117,27 @@ const Profile = () => {
                 </div>
                 <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                   <div className="form-group">
-                    <label htmlFor="fullName">Full Name</label>
+                    <label htmlFor="full_name">Full Name</label>
                     <input
                       type="text"
                       className="form-control"
-                      id="fullName"
+                      id="full_name"
                       placeholder="Enter full name"
-                      defaultValue={profile.full_name}
+                      value={profile.full_name}
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
                 <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                   <div className="form-group">
-                    <label htmlFor="eMail">Email</label>
+                    <label htmlFor="email">Email</label>
                     <input
                       type="email"
                       className="form-control"
-                      id="eMail"
+                      id="email"
                       placeholder="Enter email ID"
-                      defaultValue={profile.email}
+                      value={profile.email}
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
@@ -99,7 +149,8 @@ const Profile = () => {
                       className="form-control"
                       id="phone"
                       placeholder="Enter phone number"
-                      defaultValue={profile.phone}
+                      value={profile.phone}
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
@@ -110,49 +161,53 @@ const Profile = () => {
                 </div>
                 <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                   <div className="form-group">
-                    <label htmlFor="Street">Street</label>
+                    <label htmlFor="street">Street</label>
                     <input
                       type="text"
                       className="form-control"
-                      id="Street"
+                      id="street"
                       placeholder="Enter Street"
-                      defaultValue={profile.street}
+                      value={profile.street}
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
                 <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                   <div className="form-group">
-                    <label htmlFor="ciTy">City</label>
+                    <label htmlFor="city">City</label>
                     <input
                       type="text"
                       className="form-control"
-                      id="ciTy"
+                      id="city"
                       placeholder="Enter City"
-                      defaultValue={profile.city}
+                      value={profile.city}
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
                 <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                   <div className="form-group">
-                    <label htmlFor="sTate">State</label>
+                    <label htmlFor="state">State</label>
                     <input
                       type="text"
                       className="form-control"
-                      id="sTate"
+                      id="state"
                       placeholder="Enter State"
-                      defaultValue={profile.state}
+                      value={profile.state}
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
                 <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                   <div className="form-group">
-                    <label htmlFor="zIp">Zip Code</label>
+                    <label htmlFor="zip_code">Zip Code</label>
                     <input
                       type="text"
                       className="form-control"
-                      id="zIp"
+                      id="zip_code"
                       placeholder="Zip Code"
-                      defaultValue={profile.zip}
+                      value={profile.zip_code}
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
@@ -160,10 +215,10 @@ const Profile = () => {
               <div className="row gutters">
                 <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                   <div className="text-right">
-                    <button type="button" id="submit" name="submit" className="btn btn-secondary">
+                    <button type="button" id="cancel" name="cancel" className="btn btn-secondary">
                       Cancel
                     </button>
-                    <button type="button" id="submit" name="submit" className="btn btn-primary">
+                    <button type="button" id="submit" name="submit" className="btn btn-primary" onClick={handleUpdate}>
                       Update
                     </button>
                   </div>

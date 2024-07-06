@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { Dropdown } from 'react-bootstrap';
 import './Header.css';
 import logo from './logo.png';
 import SearchBar from '../SearchBar/SearchBar';
@@ -22,21 +23,17 @@ function Header() {
 
     window.addEventListener('scroll', handleScroll);
 
-    // Cleanup
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [prevScrollPos]);
 
   useEffect(() => {
-    // Get profile picture path from local storage
     const storedProfilePic = localStorage.getItem('profile_pic');
     setProfilePic(storedProfilePic);
-    
   }, []);
 
   const handleLoginClick = () => {
-    // Store current page URL in localStorage
     localStorage.setItem('lastVisitedPage', location.pathname);
   };
 
@@ -56,14 +53,19 @@ function Header() {
           <div className="search-container">
             {isLoggedIn() ? (
               <div className="profile-container">
-                <div className="profile-circle">
-                  {profilePic ? (
-                    <img src={`${config.API_URL}/${profilePic}`} alt="Profile" className="profile-pic" />
-                  ) : (
-                    <img src="default-profile-pic.jpg" alt="Default Profile" className="profile-pic" />
-                  )}
-                </div>
-                <button className="btn btn-logout" onClick={logout}>Log Out</button>
+                <Dropdown>
+                  <Dropdown.Toggle variant="light" id="dropdown-basic" className="profile-circle">
+                    {profilePic ? (
+                      <img src={`${config.API_URL}/${profilePic}`} alt="Profile" className="profile-pic" />
+                    ) : (
+                      <img src="default-profile-pic.jpg" alt="Default Profile" className="profile-pic" />
+                    )}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item as={Link} to="/profile">Profile</Dropdown.Item>
+                    <Dropdown.Item onClick={logout}>Log Out</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
               </div>
             ) : (
               <>
