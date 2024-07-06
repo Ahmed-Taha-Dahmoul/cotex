@@ -11,6 +11,9 @@ body {
     margin: 0 0 1rem 0;
     padding-bottom: 1rem;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .account-settings .user-profile .user-avatar {
@@ -19,6 +22,7 @@ body {
     height: 120px; /* Make the avatar larger */
     border-radius: 50%; /* Make it a circle */
     overflow: hidden; /* Hide overflow */
+    border: 3px solid rgb(175, 175, 175); /* Add black contour */
 }
 
 .account-settings .user-profile .user-avatar img {
@@ -29,6 +33,9 @@ body {
 
 .account-settings .user-profile h5.user-name {
     margin: 0 0 0.5rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .account-settings .user-profile h6.user-email {
@@ -41,11 +48,17 @@ body {
 .account-settings .about {
     margin: 2rem 0 0 0;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .account-settings .about h5 {
     margin: 0 0 15px 0;
     color: #007ae1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .account-settings .about p {
@@ -55,7 +68,7 @@ body {
 .form-control {
     border: 1px solid #cfd1d8;
     border-radius: 2px;
-    font-size: .825rem;
+    font-size: 0.825rem;
     background: #ffffff;
     color: #2e323c;
 }
@@ -69,4 +82,21 @@ body {
 
 .text-right .btn + .btn {
     margin-left: 10px; /* Add space between buttons */
+}
+
+.ml-2 {
+    margin-left: 10px; /* Adjust margin for edit icon */
+    cursor: pointer; /* Make the cursor a pointer for edit icons */
+    color: #007ae1; /* Color for edit icons */
+}
+
+.edit-icon {
+    display: inline-block;
+    margin-left: 10px; /* Add space between text and icon */
+    color: #007ae1;
+    cursor: pointer;
+}
+
+.edit-icon:hover {
+    color: #005bb5; /* Darken the icon color on hover */
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { FaEdit } from 'react-icons/fa';
 import './Profile.css';
 import config from '../../config';
 
@@ -13,9 +14,15 @@ const Profile = () => {
     city: '',
     state: '',
     zip_code: '',
-    about: ''
+    about: '',
+    username: '',
+    profile_pic: '',
   });
   const [successMessage, setSuccessMessage] = useState('');
+  const [editMode, setEditMode] = useState({
+    username: false,
+    about: false,
+  });
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -55,7 +62,7 @@ const Profile = () => {
         throw new Error('Access token not found.');
       }
 
-      console.log('Updating profile with data:', profile);  // Log the profile data
+      console.log('Updating profile with data:', profile); // Log the profile data
 
       const response = await axios.put(`${config.API_URL}/auth/profile/`, profile, {
         headers: {
@@ -70,8 +77,15 @@ const Profile = () => {
         setSuccessMessage('');
       }, 3000);
     } catch (error) {
-      console.error('Failed to update profile:', error.response.data);  // Log the error response
+      console.error('Failed to update profile:', error.response.data); // Log the error response
     }
+  };
+
+  const toggleEditMode = (field) => {
+    setEditMode((prevState) => ({
+      ...prevState,
+      [field]: !prevState[field],
+    }));
   };
 
   if (!profile) {
@@ -97,12 +111,45 @@ const Profile = () => {
                       alt={profile.username}
                     />
                   </div>
-                  <h5 className="user-name">{profile.username}</h5>
+                  <div className="d-flex align-items-center">
+                    {editMode.username ? (
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="username"
+                        value={profile.username}
+                        onChange={handleChange}
+                      />
+                    ) : (
+                      <h5 className="user-name">{profile.username}</h5>
+                    )}
+                    <FaEdit
+                      className="ml-2"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => toggleEditMode('username')}
+                    />
+                  </div>
                   <h6 className="user-email">{profile.email}</h6>
                 </div>
                 <div className="about">
-                  <h5>About</h5>
-                  <p>{profile.about}</p>
+                  <div className="d-flex align-items-center">
+                    <h5>About</h5>
+                    <FaEdit
+                      className="ml-2"
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => toggleEditMode('about')}
+                    />
+                  </div>
+                  {editMode.about ? (
+                    <textarea
+                      className="form-control"
+                      id="about"
+                      value={profile.about}
+                      onChange={handleChange}
+                    />
+                  ) : (
+                    <p>{profile.about}</p>
+                  )}
                 </div>
               </div>
             </div>
