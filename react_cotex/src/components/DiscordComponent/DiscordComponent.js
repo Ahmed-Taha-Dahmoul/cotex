@@ -5,7 +5,7 @@ const DiscordWidget = () => {
     <div className="discord-widget">
       <iframe
         src="https://discord.com/widget?id=689951983519662096&theme=dark"
-        width="350"
+        width="100%" // Use percentage width for responsiveness
         height="500"
         allowtransparency="true"
         frameBorder="0"

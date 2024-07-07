@@ -58,6 +58,7 @@ const GameDetail = () => {
       } catch (error) {
         console.error("Error fetching game details:", error);
         setLoading(false);
+        // Handle error state or retry logic
       }
     };
 
@@ -67,10 +68,12 @@ const GameDetail = () => {
   useEffect(() => {
     const handleResize = () => {
       const widget = document.querySelector('.discord-widget-container');
-      if (window.innerWidth <= 768) {
-        widget.style.opacity = '0';
-      } else {
-        widget.style.opacity = '1';
+      if (widget) {
+        if (window.innerWidth <= 768) {
+          widget.style.opacity = '0';
+        } else {
+          widget.style.opacity = '1';
+        }
       }
     };
 
@@ -88,6 +91,7 @@ const GameDetail = () => {
 
   const handleDownloadClick = () => {
     setShowThankYou(true);
+    window.location.href = `${game.download_link}`;
   };
 
   const extractYouTubeVideoId = (url) => {
@@ -242,10 +246,7 @@ const GameDetail = () => {
                   <button
                     className="button"
                     type="button"
-                    onClick={() => {
-                      handleDownloadClick();
-                      window.location.href = `${game.download_link}`;
-                    }}
+                    onClick={handleDownloadClick}
                     download={`${game.title}.torrent`}
                   >
                     <span className="button__text">Download</span>
@@ -263,7 +264,7 @@ const GameDetail = () => {
                     <center>
                       <p>Your file has been downloaded!</p>
                       <span>The best way to thank us is by sharing this game. Come on... it will only take 5 seconds!</span>
-                      <img id="helping" src="${config.API_URL}/path_to_image/help_down.gif" alt="Help Down" />
+                      <img id="helping" src={`${config.API_URL}/path_to_image/help_down.gif`} alt="Help Down" />
                       <div className="social_buttons">
                         <span rel="nofollow" onClick={() => window.open(`https://www.facebook.com/sharer.php?u=http://localhost:8000/games-pc/${game.slug}/`, 'mywin', 'width=500,height=500')} className="buttonsocial fa fa-facebook"></span>
                         <span rel="nofollow" onClick={() => window.open(`https://twitter.com/share?url=http://localhost:8000/games-pc/${game.slug}/`, 'mywin', 'width=500,height=500')} className="buttonsocial fa fa-twitter"></span>
