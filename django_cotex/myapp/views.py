@@ -53,3 +53,27 @@ class GameSearchAPIView(views.APIView):
 
         return paginator.get_paginated_response(serializer.data)
 
+
+
+
+
+
+
+
+
+class GameGenreAPIView(views.APIView):
+    def get(self, request):
+        query = request.GET.get('q')
+        if query:
+            games = Game.objects.filter((Q(genres__icontains=query)) & ~Q(image_path__isnull=True)).order_by('-release_date').values('id', 'title', 'image_path')
+        else:
+            games = Game.objects.none()
+
+        paginator = pagination.PageNumberPagination()
+        paginator.page_size = 30
+        result_page = paginator.paginate_queryset(games, request, view=self)
+        serializer = Game_title_cracker_version_Serializer(result_page, many=True)
+
+        return paginator.get_paginated_response(serializer.data)
+    
+

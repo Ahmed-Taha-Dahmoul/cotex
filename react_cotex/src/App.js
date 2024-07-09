@@ -7,12 +7,12 @@ import GameDetail from './components/GameDetail/GameDetail';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import SearchResults from './components/SearchResults/SearchResults';
+import CategoryResults from './components/CategoryResults/CategoryResults';
 import SignUpForm from './components/SignUpForm/SignUpForm';
 import LoginForm from './components/LoginForm/LoginForm';
 import Profile from './components/Profile/Profile';
-import PrivateRoute from './components/PrivateRoute'; // Import the PrivateRoute component
-
-// Assuming AuthProvider manages authentication state
+import PrivateRoute from './components/PrivateRoute';
+import PublicRoute from './components/PublicRoute';
 import { AuthProvider } from './components/AuthContext';
 
 function App() {
@@ -25,14 +25,15 @@ function App() {
             <Routes>
               <Route path="/" element={<GameList />} />
               <Route path="/games/:id" element={<GameDetail />} />
+              <Route path="/category" element={<CategoryResults />} />
               <Route path="/action" element={<div>Action Games</div>} />
               <Route path="/adventure" element={<div>Adventure Games</div>} />
               <Route path="/simulation" element={<div>Simulation Games</div>} />
               <Route path="/multiplayer" element={<div>Multiplayer Games</div>} />
               <Route path="/search_result" element={<SearchResults />} />
               <Route path="/signup" element={<SignUpForm />} />
-              <Route path="/login" element={<LoginForm />} />
-              <Route path="/profile" element={<PrivateRoute element={Profile} />} /> {/* Protected Route */}
+              <Route path="/login" element={<PublicRoute element={<LoginForm />} />} />
+              <Route path="/profile" element={<PrivateRoute element={<Profile />} />} />
             </Routes>
           </main>
           <Footer />
