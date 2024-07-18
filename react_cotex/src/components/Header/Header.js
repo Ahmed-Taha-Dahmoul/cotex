@@ -45,10 +45,10 @@ function Header() {
             <img alt="Logo" className="logo-img" src={logo} />
           </Link>
           <nav className="nav-links">
-            <Link className="nav-link" to="/action">Action</Link>
-            <Link className="nav-link" to="/adventure">Adventure</Link>
-            <Link className="nav-link" to="/simulation">Simulation</Link>
-            <Link className="nav-link" to="/multiplayer">Multiplayer</Link>
+            <Link className="nav-link" to="/category/?q=Action">Action</Link>
+            <Link className="nav-link" to="/category/?q=Adventure">Adventure</Link>
+            <Link className="nav-link" to="/category/?q=Simulator">Simulation</Link>
+            <Link className="nav-link" to="/category/?q=Sports"> Sports</Link>
           </nav>
           <div className="search-container">
             {isLoggedIn() ? (
