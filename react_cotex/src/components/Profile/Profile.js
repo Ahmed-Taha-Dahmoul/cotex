@@ -3,7 +3,9 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaEdit } from 'react-icons/fa';
 import './Profile.css';
+import './Password.css'; // Ensure this is included for password component styling
 import config from '../../config';
+import Password from './Password'; // Adjust path as needed
 
 const Profile = () => {
   const [profile, setProfile] = useState({
@@ -23,6 +25,7 @@ const Profile = () => {
     username: false,
     about: false,
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -86,6 +89,14 @@ const Profile = () => {
       ...prevState,
       [field]: !prevState[field],
     }));
+  };
+
+  const handleChangePassword = () => {
+    setShowPassword(true);
+  };
+
+  const handleClosePassword = () => {
+    setShowPassword(false);
   };
 
   if (!profile) {
@@ -261,12 +272,32 @@ const Profile = () => {
               </div>
               <div className="row gutters">
                 <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                  <div className="text-right">
-                    <button type="button" id="cancel" name="cancel" className="btn btn-secondary">
+                  <div className="d-flex justify-content-between">
+                    <button
+                      type="button"
+                      id="cancel"
+                      name="cancel"
+                      className="btn btn-secondary btn-spacing"
+                    >
                       Cancel
                     </button>
-                    <button type="button" id="submit" name="submit" className="btn btn-primary" onClick={handleUpdate}>
+                    <button
+                      type="button"
+                      id="submit"
+                      name="submit"
+                      className="btn btn-primary btn-spacing"
+                      onClick={handleUpdate}
+                    >
                       Update
+                    </button>
+                    <button
+                      type="button"
+                      id="changePassword"
+                      name="changePassword"
+                      className="btn btn-warning"
+                      onClick={handleChangePassword}
+                    >
+                      Change Password
                     </button>
                   </div>
                 </div>
@@ -275,6 +306,12 @@ const Profile = () => {
           </div>
         </div>
       </div>
+
+      {showPassword && (
+        <div className="password-modal">
+          <Password onClose={handleClosePassword} />
+        </div>
+      )}
     </div>
   );
 };

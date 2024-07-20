@@ -2,31 +2,28 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import {jwtDecode} from 'jwt-decode'; // Corrected import statement
 import config from '../config';
-// Create AuthContext
+
 const AuthContext = createContext();
 
-// Custom hook to use AuthContext
 export const useAuth = () => useContext(AuthContext);
 
-// AuthProvider component
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // Initialize user state with null
+  const [user, setUser] = useState(null);
 
   const login = async (userData) => {
     try {
       const response = await axios.post(`${config.API_URL}/auth/login/`, userData);
-      setUser(response.data.user); // Assuming your backend returns the user object
+      setUser(response.data.user);
       sessionStorage.setItem('accessToken', response.data.access);
       sessionStorage.setItem('refreshToken', response.data.refresh);
-      // Store user data in localStorage
       localStorage.setItem('user_id', response.data.user.id);
       localStorage.setItem('email', response.data.user.email);
       localStorage.setItem('username', response.data.user.username);
       localStorage.setItem('profile_pic', response.data.user.profile_pic);
-      return true; // Indicate login was successful
+      return true;
     } catch (error) {
-      console.error('Login failed:', error.response.data);
-      return false; // Indicate login failed
+      console.error('Login failed:', error.response?.data || error.message);
+      throw error; // Throw error for component to handle
     }
   };
 
@@ -35,7 +32,6 @@ export const AuthProvider = ({ children }) => {
       setUser(null);
       sessionStorage.removeItem('accessToken');
       sessionStorage.removeItem('refreshToken');
-      // Clear user data from localStorage
       localStorage.removeItem('user_id');
       localStorage.removeItem('email');
       localStorage.removeItem('username');
@@ -48,37 +44,34 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     try {
       const response = await axios.post(`${config.API_URL}/auth/register/`, userData);
-      setUser(response.data.user); // Assuming your backend returns the user object
+      setUser(response.data.user);
       sessionStorage.setItem('accessToken', response.data.access);
       sessionStorage.setItem('refreshToken', response.data.refresh);
-      // Store user data in localStorage
       localStorage.setItem('user_id', response.data.user.id);
       localStorage.setItem('email', response.data.user.email);
       localStorage.setItem('username', response.data.user.username);
       localStorage.setItem('profile_pic', response.data.user.profile_pic);
     } catch (error) {
-      console.error('Registration failed:', error.response.data);
+      console.error('Registration failed:', error.response?.data || error.message);
+      throw error; // Throw error for component to handle
     }
   };
 
-  // Function to check if user is logged in
   const isLoggedIn = () => {
     const accessToken = sessionStorage.getItem('accessToken');
-    if (!accessToken) return false; // No access token, user not logged in
+    if (!accessToken) return false;
     try {
-      const decoded = jwtDecode(accessToken); // Corrected usage
-      return decoded.exp * 1000 > Date.now(); // Check if token is not expired
+      const decoded = jwtDecode(accessToken);
+      return decoded.exp * 1000 > Date.now();
     } catch (error) {
       console.error('Invalid token:', error);
-      return false; // Token is invalid, user not logged in
+      return false;
     }
   };
 
-  // Automatically log in user if tokens are present
   useEffect(() => {
     const accessToken = sessionStorage.getItem('accessToken');
     if (accessToken && isLoggedIn()) {
-      // Token is valid, fetch user info
       axios.get(`${config.API_URL}/auth/user/`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -86,7 +79,6 @@ export const AuthProvider = ({ children }) => {
       })
       .then(response => {
         setUser(response.data);
-        // Store user data in localStorage
         localStorage.setItem('user_id', response.data.id);
         localStorage.setItem('email', response.data.email);
         localStorage.setItem('username', response.data.username);
@@ -94,7 +86,6 @@ export const AuthProvider = ({ children }) => {
       })
       .catch(error => console.error('Failed to fetch user:', error));
     } else {
-      // Token expired or invalid, log the user out
       logout();
     }
   }, []);
