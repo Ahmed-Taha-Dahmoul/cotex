@@ -19,14 +19,16 @@ const LoginForm = () => {
     e.preventDefault();
     setError(''); // Clear any previous error messages
 
-    // Call login method from AuthContext
-    const success = await login({ email, password });
+    try {
+      // Call login method from AuthContext
+      const success = await login({ email, password });
 
-    if (success) {
-      const lastVisitedPage = localStorage.getItem('lastVisitedPage') || '/';
-      navigate(lastVisitedPage); // Redirect to last visited page
-      window.location.reload(); // Optionally reload the page to refresh data
-    } else {
+      if (success) {
+        const lastVisitedPage = localStorage.getItem('lastVisitedPage') || '/';
+        navigate(lastVisitedPage); // Redirect to last visited page
+        window.location.reload(); // Optionally reload the page to refresh data
+      }
+    } catch (error) {
       // Handle specific error messages based on the response
       setError('Invalid email or password. Please try again.');
     }
