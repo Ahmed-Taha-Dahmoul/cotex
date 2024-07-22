@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Comment, LikeDislike, CommentReport
+from .models import Comment, LikeDislike, CommentReport, Notification
 from .forms import CommentForm
 
 class LikeDislikeInline(admin.TabularInline):
@@ -29,5 +29,12 @@ class CommentAdmin(admin.ModelAdmin):
     get_dislikes.short_description = 'Dislikes'
     get_reports_count.short_description = 'Reports'
 
+class NotificationAdmin(admin.ModelAdmin):
+    list_display = ('recipient', 'sender', 'comment', 'notification_type', 'message', 'created_at', 'is_read')
+    list_filter = ('notification_type', 'is_read', 'created_at')
+    search_fields = ('recipient__email', 'sender__email', 'message')
+    readonly_fields = ('created_at',)
+
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(CommentReport)  # Register CommentReport with admin
+admin.site.register(Notification, NotificationAdmin)  # Register Notification with admin

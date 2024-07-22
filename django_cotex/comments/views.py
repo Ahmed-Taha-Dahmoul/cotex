@@ -1,11 +1,12 @@
-from rest_framework import generics, status
+from rest_framework import generics, status , permissions
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from .serializers import CommentDetailSerializer, CommentSerializer, CommentReportSerializer
-from .models import Comment, LikeDislike, CommentReport
+from .serializers import CommentDetailSerializer, CommentSerializer, CommentReportSerializer , NotificationSerializer
+from .models import Comment, LikeDislike, CommentReport , Notification
 from rest_framework.decorators import api_view
 from rest_framework import serializers
+
 
 
 class CommentListAPIView(generics.ListAPIView):
@@ -18,12 +19,18 @@ class CommentListAPIView(generics.ListAPIView):
             return queryset
         return Comment.objects.none()
 
+
+
+
 class CommentCreateAPIView(generics.CreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+
 
 class LikeCommentAPIView(generics.UpdateAPIView):
     serializer_class = CommentDetailSerializer
@@ -49,6 +56,9 @@ class LikeCommentAPIView(generics.UpdateAPIView):
 
         serializer = self.get_serializer(comment)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+
 
 class DislikeCommentAPIView(generics.UpdateAPIView):
     serializer_class = CommentDetailSerializer
@@ -79,12 +89,9 @@ class DislikeCommentAPIView(generics.UpdateAPIView):
     
 
 
-from rest_framework import generics, status
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from rest_framework_simplejwt.authentication import JWTAuthentication
-from .serializers import CommentReportSerializer
-from .models import Comment, CommentReport
+
+
+
 
 class CommentReportCreateView(generics.CreateAPIView):
     queryset = CommentReport.objects.all()
@@ -102,3 +109,17 @@ class CommentReportCreateView(generics.CreateAPIView):
 
         serializer.save(comment=comment, reported_by=self.request.user)
 
+
+
+class NotificationListView(generics.ListAPIView):
+    serializer_class = NotificationSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Notification.objects.filter(recipient=self.request.user)
+
+class NotificationUpdateView(generics.UpdateAPIView):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    lookup_field = 'pk'

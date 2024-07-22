@@ -5,6 +5,8 @@ from .views import (
     LikeCommentAPIView, 
     DislikeCommentAPIView,
     CommentReportCreateView,
+    NotificationListView, 
+    NotificationUpdateView,
 )
 
 urlpatterns = [
@@ -13,4 +15,8 @@ urlpatterns = [
     path('<int:comment_id>/like/', LikeCommentAPIView.as_view(), name='comment-like'),
     path('<int:comment_id>/dislike/', DislikeCommentAPIView.as_view(), name='comment-dislike'),
     path('<int:comment_id>/report/', CommentReportCreateView.as_view(), name='comment-report-create'),
+
+    path('notifications/', NotificationListView.as_view(), name='notification-list'),
+    path('notifications/<int:pk>/', NotificationUpdateView.as_view(), name='notification-update'),
+
 ]

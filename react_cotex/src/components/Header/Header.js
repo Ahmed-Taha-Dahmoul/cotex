@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Dropdown } from 'react-bootstrap';
+import { Dropdown, Button } from 'react-bootstrap';
 import './Header.css';
 import logo from './logo.png';
 import SearchBar from '../SearchBar/SearchBar';
 import { useAuth } from '../AuthContext';
 import config from '../../config';
+import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBell } from '@fortawesome/free-solid-svg-icons';
 
 function Header() {
   const [prevScrollPos, setPrevScrollPos] = useState(0);
@@ -13,6 +16,8 @@ function Header() {
   const { user, logout, isLoggedIn } = useAuth();
   const [profilePic, setProfilePic] = useState('');
   const location = useLocation();
+  const [notifications, setNotifications] = useState([]);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,6 +38,42 @@ function Header() {
     setProfilePic(storedProfilePic);
   }, []);
 
+  useEffect(() => {
+    if (isLoggedIn()) {
+      fetchNotifications();
+    }
+  }, [isLoggedIn]);
+
+  const fetchNotifications = async () => {
+    try {
+      const token = sessionStorage.getItem('accessToken');
+      const response = await axios.get(`${config.API_URL}/comments/notifications/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log('API response:', response.data); // Log the response
+      setNotifications(Array.isArray(response.data) ? response.data : []); // Ensure it's an array
+    } catch (error) {
+      console.error('Error fetching notifications', error);
+    }
+  };
+  
+
+  const markAsRead = async (notificationId) => {
+    try {
+      const token = sessionStorage.getItem('accessToken');
+      await axios.patch(`${config.API_URL}/notifications/${notificationId}/`, { is_read: true }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      fetchNotifications(); // Refresh notifications
+    } catch (error) {
+      console.error('Error marking notification as read', error);
+    }
+  };
+
   const handleLoginClick = () => {
     localStorage.setItem('lastVisitedPage', location.pathname);
   };
@@ -48,7 +89,7 @@ function Header() {
             <Link className="nav-link" to="/category/?q=Action">Action</Link>
             <Link className="nav-link" to="/category/?q=Adventure">Adventure</Link>
             <Link className="nav-link" to="/category/?q=Simulator">Simulation</Link>
-            <Link className="nav-link" to="/category/?q=Sports"> Sports</Link>
+            <Link className="nav-link" to="/category/?q=Sports">Sports</Link>
           </nav>
           <div className="search-container">
             {isLoggedIn() ? (
@@ -64,6 +105,27 @@ function Header() {
                   <Dropdown.Menu>
                     <Dropdown.Item as={Link} to="/profile">Profile</Dropdown.Item>
                     <Dropdown.Item onClick={logout}>Log Out</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+                <Dropdown show={showNotifications} onToggle={() => setShowNotifications(!showNotifications)}>
+                  <Dropdown.Toggle as={Button} variant="light" className="notification-button">
+                    <FontAwesomeIcon icon={faBell} />
+                    {notifications.filter(notification => !notification.is_read).length > 0 && (
+                      <span className="notification-badge">
+                        {notifications.filter(notification => !notification.is_read).length}
+                      </span>
+                    )}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    {notifications.length === 0 ? (
+                      <Dropdown.Item>No notifications</Dropdown.Item>
+                    ) : (
+                      notifications.map(notification => (
+                        <Dropdown.Item key={notification.id} onClick={() => markAsRead(notification.id)}>
+                          {notification.message}
+                        </Dropdown.Item>
+                      ))
+                    )}
                   </Dropdown.Menu>
                 </Dropdown>
               </div>

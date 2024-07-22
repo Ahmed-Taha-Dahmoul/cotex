@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from custom_auth.models import CustomUser
 from myapp.models import Game
-from .models import Comment, LikeDislike, CommentReport
+from .models import Comment, LikeDislike, CommentReport , Notification
 
 class UserSerializer(serializers.ModelSerializer):
     profile_pic = serializers.SerializerMethodField()
@@ -57,3 +57,9 @@ class CommentReportSerializer(serializers.ModelSerializer):
         model = CommentReport
         fields = ['id', 'comment', 'reported_by', 'reason', 'time']
         read_only_fields = ['time', 'reported_by', 'comment']
+
+
+class NotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notification
+        fields = '__all__'
