@@ -7,6 +7,9 @@ const Password = ({ onClose }) => {
   const [profilePic, setProfilePic] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     const fetchProfilePic = async () => {
@@ -32,26 +35,39 @@ const Password = ({ onClose }) => {
   }, []);
 
   const handlePasswordChange = async () => {
+    if (newPassword !== confirmPassword) {
+      setError('New password and confirmation do not match.');
+      return;
+    }
+
     try {
       const accessToken = sessionStorage.getItem('accessToken');
       if (!accessToken) {
         throw new Error('Access token not found.');
       }
 
-      await axios.post(`${config.API_URL}/auth/change-password/`, {
+      await axios.put(`${config.API_URL}/auth/change-password/`, {
         current_password: currentPassword,
         new_password: newPassword,
+        confirm_password: confirmPassword,
       }, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
 
-      alert('Password changed successfully!');
+      setSuccessMessage('Password changed successfully!');
+      setError('');
       setCurrentPassword('');
       setNewPassword('');
+      setConfirmPassword('');
+      setTimeout(() => {
+        setSuccessMessage('');
+        onClose(); // Close the password modal
+      }, 3000);
     } catch (error) {
-      console.error('Failed to change password:', error.response.data); // Log the error response
+      setError('Failed to change password. Please try again.');
+      console.error('Failed to change password:', error.response.data);
     }
   };
 
@@ -84,6 +100,8 @@ const Password = ({ onClose }) => {
                     />
                   </div>
                   <div className="col-xs-6 col-sm-6 col-md-6 login-box">
+                    {error && <div className="alert alert-danger">{error}</div>}
+                    {successMessage && <div className="alert alert-success">{successMessage}</div>}
                     <div className="form-group">
                       <div className="input-group">
                         <div className="input-group-addon">
@@ -109,6 +127,20 @@ const Password = ({ onClose }) => {
                           placeholder="New Password"
                           value={newPassword}
                           onChange={(e) => setNewPassword(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="form-group">
+                      <div className="input-group">
+                        <div className="input-group-addon">
+                          <span className="glyphicon glyphicon-log-in"></span>
+                        </div>
+                        <input
+                          className="form-control"
+                          type="password"
+                          placeholder="Confirm New Password"
+                          value={confirmPassword}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
                         />
                       </div>
                     </div>

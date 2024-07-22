@@ -36,18 +36,18 @@ const SignUpForm = () => {
         {error && <div className="error-message">{error}</div>}
         <div className="form-group">
           <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-          />
-        </div>
-        <div className="form-group">
-          <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Username"
+          />
+        </div>
+        <div className="form-group">
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
           />
         </div>
         <div className="form-group">

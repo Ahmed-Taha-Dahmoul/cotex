@@ -144,6 +144,7 @@ const GameDetail = () => {
 
   const { mainDescription, minimumRequirements, recommendedRequirements, installationInstructions } = game ? extractSections(game.description) : {};
 
+  
   return (
     <Container>
       {loading ? (
@@ -298,10 +299,7 @@ const GameDetail = () => {
         </div>
       )}
 
-      <div className="discord-widget-container">
-        <h2>Join Our Discord Server</h2>
-        <DiscordWidget />
-      </div>
+      
     </Container>
   );
 };

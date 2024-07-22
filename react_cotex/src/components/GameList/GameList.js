@@ -11,6 +11,7 @@ const GameList = () => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [fade, setFade] = useState(false); // Add fade state
 
   useEffect(() => {
     fetchGames(currentPage);
@@ -18,10 +19,10 @@ const GameList = () => {
 
   const fetchGames = async (page) => {
     setLoading(true);
-    console.log('Fetching games for page:', page);  // Added log
+    console.log('Fetching games for page:', page);
     try {
       const response = await axios.get(`${config.API_URL}/api/games/?page=${page}`);
-      console.log('Response received:', response.data);  // Added log
+      console.log('Response received:', response.data);
       if (response.data && response.data.results) {
         setGames(response.data.results);
         setTotalPages(Math.ceil(response.data.count / 30));
@@ -31,7 +32,7 @@ const GameList = () => {
       }
       setLoading(false);
     } catch (error) {
-      console.error('There was an error fetching the games!', error);  // Modified log
+      console.error('There was an error fetching the games!', error);
       setGames([]);
       setLoading(false);
     }
@@ -39,7 +40,11 @@ const GameList = () => {
 
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
-      setCurrentPage(newPage);
+      setFade(true); // Start fade out
+      setTimeout(() => {
+        setCurrentPage(newPage);
+        setFade(false); // End fade out
+      }, 300); // Duration matches the CSS transition
     }
   };
 
@@ -52,7 +57,7 @@ const GameList = () => {
           onPageChange={handlePageChange}
         />
       </div>
-      <Row gutter={[16, 16]}>
+      <Row gutter={[16, 16]} className={fade ? 'fade' : ''}>
         {loading ? (
           [...Array(24)].map((_, index) => (
             <Col key={index} xs={24} sm={12} md={8} lg={6} xl={4} style={{ padding: '0 8px' }}>

@@ -181,28 +181,7 @@
   border: 0;
 }
 
-.discord-widget-container {
-  position: fixed;
-  top: 200px;
-  right: 40px;
-  z-index: 1000;
-  transition: opacity 0.3s ease-in-out;
-  opacity: 1;
-}
 
-.discord-widget {
-  position: fixed;
-  width: 100%;
-  max-width: 350px; /* Optional: Adjust max-width as needed */
-  margin: 0 auto; /* Center align the widget */
-}
-
-/* Media query for responsiveness */
-@media (max-width: 768px) {
-  .discord-widget-container {
-    display: none; /* Hide the container on smaller screens */
-  }
-}
 
 
 

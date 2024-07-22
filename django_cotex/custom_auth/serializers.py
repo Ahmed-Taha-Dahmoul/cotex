@@ -80,3 +80,31 @@ class CustomUserSerializer_all(serializers.ModelSerializer):
         read_only_fields = ['profile_pic']  # Make profile_pic read-only
 
 
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
+
+
+class PasswordChangeSerializer(serializers.Serializer):
+    current_password = serializers.CharField(write_only=True)
+    new_password = serializers.CharField(write_only=True)
+    confirm_password = serializers.CharField(write_only=True)
+
+    def validate(self, data):
+        user = self.context['request'].user
+        if not user.check_password(data['current_password']):
+            raise serializers.ValidationError({'current_password': 'Current password is incorrect.'})
+
+        if data['new_password'] != data['confirm_password']:
+            raise serializers.ValidationError({'confirm_password': 'New password and confirm password do not match.'})
+
+        try:
+            validate_password(data['new_password'], user)
+        except ValidationError as e:
+            raise serializers.ValidationError({'new_password': e.messages})
+
+        return data
+
+    def save(self):
+        user = self.context['request'].user
+        user.set_password(self.validated_data['new_password'])
+        user.save()

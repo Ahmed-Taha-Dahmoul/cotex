@@ -93,3 +93,21 @@ class ProfileView(APIView):
 
 
 
+from rest_framework import status, generics
+from rest_framework.response import Response
+from .serializers import PasswordChangeSerializer
+
+class PasswordChangeView(generics.UpdateAPIView):
+    serializer_class = PasswordChangeSerializer
+
+    def get_object(self):
+        return self.request.user
+
+    def put(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response({'detail': 'Password changed successfully.'}, status=status.HTTP_200_OK)
+
+    def perform_update(self, serializer):
+        serializer.save()

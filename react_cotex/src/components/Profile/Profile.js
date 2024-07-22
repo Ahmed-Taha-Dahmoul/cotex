@@ -275,14 +275,6 @@ const Profile = () => {
                   <div className="d-flex justify-content-between">
                     <button
                       type="button"
-                      id="cancel"
-                      name="cancel"
-                      className="btn btn-secondary btn-spacing"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="button"
                       id="submit"
                       name="submit"
                       className="btn btn-primary btn-spacing"

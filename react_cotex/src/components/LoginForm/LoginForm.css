@@ -61,16 +61,21 @@ input[type="password"]:focus {
 }
 
 button {
+  display: block; /* Make the button a block element */
+  width: 100%; /* Make the button take the full width of the form group */
   background-color: #007bff; /* Primary button color */
   color: #fff; /* White text */
   border: none; /* Remove border */
   border-radius: 5px; /* Rounded corners */
-  padding: 10px;
+  padding: 12px 0; /* Increase padding for a larger button */
   font-size: 1rem; /* Consistent font size */
+  font-weight: bold; /* Make the font bold */
+  text-align: center; /* Center the text */
   cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Smooth transition for background color */
+  transition: background-color 0.3s, transform 0.3s; /* Smooth transition for background color and transform */
 }
 
 button:hover {
   background-color: #0056b3; /* Darker blue on hover */
+  transform: scale(1.05); /* Slightly increase size on hover */
 }
