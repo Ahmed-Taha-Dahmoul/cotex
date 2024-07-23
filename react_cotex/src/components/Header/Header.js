@@ -53,17 +53,19 @@ function Header() {
         },
       });
       console.log('API response:', response.data); // Log the response
-      setNotifications(Array.isArray(response.data) ? response.data : []); // Ensure it's an array
+      const sortedNotifications = Array.isArray(response.data.results)
+        ? response.data.results.sort((a, b) => a.is_read - b.is_read) // Sort by read status
+        : [];
+      setNotifications(sortedNotifications);
     } catch (error) {
       console.error('Error fetching notifications', error);
     }
   };
-  
 
   const markAsRead = async (notificationId) => {
     try {
       const token = sessionStorage.getItem('accessToken');
-      await axios.patch(`${config.API_URL}/notifications/${notificationId}/`, { is_read: true }, {
+      await axios.patch(`${config.API_URL}/comments/notifications/${notificationId}/`, { is_read: true }, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -88,12 +90,41 @@ function Header() {
           <nav className="nav-links">
             <Link className="nav-link" to="/category/?q=Action">Action</Link>
             <Link className="nav-link" to="/category/?q=Adventure">Adventure</Link>
-            <Link className="nav-link" to="/category/?q=Simulator">Simulation</Link>
-            <Link className="nav-link" to="/category/?q=Sports">Sports</Link>
           </nav>
           <div className="search-container">
             {isLoggedIn() ? (
               <div className="profile-container">
+                <Dropdown show={showNotifications} onToggle={() => setShowNotifications(!showNotifications)}>
+                  <Dropdown.Toggle as={Button} variant="light" className="notification-button">
+                    <FontAwesomeIcon icon={faBell} />
+                    {notifications.filter(notification => !notification.is_read).length > 0 && (
+                      <span className="notification-badge">
+                        {notifications.filter(notification => !notification.is_read).length}
+                      </span>
+                    )}
+                                    </Dropdown.Toggle>
+                  <Dropdown.Menu className="notification-list">
+                    {notifications.length === 0 ? (
+                      <Dropdown.Item>No notifications</Dropdown.Item>
+                    ) : (
+                      notifications.map(notification => (
+                        <Dropdown.Item 
+                          key={notification.id} 
+                          className={`notification-item ${notification.is_read ? 'notification-read' : ''}`} 
+                          onClick={() => markAsRead(notification.id)}
+                        >
+                          <div>
+                            <strong>{notification.sender}</strong>
+                            <span className="notification-message">{notification.message}</span>
+                            <div className="notification-timestamp">
+                              {new Date(notification.created_at).toLocaleString()}
+                            </div>
+                          </div>
+                        </Dropdown.Item>
+                      ))
+                    )}
+                  </Dropdown.Menu>
+                </Dropdown>
                 <Dropdown>
                   <Dropdown.Toggle variant="light" id="dropdown-basic" className="profile-circle">
                     {profilePic ? (
@@ -105,27 +136,6 @@ function Header() {
                   <Dropdown.Menu>
                     <Dropdown.Item as={Link} to="/profile">Profile</Dropdown.Item>
                     <Dropdown.Item onClick={logout}>Log Out</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-                <Dropdown show={showNotifications} onToggle={() => setShowNotifications(!showNotifications)}>
-                  <Dropdown.Toggle as={Button} variant="light" className="notification-button">
-                    <FontAwesomeIcon icon={faBell} />
-                    {notifications.filter(notification => !notification.is_read).length > 0 && (
-                      <span className="notification-badge">
-                        {notifications.filter(notification => !notification.is_read).length}
-                      </span>
-                    )}
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    {notifications.length === 0 ? (
-                      <Dropdown.Item>No notifications</Dropdown.Item>
-                    ) : (
-                      notifications.map(notification => (
-                        <Dropdown.Item key={notification.id} onClick={() => markAsRead(notification.id)}>
-                          {notification.message}
-                        </Dropdown.Item>
-                      ))
-                    )}
                   </Dropdown.Menu>
                 </Dropdown>
               </div>
@@ -144,3 +154,4 @@ function Header() {
 }
 
 export default Header;
+

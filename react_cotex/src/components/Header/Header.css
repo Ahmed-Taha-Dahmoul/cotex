@@ -29,7 +29,7 @@
 }
 
 .header-hidden {
-  top: -200px; /* Increase the value to ensure it fully hides off-screen */
+  top: -200px;
 }
 
 .header-container {
@@ -45,12 +45,12 @@
 }
 
 .logo-img {
-  height: 48px; /* Adjust the size as needed */
+  height: 48px;
   object-fit: cover;
 }
 
 .logo-text {
-  font-size: 1.5rem; /* Increase font size for better visibility */
+  font-size: 1.5rem;
   font-weight: bold;
 }
 
@@ -144,92 +144,38 @@
 
   .search-container {
     flex-direction: column;
+    gap: 0;
+    flex-direction: column;
     gap: 0.5rem;
   }
 
-  .search-input-wrapper {
-    max-width: 100%;
-  }
-
-  .btn {
-    width: 100%;
+  .profile-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 }
 
 @media (max-width: 768px) {
-  .header-container {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .logo-text {
-    font-size: 1.25rem; /* Decrease font size for smaller screens */
-  }
-
-  .search-container {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .btn {
-    padding: 0.5rem;
+  .search-input-wrapper {
+    width: 70%;
   }
 }
 
 @media (max-width: 480px) {
-  .header {
-    padding: 0.5rem 1rem;
-  }
-
-  .logo-img {
-    width: 36px; /* Adjust the size as needed */
-    height: 36px; /* Adjust the size as needed */
-  }
-
-  .logo-text {
-    font-size: 1rem; /* Decrease font size for better visibility */
-  }
-
-  .search-container {
-    width: 100%;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
   .search-input-wrapper {
-    width: 100%;
+    width: 90%;
   }
 
-  .btn {
+  .btn-signup,
+  .btn-login {
     width: 100%;
-    padding: 0.5rem;
   }
 }
 
-.profile-container {
-  display: flex;
-  align-items: center;
-}
-
-.profile-circle {
-  width: 48px; /* Increased size */
-  height: 48px; /* Increased size */
-  border-radius: 50%; /* Make it a circle */
-  overflow: hidden; /* Hide overflow */
-  margin-right: 10px;
-}
-
-.profile-pic {
-  width: 100% !important; /* Make the image fill the circle */
-  height: 100% !important; /* Make the image fill the circle */
-  object-fit: cover; /* Maintain aspect ratio and cover */
-}
-
-
+/* Notifications Dropdown */
 .notification-button {
   position: relative;
-  border: none;
-  background: transparent;
 }
 
 .notification-badge {
@@ -239,6 +185,65 @@
   background-color: red;
   color: white;
   border-radius: 50%;
-  padding: 2px 5px;
-  font-size: 12px;
+  padding: 2px 6px;
+  font-size: 0.75rem;
+}
+
+.notification-list {
+  max-height: 300px;
+  overflow-y: auto;
+  width: 300px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.notification-item {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.notification-item:hover {
+  background-color: #f5f5f5;
+}
+
+.notification-item.notification-read {
+  background-color: #f0f0f0;
+  color: grey;
+}
+
+.notification-message {
+  margin-left: 10px;
+}
+
+.notification-timestamp {
+  font-size: 0.75rem;
+  color: grey;
+  text-align: right;
+  margin-top: 5px;
+}
+
+
+/* Profile Picture */
+.profile-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.profile-circle {
+  border: none;
+  padding: 0;
+  background: none;
+}
+
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
 }
