@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Dropdown, Button } from 'react-bootstrap';
 import './Header.css';
 import logo from './logo.png';
@@ -18,6 +18,7 @@ function Header() {
   const location = useLocation();
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const handleScroll = () => {
@@ -52,17 +53,18 @@ function Header() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log('API response:', response.data); // Log the response
+
       const sortedNotifications = Array.isArray(response.data.results)
-        ? response.data.results.sort((a, b) => a.is_read - b.is_read) // Sort by read status
+        ? response.data.results.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
         : [];
+
       setNotifications(sortedNotifications);
     } catch (error) {
       console.error('Error fetching notifications', error);
     }
   };
 
-  const markAsRead = async (notificationId) => {
+  const markAsRead = async (notificationId, gameUrl) => { 
     try {
       const token = sessionStorage.getItem('accessToken');
       await axios.patch(`${config.API_URL}/comments/notifications/${notificationId}/`, { is_read: true }, {
@@ -70,7 +72,23 @@ function Header() {
           Authorization: `Bearer ${token}`,
         },
       });
-      fetchNotifications(); // Refresh notifications
+      fetchNotifications(); 
+
+      if (gameUrl) {
+        const commentMatch = gameUrl.match(/#comment-(\d+)$/);
+        if (commentMatch) {
+          const commentId = commentMatch[1]; 
+          navigate(gameUrl); 
+          setTimeout(() => { 
+            const commentElement = document.getElementById(`comment-${commentId}`);
+            if (commentElement) {
+              commentElement.scrollIntoView({ behavior: 'smooth' });
+            }
+          }, 500); 
+        } else {
+          navigate(gameUrl); 
+        }
+      }      
     } catch (error) {
       console.error('Error marking notification as read', error);
     }
@@ -102,19 +120,18 @@ function Header() {
                         {notifications.filter(notification => !notification.is_read).length}
                       </span>
                     )}
-                                    </Dropdown.Toggle>
+                  </Dropdown.Toggle>
                   <Dropdown.Menu className="notification-list">
                     {notifications.length === 0 ? (
                       <Dropdown.Item>No notifications</Dropdown.Item>
                     ) : (
                       notifications.map(notification => (
-                        <Dropdown.Item 
-                          key={notification.id} 
-                          className={`notification-item ${notification.is_read ? 'notification-read' : ''}`} 
-                          onClick={() => markAsRead(notification.id)}
+                        <Dropdown.Item
+                          key={notification.id}
+                          className={`notification-item ${notification.is_read ? 'notification-read' : ''}`}
+                          onClick={() => markAsRead(notification.id, notification.game_url)} 
                         >
                           <div>
-                            <strong>{notification.sender}</strong>
                             <span className="notification-message">{notification.message}</span>
                             <div className="notification-timestamp">
                               {new Date(notification.created_at).toLocaleString()}
@@ -154,4 +171,3 @@ function Header() {
 }
 
 export default Header;
-

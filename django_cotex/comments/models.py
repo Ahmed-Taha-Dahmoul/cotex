@@ -29,12 +29,14 @@ class Comment(models.Model):
 @receiver(post_save, sender=Comment)
 def create_notifications(sender, instance, created, **kwargs):
     if created and instance.parent:
+        game_url = f"/games/{instance.game.id}/#comment-{instance.id}"  # Include comment ID
         Notification.objects.create(
             recipient=instance.parent.user,
             sender=instance.user,
             comment=instance,
             notification_type='reply',
-            message=f'{instance.user.username} replied to your comment.'
+            message=f'{instance.user.username} replied to your comment.',
+            game_url=game_url 
         )
 
 class LikeDislike(models.Model):
@@ -52,7 +54,7 @@ class LikeDislike(models.Model):
 @receiver(post_save, sender=LikeDislike)
 def create_like_dislike_notifications(sender, instance, created, **kwargs):
     if created:
-        # New LikeDislike - Create notification (this part is likely fine)
+        game_url = f"/games/{instance.comment.game.id}/#comment-{instance.comment.id}"
         notification_type = 'like' if instance.like else 'dislike'
         message = f'{instance.user.username} {"liked" if instance.like else "disliked"} your comment.'
         Notification.objects.create(
@@ -60,27 +62,26 @@ def create_like_dislike_notifications(sender, instance, created, **kwargs):
             sender=instance.user,
             comment=instance.comment,
             notification_type=notification_type,
-            message=message
+            message=message,
+            game_url=game_url  # Add game URL to notification
         )
-        print(f"Notification created: {notification_type} - {message}")
 
     else:
-        # LikeDislike updated - Check for existing notification and UPDATE
+        # LikeDislike updated 
         try:
+            # Retrieve notification using sender, comment, AND notification_type
             notification = Notification.objects.get(
                 sender=instance.user,
                 comment=instance.comment,
+                notification_type__in=['like', 'dislike']  # Only target like/dislike notifications
             )
-
             # Update the existing notification
             notification.notification_type = 'like' if instance.like else 'dislike'
             notification.message = f'{instance.user.username} {"liked" if instance.like else "disliked"} your comment.'
             notification.save()
 
-            print(f"Notification updated to: {'like' if instance.like else 'dislike'}")
-
         except Notification.DoesNotExist:
-            # No existing notification, create a new one (should be rare)
+            # No existing like/dislike notification, create a new one 
             notification_type = 'like' if instance.like else 'dislike'
             message = f'{instance.user.username} {"liked" if instance.like else "disliked"} your comment.'
             Notification.objects.create(
@@ -90,7 +91,6 @@ def create_like_dislike_notifications(sender, instance, created, **kwargs):
                 notification_type=notification_type,
                 message=message
             )
-            print(f"New notification created: {notification_type}")
 
 
 
@@ -111,6 +111,9 @@ class Notification(models.Model):
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
+    game_url = models.CharField(max_length=255, blank=True) 
 
     def __str__(self):
         return f"Notification for {self.recipient.email} - {self.notification_type}"
+
+

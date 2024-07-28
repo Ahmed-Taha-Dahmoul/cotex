@@ -85,6 +85,32 @@ const GameDetail = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    const handleFragmentNavigation = () => {
+      const hash = window.location.hash;
+      if (hash.startsWith('#comment-')) {
+        const commentId = hash.substring(8);
+        setTimeout(() => {
+          const commentElement = document.getElementById(`comment-${commentId}`);
+          if (commentElement) {
+            commentElement.scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'center', 
+              inline: 'nearest' 
+            });
+          }
+        }, 500); // Adjust delay if needed
+      }
+    };
+
+    window.addEventListener('hashchange', handleFragmentNavigation);
+    handleFragmentNavigation(); // Call on initial load
+
+    return () => {
+      window.removeEventListener('hashchange', handleFragmentNavigation);
+    };
+  }, []);
+
   const toggleDescription = () => {
     setShowFullDescription(!showFullDescription);
   };
