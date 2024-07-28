@@ -181,7 +181,10 @@
   border: 0;
 }
 
-
+.comment-highlight {
+  background-color: rgb(186, 63, 63); 
+  transition: background-color 0.3s ease; /* Add a smooth transition */
+}
 
 
 

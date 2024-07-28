@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { Container, Spinner } from 'react-bootstrap';
 import './GameDetail.css';
 import windowsflag from './windows logo.svg';
-import CommentSection from '../CommentSection/CommentSection'; // Import CommentSection component
+import CommentSection from '../CommentSection/CommentSection'; 
 import config from '../../config';
 import DiscordWidget from '../DiscordComponent/DiscordComponent';
 
@@ -44,10 +44,12 @@ const languageImages = {
 
 const GameDetail = () => {
   const { id } = useParams();
+  const location = useLocation();
   const [game, setGame] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [showThankYou, setShowThankYou] = useState(false);
+  const commentRef = useRef(null);
 
   useEffect(() => {
     const fetchGameDetails = async () => {
@@ -58,7 +60,6 @@ const GameDetail = () => {
       } catch (error) {
         console.error("Error fetching game details:", error);
         setLoading(false);
-        // Handle error state or retry logic
       }
     };
 
@@ -79,7 +80,6 @@ const GameDetail = () => {
 
     window.addEventListener('resize', handleResize);
 
-    // Initial check
     handleResize();
 
     return () => window.removeEventListener('resize', handleResize);
@@ -90,26 +90,27 @@ const GameDetail = () => {
       const hash = window.location.hash;
       if (hash.startsWith('#comment-')) {
         const commentId = hash.substring(8);
-        setTimeout(() => {
-          const commentElement = document.getElementById(`comment-${commentId}`);
-          if (commentElement) {
-            commentElement.scrollIntoView({ 
-              behavior: 'smooth', 
-              block: 'center', 
-              inline: 'nearest' 
-            });
-          }
-        }, 500); // Adjust delay if needed
+        const targetComment = document.getElementById(`comment-${commentId}`);
+
+        if (targetComment) {
+          targetComment.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+            inline: 'nearest'
+          });
+
+          targetComment.classList.add('comment-highlight');
+
+          setTimeout(() => {
+            targetComment.classList.remove('comment-highlight');
+          }, 3000); 
+        }
       }
     };
 
-    window.addEventListener('hashchange', handleFragmentNavigation);
-    handleFragmentNavigation(); // Call on initial load
+    handleFragmentNavigation(); 
 
-    return () => {
-      window.removeEventListener('hashchange', handleFragmentNavigation);
-    };
-  }, []);
+  }, [location]); 
 
   const toggleDescription = () => {
     setShowFullDescription(!showFullDescription);
@@ -317,15 +318,11 @@ const GameDetail = () => {
               </div>
             </div>
           </div>
-          <div className="game-details">
-            {/* Other game details */}
-            {/* Comment Section */}
+          <div className="game-details" ref={commentRef}>
             <CommentSection gameId={id} />
           </div>
         </div>
       )}
-
-      
     </Container>
   );
 };

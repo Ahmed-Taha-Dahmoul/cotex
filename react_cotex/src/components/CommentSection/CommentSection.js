@@ -20,7 +20,7 @@ const CommentSection = ({ gameId }) => {
 
   const [showReportModal, setShowReportModal] = useState(false);
   const [reportReason, setReportReason] = useState('');
-  const [reportCommentId, setReportCommentId] = useState(null); // State to store commentId for reporting
+  const [reportCommentId, setReportCommentId] = useState(null); 
 
   const fetchComments = async () => {
     const accessToken = sessionStorage.getItem('accessToken');
@@ -153,7 +153,7 @@ const CommentSection = ({ gameId }) => {
           user: user.id,
           game: gameId,
           text: newComment,
-          parent: null,
+          parent: null, // This is a top-level comment
         },
         {
           headers: {
@@ -166,7 +166,13 @@ const CommentSection = ({ gameId }) => {
       setComments([newCommentData, ...comments]);
       setNewComment('');
 
-      window.location.reload();
+      // Optional: You might want to scroll to the new comment here
+      // For example: 
+      // const newCommentElement = document.getElementById(`comment-${response.data.id}`);
+      // if (newCommentElement) {
+      //   newCommentElement.scrollIntoView({ behavior: 'smooth' });
+      // }
+
     } catch (error) {
       console.error('Error adding comment:', error);
     }
@@ -195,11 +201,18 @@ const CommentSection = ({ gameId }) => {
         }
       );
 
+      // Update the comments state with the new reply
       const newCommentData = processCommentData(response.data);
       setComments([newCommentData, ...comments]);
-      setReplyingTo(null);
+      setReplyingTo(null); 
 
-      window.location.reload();
+      // Optional: You might want to scroll to the new reply here
+      // For example:
+      // const newReplyElement = document.getElementById(`comment-${response.data.id}`);
+      // if (newReplyElement) {
+      //   newReplyElement.scrollIntoView({ behavior: 'smooth' });
+      // }
+
     } catch (error) {
       console.error('Error replying to comment:', error);
     }
@@ -219,13 +232,13 @@ const CommentSection = ({ gameId }) => {
 
   const handleOpenReportModal = (commentId) => {
     setShowReportModal(true);
-    setReportCommentId(commentId); // Store commentId when opening modal
+    setReportCommentId(commentId); 
   };
 
   const handleCloseReportModal = () => {
     setShowReportModal(false);
-    setReportReason(''); // Clear reason input when closing modal
-    setReportCommentId(null); // Clear commentId when closing modal
+    setReportReason(''); 
+    setReportCommentId(null); 
   };
 
   const handleReport = async () => {
@@ -234,12 +247,10 @@ const CommentSection = ({ gameId }) => {
       return;
     }
 
-    // Optionally, you can handle validation for report reason here before submitting
-
     try {
       const accessToken = sessionStorage.getItem('accessToken');
       const reportData = {
-        reason: reportReason, // Use the state variable for reason
+        reason: reportReason, 
       };
 
       const response = await axios.post(
@@ -254,7 +265,7 @@ const CommentSection = ({ gameId }) => {
       );
 
       console.log('Report submitted:', response.data);
-      handleCloseReportModal(); // Close modal after successful submission
+      handleCloseReportModal(); 
     } catch (error) {
       console.error('Error reporting comment:', error.response ? error.response.data : error.message);
     }
@@ -281,7 +292,7 @@ const CommentSection = ({ gameId }) => {
     return comments
       .filter((comment) => !comment.parent)
       .map((comment) => (
-        <li key={comment.id} className="comment-item">
+        <li key={comment.id} className="comment-item" id={`comment-${comment.id}`}>
           <div className="comment-info">
             <div className="user-avatar">
               <img src={comment.user.profile_pic} alt="Profile" />
@@ -305,14 +316,14 @@ const CommentSection = ({ gameId }) => {
                 handleLikeToggle={handleLikeToggle}
                 isLiked={likedComments.has(comment.id)}
                 likesCount={comment.likes_count}
-                updateLikesCount={fetchComments}
+                updateLikesCount={fetchComments} 
               />
               <DislikeButton
                 commentId={comment.id}
                 handleDislikeToggle={handleDislikeToggle}
                 isDisliked={dislikedComments.has(comment.id)}
                 dislikesCount={comment.dislikes_count}
-                updateDislikesCount={fetchComments}
+                updateDislikesCount={fetchComments} 
               />
             </div>
           </div>
@@ -330,7 +341,7 @@ const CommentSection = ({ gameId }) => {
     return comments
       .filter((comment) => comment.parent === parentId)
       .map((comment) => (
-        <li key={comment.id} className="comment-item">
+        <li key={comment.id} className="comment-item" id={`comment-${comment.id}`}> 
           <div className="comment-info">
             <div className="user-avatar">
               <img src={comment.user.profile_pic} alt="Profile" />
@@ -346,25 +357,23 @@ const CommentSection = ({ gameId }) => {
               Reply
             </div>
             <ThreeDotsMenu onReport={() => handleOpenReportModal(comment.id)} />
-            <div className="like-wrapper">
-              <div className="like-container">
-                <span className="like-count">{comment.likes_count}</span>
-                <LikeButton
-                  commentId={comment.id}
-                  handleLikeToggle={handleLikeToggle}
-                  isLiked={likedComments.has(comment.id)}
-                  updateLikesCount={fetchComments}
-                />
-              </div>
-              <div className="dislike-container">
-                <span className="dislike-count">{comment.dislikes_count}</span>
-                <DislikeButton
-                  commentId={comment.id}
-                  handleDislikeToggle={handleDislikeToggle}
-                  isDisliked={dislikedComments.has(comment.id)}
-                  updateDislikesCount={fetchComments}
-                />
-              </div>
+          </div>
+          <div className="comment-actions">
+            <div className="like-container">
+              <LikeButton
+                commentId={comment.id}
+                handleLikeToggle={handleLikeToggle}
+                isLiked={likedComments.has(comment.id)}
+                likesCount={comment.likes_count}
+                updateLikesCount={fetchComments} 
+              />
+              <DislikeButton
+                commentId={comment.id}
+                handleDislikeToggle={handleDislikeToggle}
+                isDisliked={dislikedComments.has(comment.id)}
+                dislikesCount={comment.dislikes_count}
+                updateDislikesCount={fetchComments} 
+              />
             </div>
           </div>
           <ul className="replies">
