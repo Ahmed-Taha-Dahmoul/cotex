@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { useParams, useLocation } from 'react-router-dom';
-import { Container, Spinner } from 'react-bootstrap';
+import { useParams, useLocation, Link } from 'react-router-dom';
+import { Container, Spinner, Carousel } from 'react-bootstrap';
 import './GameDetail.css';
 import windowsflag from './windows logo.svg';
-import CommentSection from '../CommentSection/CommentSection'; 
+import CommentSection from '../CommentSection/CommentSection';
 import config from '../../config';
-import DiscordWidget from '../DiscordComponent/DiscordComponent';
 
 import Arabic from './languages_logo/Arabic.png';
 import Brazil from './languages_logo/Brazil.png';
@@ -46,6 +45,7 @@ const GameDetail = () => {
   const { id } = useParams();
   const location = useLocation();
   const [game, setGame] = useState(null);
+  const [suggestedGames, setSuggestedGames] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [showThankYou, setShowThankYou] = useState(false);
@@ -66,24 +66,29 @@ const GameDetail = () => {
     fetchGameDetails();
   }, [id]);
 
+  // Fetch suggested games based on genres
   useEffect(() => {
-    const handleResize = () => {
-      const widget = document.querySelector('.discord-widget-container');
-      if (widget) {
-        if (window.innerWidth <= 768) {
-          widget.style.opacity = '0';
-        } else {
-          widget.style.opacity = '1';
+    const fetchSuggestedGames = async () => {
+      if (game && game.genres && game.languages) {
+        try {
+          const response = await axios.get(`${config.API_URL}/api/suggestion/`, {
+            params: {
+              title: game.title,
+              genres: game.genres.join(','),
+              languages: game.languages.join(','),
+              date: game.release_date,
+            }
+          });
+          console.log(response.data);
+          setSuggestedGames(response.data);
+        } catch (error) {
+          console.error("Error fetching suggested games:", error);
         }
       }
     };
-
-    window.addEventListener('resize', handleResize);
-
-    handleResize();
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  
+    fetchSuggestedGames();
+  }, [game]);
 
   useEffect(() => {
     const handleFragmentNavigation = () => {
@@ -103,14 +108,14 @@ const GameDetail = () => {
 
           setTimeout(() => {
             targetComment.classList.remove('comment-highlight');
-          }, 3000); 
+          }, 3000);
         }
       }
     };
 
-    handleFragmentNavigation(); 
+    handleFragmentNavigation();
 
-  }, [location]); 
+  }, [location]);
 
   const toggleDescription = () => {
     setShowFullDescription(!showFullDescription);
@@ -171,7 +176,7 @@ const GameDetail = () => {
 
   const { mainDescription, minimumRequirements, recommendedRequirements, installationInstructions } = game ? extractSections(game.description) : {};
 
-  
+
   return (
     <Container>
       {loading ? (
@@ -195,12 +200,12 @@ const GameDetail = () => {
                 <ul className="list">
                   <li>Name: <strong>{game.title}</strong></li>
                   <li className="platform">Platform: <strong>{game.platform}</strong>
-                  <img
-                    style={{ marginTop: '-9px' }}
-                    className="console windowsflag"
-                    src={windowsflag}
-                    alt={`Games for ${game.platform}`}
-                  />
+                    <img
+                      style={{ marginTop: '-9px' }}
+                      className="console windowsflag"
+                      src={windowsflag}
+                      alt={`Games for ${game.platform}`}
+                    />
                   </li>
                   <li className="language">Languages:
                     <span>
@@ -220,14 +225,13 @@ const GameDetail = () => {
                     </span>
                   </li>
                   <li>Genre:
-                  <span className="category">
-                    {game.genres.map((genre, index) => (
-                      <React.Fragment key={index}>
-                        <a href={`${config.LOCAL_URL}/category/?q=${genre}`} rel="category tag">{genre}</a>{index < game.genres.length - 1 && ', '}
-                      </React.Fragment>
-                    ))}
-                  </span>
-
+                    <span className="category">
+                      {game.genres.map((genre, index) => (
+                        <React.Fragment key={index}>
+                          <a href={`${config.LOCAL_URL}/category/?q=${genre}`} rel="category tag">{genre}</a>{index < game.genres.length - 1 && ', '}
+                        </React.Fragment>
+                      ))}
+                    </span>
                   </li>
                   <li>Format: <strong>{game.format}</strong></li>
                 </ul>
@@ -270,7 +274,7 @@ const GameDetail = () => {
                   )}
                 </>
 
-                <br/>
+                <br />
                 <center>
                   <button
                     className="button"
@@ -318,6 +322,30 @@ const GameDetail = () => {
               </div>
             </div>
           </div>
+
+          {/* Suggested Games Section */}
+          {suggestedGames.length > 0 && (
+            <div className="suggested-games">
+              <h3>You might also like</h3>
+              <Carousel>
+                {suggestedGames.map((suggestedGame) => (
+                  <Carousel.Item key={suggestedGame.id}>
+                    <Link to={`/games-pc/${suggestedGame.slug}/`}>
+                      <img
+                        className="d-block w-100"
+                        src={`${config.API_URL}/${suggestedGame.image_path}`}
+                        alt={suggestedGame.title}
+                      />
+                      <Carousel.Caption>
+                        <h3>{suggestedGame.title}</h3>
+                      </Carousel.Caption>
+                    </Link>
+                  </Carousel.Item>
+                ))}
+              </Carousel>
+            </div>
+          )}
+
           <div className="game-details" ref={commentRef}>
             <CommentSection gameId={id} />
           </div>

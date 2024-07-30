@@ -190,3 +190,40 @@
 
 
 
+.suggested-games {
+  margin-top: 30px;
+}
+
+.suggested-games h3 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.carousel-item img {
+  width: flex;
+  height: auto; /* Maintain aspect ratio */
+  max-height: 200px; /* Limit the height */
+  max-width: 160px;
+  object-fit: cover; /* Ensure images cover the container */
+  border-radius: 8px; /* Rounded corners for images */
+}
+
+.carousel-caption {
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  color: #fff; /* White text */
+  padding: 10px;
+  border-radius: 8px; /* Rounded corners for caption */
+  bottom: 10px; /* Position caption at the bottom */
+}
+
+.carousel-caption h3 {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.carousel {
+  margin-bottom: 20px;
+}
+
