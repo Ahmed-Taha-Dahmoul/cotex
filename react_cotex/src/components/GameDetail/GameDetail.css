@@ -192,6 +192,7 @@
 
 .suggested-games {
   margin-top: 30px;
+  position: relative; /* To position the arrows */
 }
 
 .suggested-games h3 {
@@ -200,11 +201,14 @@
   margin-bottom: 20px;
 }
 
+.carousel-container {
+  position: relative; /* To position the arrows */
+}
+
 .carousel-item img {
-  width: flex;
+  width: 100%; /* Ensure images fill the width */
   height: auto; /* Maintain aspect ratio */
   max-height: 200px; /* Limit the height */
-  max-width: 160px;
   object-fit: cover; /* Ensure images cover the container */
   border-radius: 8px; /* Rounded corners for images */
 }
@@ -225,5 +229,49 @@
 
 .carousel {
   margin-bottom: 20px;
+}
+
+/* Customize Carousel for 4 items */
+.carousel-inner {
+  display: flex; /* Use flexbox for better layout */
+  overflow: hidden; /* Hide overflow to prevent scrollbar */
+}
+
+.carousel-item {
+  flex: 0 0 25%; /* Each item takes 25% of the width */
+  max-width: 25%; /* Limit the maximum width */
+}
+
+/* Optional: Add spacing between carousel items */
+.carousel-item + .carousel-item {
+  margin-left: 10px;
+}
+
+/* Carousel Arrows */
+.carousel-prev,
+.carousel-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 1; /* Ensure arrows are on top */
+}
+
+.carousel-prev {
+  left: 10px;
+}
+
+.carousel-next {
+  right: 10px;
+}
+
+.carousel-prev svg,
+.carousel-next svg {
+  width: 16px;
+  height: 16px;
 }
 

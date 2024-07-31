@@ -10,6 +10,8 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
 
+
+
 function Header() {
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
@@ -19,6 +21,7 @@ function Header() {
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
   const navigate = useNavigate(); 
+  const [showPCGamesDropdown, setShowPCGamesDropdown] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,6 +41,29 @@ function Header() {
     const storedProfilePic = localStorage.getItem('profile_pic');
     setProfilePic(storedProfilePic);
   }, []);
+
+
+  useEffect(() => {
+    const handleScrollAnimation = () => {
+      const elements = document.querySelectorAll('.animate-on-scroll');
+      elements.forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= window.innerHeight && rect.bottom >= 0) {
+          el.classList.add('animate');
+        } else {
+          el.classList.remove('animate');
+        }
+      });
+    };
+  
+    window.addEventListener('scroll', handleScrollAnimation);
+    handleScrollAnimation(); // Initial check
+  
+    return () => {
+      window.removeEventListener('scroll', handleScrollAnimation);
+    };
+  }, []);
+
 
   useEffect(() => {
     if (isLoggedIn()) {
@@ -63,7 +89,7 @@ function Header() {
       console.error('Error fetching notifications', error);
     }
   };
-
+  
   const markAsRead = async (notificationId, gameUrl) => { 
     try {
       const token = sessionStorage.getItem('accessToken');
@@ -98,6 +124,10 @@ function Header() {
     localStorage.setItem('lastVisitedPage', location.pathname);
   };
 
+  const handlePCGamesDropdownToggle = () => {
+    setShowPCGamesDropdown(!showPCGamesDropdown);
+  };
+
   return (
     <div className="search">
       <header className={`header ${visible ? 'header-visible' : 'header-hidden'}`}>
@@ -106,8 +136,39 @@ function Header() {
             <img alt="Logo" className="logo-img" src={logo} />
           </Link>
           <nav className="nav-links">
-            <Link className="nav-link" to="/category/?q=Action">Action</Link>
-            <Link className="nav-link" to="/category/?q=Adventure">Adventure</Link>
+          <div className="nav-link-container" onMouseEnter={handlePCGamesDropdownToggle} onMouseLeave={handlePCGamesDropdownToggle}>
+            <Link className="nav-link" to="/category/?q=PC Games">PC Games ▼</Link>
+            {showPCGamesDropdown && (
+              <div className="dropdown-content">
+                <div className="dropdown-grid">
+                  <ul>
+                    <li><Link to="/category/?q=Action">Action</Link></li>
+                    <li><Link to="/category/?q=Adventure">Adventure</Link></li>
+                    <li><Link to="/category/?q=RPG">RPG</Link></li>
+                    <li><Link to="/category/?q=Careers">Careers</Link></li>
+                  </ul>
+                  <ul>
+                    <li><Link to="/category/?q=Indie">Indie</Link></li>
+                    <li><Link to="/category/?q=Simulator">Simulator</Link></li>
+                    <li><Link to="/category/?q=Open world">Open world</Link></li>
+                    <li><Link to="/category/?q=ROLE">ROLE</Link></li>
+                  </ul>
+                  <ul>
+                    <li><Link to="/category/?q=Strategy">Strategy</Link></li>
+                    <li><Link to="/category/?q=Sandbox">Sandbox</Link></li>
+                    <li><Link to="/category/?q=Terror">Terror</Link></li>
+                    <li><Link to="/category/?q=Exploration">Exploration</Link></li>
+                  </ul>
+                  <ul>
+                    <li><Link to="/category/?q=Struggle">Struggle</Link></li>
+                  </ul>
+                </div>
+              </div>
+            )}
+          </div>
+            <Link className="nav-link" to="/faq">FAQ</Link>
+            <Link className="nav-link" to="/about-us">About Us</Link>
+            <Link className="nav-link" to="/contact">Contact Us</Link>
           </nav>
           <div className="search-container">
             {isLoggedIn() ? (
