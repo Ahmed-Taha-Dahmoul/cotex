@@ -1,12 +1,15 @@
+/* Container for the GameList */
 .container-game-list {
   padding: 0 15px;
   margin-top: 50px;
   margin-right: 10%;
   margin-left: 10%;
-  background-color: #1d2431;
+  position: relative; /* Ensure positioning context for background image */
+  background-color: #1d2431; /* Original background color */
   transition: opacity 0.3s ease; /* Add transition for fade effect */
 }
 
+/* Adjust padding for different screen sizes */
 @media (min-width: 576px) {
   .container-game-list {
     padding: 0 30px;
@@ -31,6 +34,26 @@
   }
 }
 
+/* Background image */
+.container-game-list::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('./images.jpg') no-repeat center center/cover; /* Make sure path is correct */
+  filter: blur(8px); /* Adjust blur intensity */
+  z-index: -1; /* Ensure it's behind the content */
+}
+
+/* Ensure the main content is above the background */
+.container-game-list > * {
+  position: relative;
+  z-index: 1; /* Ensure all content is above the background */
+}
+
+/* Game card styles */
 .game-card {
   position: relative;
   border-radius: 0.5rem;

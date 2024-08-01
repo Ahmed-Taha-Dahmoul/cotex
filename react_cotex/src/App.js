@@ -14,6 +14,9 @@ import Profile from './components/Profile/Profile';
 import PrivateRoute from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';
 import { AuthProvider } from './components/AuthContext';
+import FAQ from './components/FAQ/FAQ';
+import OnlineGames from './components/OnlineGames/OnlineGames';
+import AboutUs from './components/AboutUs/AboutUs';
 
 function App() {
   return (
@@ -34,6 +37,9 @@ function App() {
               <Route path="/signup" element={<SignUpForm />} />
               <Route path="/login" element={<PublicRoute element={<LoginForm />} />} />
               <Route path="/profile" element={<PrivateRoute element={<Profile />} />} />
+              <Route path="/FAQ" element={<FAQ/>} />
+              <Route path="/online-games" element={<OnlineGames/>} />
+              <Route path="/about-us" element={<AboutUs/>} />
             </Routes>
           </main>
           <Footer />

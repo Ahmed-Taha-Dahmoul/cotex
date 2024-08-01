@@ -1,0 +1,44 @@
+/* OnlineGames.css */
+.online-games-coming-soon-container {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000; /* Ensure a dark background */
+}
+
+.online-games-background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('images.jpg') no-repeat center center/cover;
+  filter: blur(8px);
+  z-index: 1;
+}
+
+.online-games-overlay {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #fff;
+}
+
+.online-games-overlay h1 {
+  font-size: 4rem;
+  margin: 0;
+  opacity: 0.9;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  animation: textMove 3s infinite;
+}
+
+.online-games-overlay p {
+  font-size: 1.5rem;
+  margin-top: 10px;
+  opacity: 0.8;
+  animation: textFade 3s infinite;
+}

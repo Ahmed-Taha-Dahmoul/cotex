@@ -1,6 +1,6 @@
 :root {
   --header-bg-color: #1f2937;
-  --text-color: #ffffff;
+  --text-color: #88b3d1;
   --nav-link-color: #3c3c3c;
   --nav-link-hover-color: #7b8da2;
   --search-bg-color: #374151;
@@ -57,48 +57,51 @@
 .nav-links {
   display: flex;
   gap: 1.5rem;
+  left: 15% ;
 }
 
 .nav-link-container {
-  position: relative; /* To position the dropdown */
+  position: relative;
 }
 
 .nav-link {
-  color: var(--nav-link-color); /* Use a lighter color for these links */
+  color: var(--nav-link-color);
   font-weight: bold;
   text-decoration: none;
   transition: all 0.2s ease-in-out;
 }
 
 .nav-link:hover {
-  color: var(--nav-link-hover-color); /* Use a brighter color on hover */
-  transform: scale(1.1); /* Add a slight zoom effect */
+  color: var(--nav-link-hover-color);
+  transform: scale(1.1);
 }
 
 .dropdown-content {
-  display: none; /* Hide by default */
+  display: none;
   position: absolute;
   background-color: #f9f9f9;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1; /* Ensure it's above the header */
-  width: 250px; /* Adjust as needed */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  width: 250px;
   padding: 10px;
   border-radius: 5px;
-  opacity: 0; /* Initially hidden */
-  transition: opacity 0.3s ease-in-out; /* Add a smooth transition */
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  z-index: 1;
 }
 
-.nav-link-container:hover .dropdown-content {
-  display: block; /* Show on hover */
-  opacity: 1; /* Make it visible */
+.nav-link-container:hover .dropdown-content,
+.dropdown-content.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .dropdown-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Adjust minmax value as needed */
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   gap: 10px;
 }
-
 
 .dropdown-grid ul {
   list-style: none;
@@ -228,6 +231,7 @@
 /* Notifications Dropdown */
 .notification-button {
   position: relative;
+  cursor: pointer;
 }
 
 .notification-badge {
@@ -242,12 +246,26 @@
 }
 
 .notification-list {
+  display: none;
+  position: absolute;
   max-height: 300px;
   overflow-y: auto;
   width: 300px;
   border: 1px solid #ddd;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  z-index: 1000;
+}
+
+.notification-button:hover .notification-list,
+.notification-list.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .notification-item {
@@ -279,7 +297,6 @@
   margin-top: 5px;
 }
 
-
 /* Profile Picture */
 .profile-container {
   display: flex;
@@ -299,5 +316,3 @@
   border-radius: 50%;
   object-fit: cover;
 }
-
-

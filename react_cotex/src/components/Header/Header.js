@@ -135,9 +135,13 @@ function Header() {
           <Link className="logo" to="/">
             <img alt="Logo" className="logo-img" src={logo} />
           </Link>
+          
           <nav className="nav-links">
+          
+          <Link className="nav-link" to="/">HOME</Link>
+          
           <div className="nav-link-container" onMouseEnter={handlePCGamesDropdownToggle} onMouseLeave={handlePCGamesDropdownToggle}>
-            <Link className="nav-link" to="/category/?q=PC Games">PC Games ▼</Link>
+            <Link className="nav-link" to="/category/?q=PC Games">PC GAMES ▼</Link>
             {showPCGamesDropdown && (
               <div className="dropdown-content">
                 <div className="dropdown-grid">
@@ -166,9 +170,12 @@ function Header() {
               </div>
             )}
           </div>
+            <Link className="nav-link" to="/online-games">ONLINE GAMES</Link>
             <Link className="nav-link" to="/faq">FAQ</Link>
-            <Link className="nav-link" to="/about-us">About Us</Link>
-            <Link className="nav-link" to="/contact">Contact Us</Link>
+            <Link className="nav-link" to="/about-us">ABOUT US</Link>
+            <Link className="nav-link" to="/contact">CONTACT US</Link>
+
+            
           </nav>
           <div className="search-container">
             {isLoggedIn() ? (
