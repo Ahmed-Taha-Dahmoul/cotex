@@ -330,7 +330,7 @@ const GameDetail = () => {
               <Carousel>
                 {suggestedGames.map((suggestedGame) => (
                   <Carousel.Item key={suggestedGame.id}>
-                    <Link to={`/games-pc/${suggestedGame.slug}/`}>
+                    <Link to={`/games/${suggestedGame.id}/`}>
                       <img
                         className="d-block w-100"
                         src={`${config.API_URL}/${suggestedGame.image_path}`}
