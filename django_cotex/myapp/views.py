@@ -98,16 +98,13 @@ class GameSearchAPIView(views.APIView):
 
 
 
-from django.db.models import Count, F, Q
-from rest_framework import status, views
+from rest_framework import views, status
 from rest_framework.response import Response
 from .models import Game
-from .serializers import Game_title_cracker_version_Serializer
-from datetime import datetime
+from .serializers import GameSerializer
+from django.db.models import Q
 from django.utils.dateparse import parse_date
-from datetime import timedelta
-
-
+import Levenshtein
 
 class NearestGamesView(views.APIView):
     def get(self, request, *args, **kwargs):
@@ -116,87 +113,74 @@ class NearestGamesView(views.APIView):
         title = request.GET.get('title', '').strip()
         date_str = request.GET.get('date', '').strip()
 
-        # Ensure genres are properly formatted
+        # Clean up genres list
         genres = [genre.strip() for genre in genres if genre.strip()]
 
-        # Parse the date
+        # Parse release date
         release_date = parse_date(date_str) if date_str else None
 
-        # Initialize QuerySet
+        # Initial queryset excluding games without an image_path
         games = Game.objects.filter(~Q(image_path__isnull=True))
 
-        # Apply title filter for the nearest match
+        # List to store games with calculated scores
+        games_list = []
+
         if title:
             query_tokens = title.lower().split()
-            games_list = []
 
             for game in games:
-                title_tokens = game.title.lower().split()
-                distance = Levenshtein.distance(game.title.lower(), title.lower())
-                dynamic_max_distance = max(3, len(game.title) // 5)
-                token_matches = sum(1 for token in query_tokens if token in title_tokens)
-                token_match_score = token_matches / len(query_tokens)
+                if game.title:
+                    title_tokens = game.title.lower().split()
+                    distance = Levenshtein.distance(game.title.lower(), title.lower())
+                    dynamic_max_distance = max(3, len(game.title) // 5)
+                    token_matches = sum(1 for token in query_tokens if token in title_tokens)
+                    token_match_score = token_matches / len(query_tokens)
 
-                combined_score = (1 - distance / (dynamic_max_distance + 1)) * 0.5 + token_match_score * 0.5
-                games_list.append({
-                    'game': game,
-                    'score': combined_score,
-                    'distance': distance
-                })
+                    combined_score = (1 - distance / (dynamic_max_distance + 1)) * 0.5 + token_match_score * 0.5
+                    games_list.append({
+                        'game': game,
+                        'score': combined_score,
+                        'distance': distance
+                    })
 
             # Sort games by combined score and distance
             games_list.sort(key=lambda x: (-x['score'], x['distance']))
 
-            # Extract game objects and ensure at most 10 results
-            game_ids = [item['game'].id for item in games_list[:10]]
-            games = Game.objects.filter(id__in=game_ids)
-        else:
-            games = Game.objects.filter(~Q(image_path__isnull=True))
+            # Keep only the top 10 unique games based on their IDs
+            unique_games = {}
+            for item in games_list:
+                game = item['game']
+                if game.id not in unique_games:
+                    unique_games[game.id] = game
+                elif game.release_date > unique_games[game.id].release_date:
+                    unique_games[game.id] = game
 
-        # Remove duplicates, keeping only the most recent release
-        unique_games = {}
-        for game in games:
-            if game.title in unique_games:
-                if game.release_date > unique_games[game.title].release_date:
-                    unique_games[game.title] = game
-            else:
-                unique_games[game.title] = game
+            games = list(unique_games.values())[:10]
 
-        games = list(unique_games.values())
-
-        # Fetch additional games if fewer than 10
+        # If fewer than 10 games, fetch more based on genres
         if len(games) < 10:
-            # Find additional games based on genres
-            additional_games = Game.objects.filter(~Q(id__in=[game.id for game in games]), ~Q(image_path__isnull=True))
+            additional_games = Game.objects.filter(
+                ~Q(id__in=[game.id for game in games]), ~Q(image_path__isnull=True)
+            )
 
-            # Apply genres filter
             if genres:
                 additional_games = additional_games.filter(genres__overlap=genres)
 
-            # Fetch additional games to ensure at least 10 results
             additional_games = additional_games[:(10 - len(games))]
-
-            # Add more games if still not enough
-            if len(additional_games) < (10 - len(games)):
-                # Fetch games without any filter if needed to fill up to 10
-                additional_games = Game.objects.filter(~Q(id__in=[game.id for game in games + list(additional_games)]), ~Q(image_path__isnull=True))[:(10 - len(games))]
-
             games.extend(additional_games)
 
-        # Ensure no more than 10 results and deduplicate
+        # Ensure the final list of games is unique and capped at 10
         unique_games = {}
         for game in games:
-            if game.title in unique_games:
-                if game.release_date > unique_games[game.title].release_date:
-                    unique_games[game.title] = game
-            else:
-                unique_games[game.title] = game
+            if game.id not in unique_games:
+                unique_games[game.id] = game
 
         games = list(unique_games.values())[:10]
 
         # Serialize and return response
         serializer = GameSerializer(games, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 
 
