@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useParams, useLocation, Link } from 'react-router-dom';
-import { Container, Spinner, Carousel } from 'react-bootstrap';
+import { Container, Spinner } from 'react-bootstrap';
 import './GameDetail.css';
 import windowsflag from './windows logo.svg';
 import CommentSection from '../CommentSection/CommentSection';
@@ -66,7 +66,6 @@ const GameDetail = () => {
     fetchGameDetails();
   }, [id]);
 
-  // Fetch suggested games based on genres
   useEffect(() => {
     const fetchSuggestedGames = async () => {
       if (game && game.genres && game.languages) {
@@ -175,6 +174,27 @@ const GameDetail = () => {
   };
 
   const { mainDescription, minimumRequirements, recommendedRequirements, installationInstructions } = game ? extractSections(game.description) : {};
+
+
+  const scrollWrapperRef = useRef(null);
+
+  const scrollLeft = () => {
+    if (scrollWrapperRef.current) {
+      scrollWrapperRef.current.scrollBy({
+        left: -scrollWrapperRef.current.offsetWidth,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollWrapperRef.current) {
+      scrollWrapperRef.current.scrollBy({
+        left: scrollWrapperRef.current.offsetWidth,
+        behavior: 'smooth',
+      });
+    }
+  };
 
 
   return (
@@ -323,26 +343,33 @@ const GameDetail = () => {
             </div>
           </div>
 
-          {/* Suggested Games Section */}
+          {/* Updated Suggested Games Section */}
           {suggestedGames.length > 0 && (
             <div className="suggested-games">
               <h3>You might also like</h3>
-              <Carousel>
-                {suggestedGames.map((suggestedGame) => (
-                  <Carousel.Item key={suggestedGame.id}>
-                    <Link to={`/games/${suggestedGame.id}/`}>
-                      <img
-                        className="d-block w-100"
-                        src={`${config.API_URL}/${suggestedGame.image_path}`}
-                        alt={suggestedGame.title}
-                      />
-                      <Carousel.Caption>
-                        <h3>{suggestedGame.title}</h3>
-                      </Carousel.Caption>
-                    </Link>
-                  </Carousel.Item>
-                ))}
-              </Carousel>
+              <div className="scroll-container">
+                <button className="scroll-button left" onClick={() => scrollLeft()}>‹</button>
+                <button className="scroll-button right" onClick={() => scrollRight()}>›</button>
+                <div className="scroll-wrapper" ref={scrollWrapperRef}>
+                  <div className="scroll-content">
+                    {suggestedGames.map((suggestedGame) => (
+                      <div key={suggestedGame.id} className="scroll-item">
+                        <Link to={`/games/${suggestedGame.id}/`}>
+                          <img
+                            className="d-block w-100"
+                            src={`${config.API_URL}/${suggestedGame.image_path}`}
+                            alt={suggestedGame.title}
+                          />
+                          <div className="scroll-caption">
+                            <h3>{suggestedGame.title}</h3>
+                          </div>
+                        </Link>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+              </div>
             </div>
           )}
 

@@ -189,89 +189,109 @@
 
 
 
-
+/* Suggestions Games Section */
 .suggested-games {
-  margin-top: 30px;
-  position: relative; /* To position the arrows */
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #ffffff; /* White background for a clean look */
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  position: relative; /* Ensure relative positioning for child elements */
 }
 
 .suggested-games h3 {
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 22px;
   margin-bottom: 20px;
+  font-weight: bold;
+  color: #323232; /* Darker color for better readability */
+  text-align: center;
 }
 
-.carousel-container {
-  position: relative; /* To position the arrows */
+.scroll-container {
+  display: flex;
+  align-items: center;
+  position: relative;
 }
 
-.carousel-item img {
-  width: 100%; /* Ensure images fill the width */
-  height: auto; /* Maintain aspect ratio */
-  max-height: 200px; /* Limit the height */
-  object-fit: cover; /* Ensure images cover the container */
-  border-radius: 8px; /* Rounded corners for images */
+.scroll-wrapper {
+  overflow-x: hidden;
+  flex: 1;
 }
 
-.carousel-caption {
-  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-  color: #fff; /* White text */
-  padding: 10px;
-  border-radius: 8px; /* Rounded corners for caption */
-  bottom: 10px; /* Position caption at the bottom */
+.scroll-content {
+  display: flex;
+  transition: transform 0.3s ease-in-out;
 }
 
-.carousel-caption h3 {
+.scroll-item {
+  flex: 0 0 auto;
+  width: calc(20% - 12px); /* Adjusted width for 5 items per row, with margin */
+  margin-right: 12px; /* Adjust margin to fit spacing */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.scroll-item:last-child {
+  margin-right: 0; /* Remove margin on the last item to avoid extra space */
+}
+
+.scroll-item img {
+  width: 100%;
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.scroll-item:hover img {
+  transform: scale(1.05); /* Slight zoom on hover */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Elevate the item on hover */
+}
+
+.scroll-caption {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #007bff; /* Matching the theme color */
+}
+
+.scroll-caption h3 {
+  margin: 0;
   font-size: 16px;
   font-weight: bold;
-  margin: 0;
+  color: #333; /* Darker color for title */
 }
 
-.carousel {
-  margin-bottom: 20px;
+.scroll-caption h3:hover {
+  color: #0056b3; /* Darker shade on hover */
+  text-decoration: underline;
 }
 
-/* Customize Carousel for 4 items */
-.carousel-inner {
-  display: flex; /* Use flexbox for better layout */
-  overflow: hidden; /* Hide overflow to prevent scrollbar */
-}
-
-.carousel-item {
-  flex: 0 0 25%; /* Each item takes 25% of the width */
-  max-width: 25%; /* Limit the maximum width */
-}
-
-/* Optional: Add spacing between carousel items */
-.carousel-item + .carousel-item {
-  margin-left: 10px;
-}
-
-/* Carousel Arrows */
-.carousel-prev,
-.carousel-next {
+.scroll-button {
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  border: none;
+  color: #fff; /* White arrow color */
+  font-size: 1.2rem; /* Smaller font size */
+  cursor: pointer;
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  padding: 8px 12px;
-  border-radius: 50%;
-  cursor: pointer;
-  z-index: 1; /* Ensure arrows are on top */
+  width: 50px; /* Fixed width */
+  height: 50px; /* Fixed height */
+  padding: 0; /* Remove padding to control size with width and height */
+  border-radius: 60%;
+  display: flex; /* Center the icon */
+  align-items: center; /* Center the icon vertically */
+  justify-content: center; /* Center the icon horizontally */
+  transition: background-color 0.3s ease;
+  z-index: 2; /* Ensure buttons are above everything else */
 }
 
-.carousel-prev {
-  left: 10px;
+.scroll-button.left {
+  left: -35px; /* Move button more to the left */
 }
 
-.carousel-next {
-  right: 10px;
+.scroll-button.right {
+  right: -40px; /* Move button more to the right */
 }
 
-.carousel-prev svg,
-.carousel-next svg {
-  width: 16px;
-  height: 16px;
+.scroll-button:hover {
+  background-color: rgba(0, 0, 0, 0.7); /* Darker background on hover */
 }
-

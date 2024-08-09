@@ -61,6 +61,21 @@ const CommentSection = ({ gameId }) => {
     fetchComments();
   }, [gameId]);
 
+
+  useEffect(() => {
+    fetchComments().then(() => {
+      const scrollToCommentId = localStorage.getItem('scrollToCommentId');
+      if (scrollToCommentId) {
+        const element = document.getElementById(`comment-${scrollToCommentId}`);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+        localStorage.removeItem('scrollToCommentId');
+      }
+    });
+  }, [gameId]);
+  
+
   const handleLikeToggle = async (commentId) => {
     if (!isLoggedIn()) {
       setShowLogin(true);
@@ -165,13 +180,13 @@ const CommentSection = ({ gameId }) => {
       const newCommentData = processCommentData(response.data);
       setComments([newCommentData, ...comments]);
       setNewComment('');
-
+      window.location.reload();
       // Optional: You might want to scroll to the new comment here
       // For example: 
-      // const newCommentElement = document.getElementById(`comment-${response.data.id}`);
-      // if (newCommentElement) {
-      //   newCommentElement.scrollIntoView({ behavior: 'smooth' });
-      // }
+      const newCommentElement = document.getElementById(`comment-${response.data.id}`);
+       if (newCommentElement) {
+         newCommentElement.scrollIntoView({ behavior: 'smooth' });
+      }
 
     } catch (error) {
       console.error('Error adding comment:', error);
@@ -183,7 +198,7 @@ const CommentSection = ({ gameId }) => {
       setShowLogin(true);
       return;
     }
-
+  
     try {
       const accessToken = sessionStorage.getItem('accessToken');
       const response = await axios.post(
@@ -200,23 +215,23 @@ const CommentSection = ({ gameId }) => {
           },
         }
       );
-
+  
       // Update the comments state with the new reply
       const newCommentData = processCommentData(response.data);
       setComments([newCommentData, ...comments]);
-      setReplyingTo(null); 
-
-      // Optional: You might want to scroll to the new reply here
-      // For example:
-      // const newReplyElement = document.getElementById(`comment-${response.data.id}`);
-      // if (newReplyElement) {
-      //   newReplyElement.scrollIntoView({ behavior: 'smooth' });
-      // }
-
+      setReplyingTo(null);
+  
+      // Save the new comment ID to local storage before reload
+      localStorage.setItem('scrollToCommentId', response.data.id);
+  
+      // Reload the page
+      window.location.reload();
+  
     } catch (error) {
       console.error('Error replying to comment:', error);
     }
   };
+  
 
   const handleCloseLogin = () => {
     setShowLogin(false);
