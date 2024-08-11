@@ -155,10 +155,10 @@ class NearestGamesView(views.APIView):
                 elif game.release_date > unique_games[game.id].release_date:
                     unique_games[game.id] = game
 
-            games = list(unique_games.values())[:10]
+            games = list(unique_games.values())[:20]
 
         # If fewer than 10 games, fetch more based on genres
-        if len(games) < 10:
+        if len(games) < 20:
             additional_games = Game.objects.filter(
                 ~Q(id__in=[game.id for game in games]), ~Q(image_path__isnull=True)
             )
@@ -166,7 +166,7 @@ class NearestGamesView(views.APIView):
             if genres:
                 additional_games = additional_games.filter(genres__overlap=genres)
 
-            additional_games = additional_games[:(10 - len(games))]
+            additional_games = additional_games[:(20 - len(games))]
             games.extend(additional_games)
 
         # Ensure the final list of games is unique and capped at 10
@@ -175,7 +175,7 @@ class NearestGamesView(views.APIView):
             if game.id not in unique_games:
                 unique_games[game.id] = game
 
-        games = list(unique_games.values())[:10]
+        games = list(unique_games.values())[:20]
 
         # Serialize and return response
         serializer = GameSerializer(games, many=True)
