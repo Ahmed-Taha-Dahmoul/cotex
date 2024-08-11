@@ -57,6 +57,7 @@ const GameDetail = () => {
         const response = await axios.get(`${config.API_URL}/api/games/${id}/`);
         setGame(response.data);
         setLoading(false);
+        console.log(response.data)
       } catch (error) {
         console.error("Error fetching game details:", error);
         setLoading(false);
@@ -205,31 +206,31 @@ const GameDetail = () => {
         </Spinner>
       ) : (
         <div className="body_content">
-          <h1 className="main_title">Download {game.title}</h1>
+          <h1 className="main_title">Download {game?.title}</h1>
           <div className="row game-page">
             <div className="col-md-3 game-img">
               <img
                 className="post_image"
-                src={`${config.API_URL}/${game.image_path}`}
-                alt={`Download ${game.title}`}
-                title={`Download ${game.title}`}
+                src={`${config.API_URL}/${game?.image_path}`}
+                alt={`Download ${game?.title}`}
+                title={`Download ${game?.title}`}
               />
             </div>
             <div className="col-md-9">
               <div className="col-md-6">
                 <ul className="list">
-                  <li>Name: <strong>{game.title}</strong></li>
-                  <li className="platform">Platform: <strong>{game.platform}</strong>
+                  <li>Name: <strong>{game?.title}</strong></li>
+                  <li className="platform">Platform: <strong>{game?.platform}</strong>
                     <img
                       style={{ marginTop: '-9px' }}
                       className="console windowsflag"
                       src={windowsflag}
-                      alt={`Games for ${game.platform}`}
+                      alt={`Games for ${game?.platform}`}
                     />
                   </li>
                   <li className="language">Languages:
                     <span>
-                      {game.languages.map((language, index) => {
+                      {game?.languages?.map((language, index) => {
                         const languageKey = language.replace('Idioma ', '');
                         const imagePath = languageImages[languageKey];
                         return (
@@ -246,22 +247,22 @@ const GameDetail = () => {
                   </li>
                   <li>Genre:
                     <span className="category">
-                      {game.genres.map((genre, index) => (
+                      {game?.genres?.map((genre, index) => (
                         <React.Fragment key={index}>
                           <a href={`${config.LOCAL_URL}/category/?q=${genre}`} rel="category tag">{genre}</a>{index < game.genres.length - 1 && ', '}
                         </React.Fragment>
                       ))}
                     </span>
                   </li>
-                  <li>Format: <strong>{game.format}</strong></li>
+                  <li>Format: <strong>{game?.format}</strong></li>
                 </ul>
               </div>
               <div className="col-md-6">
                 <ul className="list">
-                  <li>Size: <strong>{game.size}</strong></li>
-                  <li>Release Date: <strong>{game.release_date}</strong></li>
-                  <li>Cracker: <strong>{game.cracker}</strong></li>
-                  <li>Version: <strong>{game.version}</strong></li>
+                  <li>Size: <strong>{game?.size}</strong></li>
+                  <li>Release Date: <strong>{game?.release_date}</strong></li>
+                  <li>Cracker: <strong>{game?.cracker}</strong></li>
+                  <li>Version: <strong>{game?.version}</strong></li>
                 </ul>
               </div>
               <div className="col-md-12">
@@ -272,7 +273,7 @@ const GameDetail = () => {
                 <span id="view_full_description" onClick={toggleDescription} style={{ cursor: 'pointer', color: '#007bff' }}>
                   {showFullDescription ? 'View Less' : 'View Full Description >'}
                 </span>
-
+  
                 <>
                   {minimumRequirements && (
                     <div className="requirements">
@@ -293,14 +294,14 @@ const GameDetail = () => {
                     </div>
                   )}
                 </>
-
+  
                 <br />
                 <center>
                   <button
                     className="button"
                     type="button"
                     onClick={handleDownloadClick}
-                    download={`${game.title}.torrent`}
+                    download={`${game?.title}.torrent`}
                   >
                     <span className="button__text">Download</span>
                     <span className="button__icon">
@@ -319,10 +320,10 @@ const GameDetail = () => {
                       <span>The best way to thank us is by sharing this game. Come on... it will only take 5 seconds!</span>
                       <img id="helping" src={`${config.API_URL}/path_to_image/help_down.gif`} alt="Help Down" />
                       <div className="social_buttons">
-                        <span rel="nofollow" onClick={() => window.open(`https://www.facebook.com/sharer.php?u=http://localhost:8000/games-pc/${game.slug}/`, 'mywin', 'width=500,height=500')} className="buttonsocial fa fa-facebook"></span>
-                        <span rel="nofollow" onClick={() => window.open(`https://twitter.com/share?url=http://localhost:8000/games-pc/${game.slug}/`, 'mywin', 'width=500,height=500')} className="buttonsocial fa fa-twitter"></span>
-                        <span rel="nofollow" onClick={() => window.open(`https://plus.google.com/share?url=http://localhost:8000/games-pc/${game.slug}/`, 'mywin', 'width=500,height=500')} className="buttonsocial fa fa-google"></span>
-                        <span rel="nofollow" onClick={() => window.open(`https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:8000/games-pc/${game.slug}/&title=${game.title}&summary=&source=`, 'mywin', 'width=500,height=500')} className="buttonsocial fa fa-linkedin"></span>
+                        <span rel="nofollow" onClick={() => window.open(`https://www.facebook.com/sharer.php?u=http://localhost:8000/games-pc/${game?.slug}/`, 'mywin', 'width=500,height=500')} className="buttonsocial fa fa-facebook"></span>
+                        <span rel="nofollow" onClick={() => window.open(`https://twitter.com/share?url=http://localhost:8000/games-pc/${game?.slug}/`, 'mywin', 'width=500,height=500')} className="buttonsocial fa fa-twitter"></span>
+                        <span rel="nofollow" onClick={() => window.open(`https://plus.google.com/share?url=http://localhost:8000/games-pc/${game?.slug}/`, 'mywin', 'width=500,height=500')} className="buttonsocial fa fa-google"></span>
+                        <span rel="nofollow" onClick={() => window.open(`https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:8000/games-pc/${game?.slug}/&title=${game?.title}&summary=&source=`, 'mywin', 'width=500,height=500')} className="buttonsocial fa fa-linkedin"></span>
                       </div>
                     </center>
                   </div>
@@ -334,7 +335,7 @@ const GameDetail = () => {
                         src={`https://www.youtube.com/embed/${youtubeVideoId}`}
                         frameBorder="0"
                         allowFullScreen
-                        title={game.title}
+                        title={game?.title}
                       ></iframe>
                     </div>
                   </div>
@@ -342,9 +343,9 @@ const GameDetail = () => {
               </div>
             </div>
           </div>
-
+  
           {/* Updated Suggested Games Section */}
-          {suggestedGames.length > 0 && (
+          {suggestedGames?.length > 0 && (
             <div className="suggested-games">
               <h3>You might also like</h3>
               <div className="scroll-container">
@@ -368,11 +369,10 @@ const GameDetail = () => {
                     ))}
                   </div>
                 </div>
-                
               </div>
             </div>
           )}
-
+  
           <div className="game-details" ref={commentRef}>
             <CommentSection gameId={id} />
           </div>

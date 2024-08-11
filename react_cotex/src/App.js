@@ -1,4 +1,3 @@
-// App.js
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -17,31 +16,32 @@ import { AuthProvider } from './components/AuthContext';
 import FAQ from './components/FAQ/FAQ';
 import OnlineGames from './components/OnlineGames/OnlineGames';
 import AboutUs from './components/AboutUs/AboutUs';
+import NotFound from './components/NotFound/NotFound';
 
 function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="App">
-          <Header />
-          <main className='main'>
-            <Routes>
-              <Route path="/" element={<GameList />} />
-              <Route path="/games/:id" element={<GameDetail />} />
-              <Route path="/category" element={<CategoryResults />} />
-              <Route path="/action" element={<div>Action Games</div>} />
-              <Route path="/adventure" element={<div>Adventure Games</div>} />
-              <Route path="/simulation" element={<div>Simulation Games</div>} />
-              <Route path="/multiplayer" element={<div>Multiplayer Games</div>} />
-              <Route path="/search_result" element={<SearchResults />} />
-              <Route path="/signup" element={<SignUpForm />} />
-              <Route path="/login" element={<PublicRoute element={<LoginForm />} />} />
-              <Route path="/profile" element={<PrivateRoute element={<Profile />} />} />
-              <Route path="/FAQ" element={<FAQ/>} />
-              <Route path="/online-games" element={<OnlineGames/>} />
-              <Route path="/about-us" element={<AboutUs/>} />
-            </Routes>
-          </main>
+      <div className="App">
+        <Header />
+        <div className="background-wrapper">
+          <div className="blurred-background"></div>
+          <main className="main-content">
+              <Routes>
+                <Route path="/" element={<GameList />} />
+                <Route path="/games/:id" element={<GameDetail />} />
+                <Route path="/category" element={<CategoryResults />} />
+                <Route path="/search_result" element={<SearchResults />} />
+                <Route path="/signup" element={<SignUpForm />} />
+                <Route path="/login" element={<PublicRoute element={<LoginForm />} />} />
+                <Route path="/profile" element={<PrivateRoute element={<Profile />} />} />
+                <Route path="/FAQ" element={<FAQ />} />
+                <Route path="/online-games" element={<OnlineGames />} />
+                <Route path="/about-us" element={<AboutUs />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </main>
+          </div>
           <Footer />
         </div>
       </Router>

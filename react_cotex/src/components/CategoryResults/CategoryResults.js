@@ -51,7 +51,7 @@ const CategoryResults = () => {
 
   return (
     <div className="container-category-results">
-      <h1>Category Results for "{categoryTerm}"</h1>
+      <h2>Category Results for "{categoryTerm}"</h2>
       <div className="d-flex justify-content-center mt-4">
         <Paginator
           currentPage={currentPage}

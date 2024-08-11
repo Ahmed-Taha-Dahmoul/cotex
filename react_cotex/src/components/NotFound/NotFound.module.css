@@ -1,0 +1,89 @@
+/* src/components/NotFound/NotFound.module.css */
+.notFound {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000; /* Black text color */
+  font-family: Arial, sans-serif;
+}
+
+.backgroundWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Ensure background doesn't overflow */
+  z-index: -1; /* Ensure it's behind the content */
+}
+
+.backgroundImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('./images.jpg') no-repeat center center/cover;
+  filter: blur(8px); /* Apply blur to background image */
+  -webkit-filter: blur(8px); /* For Safari */
+}
+
+.content {
+  position: relative;
+  text-align: center;
+  z-index: 1; /* Ensure content is above the background */
+}
+
+h1 {
+  font-size: 8rem;
+  margin: 0;
+  color: #000; /* Black color for the heading */
+}
+
+p {
+  font-size: 1.5rem;
+  color: #333; /* Dark gray for the paragraph */
+}
+
+button.backHome {
+  margin-top: 20px;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  color: #fff;
+  background-color: #252b2a; /* Button color */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+button.backHome::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  z-index: 0;
+}
+
+button.backHome:hover::before {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+button.backHome:hover {
+  background-color: #eec1e3; /* Darker button color on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+button.backHome {
+  z-index: 1; /* Ensure button is above the pseudo-element */
+}

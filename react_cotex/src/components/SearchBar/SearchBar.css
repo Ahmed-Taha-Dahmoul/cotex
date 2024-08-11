@@ -1,127 +1,132 @@
-/* Add a unique class to the search bar container */
+/* Update the search bar container */
 .search-bar-container .search-input-wrapper {
-    position: relative;
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 10px;
-    box-sizing: border-box;
-  }
-  
-  /* Styling the input field */
-  .search-bar-container .search-input {
-    width: calc(100% - 60px); /* Adjusted to leave space for the button */
-    padding: 10px 40px 10px 40px; /* Adjusted to leave space for the icon */
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    font-size: 16px;
-    outline: none;
-    transition: border-color 0.3s;
-  }
-  
-  .search-bar-container .search-input:focus {
-    border-color: #007bff;
-  }
-  
-  /* Search icon styling */
-  .search-bar-container .search-icon {
-    position: absolute;
-    left: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    font-size: 20px;
-    color: #888;
-  }
-  
-  /* Search button styling */
-  .search-bar-container .search-button {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px; /* Square padding */
-    width: 40px; /* Square width */
-    height: 40px; /* Square height */
-    border-radius: 5px; /* Slightly rounded corners */
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .search-bar-container .search-button:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Search results container */
-  .search-bar-container ul {
-    list-style: none;
-    margin: 10px 0 0 0;
-    padding: 0;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #fff;
-    max-height: 300px;
-    overflow-y: auto;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: calc(100% - 20px); /* Adjusted to account for scrollbar */
-    z-index: 1000;
-  }
-  
-  /* Individual search result items */
-  .search-bar-container li {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .search-bar-container li:last-child {
-    border-bottom: none;
-  }
-  
-  .search-bar-container li:hover {
-    background-color: #f8f8f8;
-  }
-  
-  /* Add some padding at the bottom of the results to ensure the last item is fully visible */
-  .search-bar-container ul::after {
-    content: '';
-    display: block;
-    height: 10px;
-  }
-  
-  /* Style for game cover */
-  .search-bar-container .game-cover {
-    width: 40px;
-    height: 40px;
-    margin-right: 10px;
-    border-radius: 5px;
-    object-fit: cover;
-  }
-  
-  /* Style for game title */
-  .search-bar-container .game-title {
-    flex: 1;
-  }
-  
-  /* Style for game link */
-  .search-bar-container .game-link {
-    color: #333;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-  }
-  
-  .search-bar-container .game-link:hover {
-    color: #007bff;
-  }
-  
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* Styling the input field */
+.search-bar-container .search-input {
+  width: calc(100% - 80px); /* Adjusted to leave space for the button */
+  padding: 10px 60px 10px 40px; /* Adjusted to leave space for the button and icon */
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+/* Input field focus state */
+.search-bar-container .search-input:focus {
+  border-color: #007bff;
+}
+
+/* Search icon styling */
+.search-bar-container .search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 20px;
+  color: #888;
+}
+
+/* Search button styling */
+.search-bar-container .search-button {
+  position: absolute;
+  right: 90px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #ffffff;
+  color: white;
+  border: 1px solid rgb(192, 192, 192); /* Add a black border */
+  padding: 10px;
+  width: 15%; /* Button width to fill 15% of the search bar */
+  height: 43px;
+  border-radius: 20px; /* Rounded corners */
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+  line-height: 1; /* Ensure proper alignment of text */
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+
+/* Button hover effect */
+.search-bar-container .search-button:hover {
+  background-color: #7194f3;
+  transform: translateY(-50%) scale(1.05); /* Slight zoom effect */
+}
+
+/* Search results container */
+.search-bar-container ul {
+  list-style: none;
+  margin: 10px 0 0 0;
+  padding: 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  max-height: 300px;
+  overflow-y: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: calc(100% - 20px); /* Adjusted to account for scrollbar */
+  z-index: 1000;
+}
+
+/* Individual search result items */
+.search-bar-container li {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.search-bar-container li:last-child {
+  border-bottom: none;
+}
+
+.search-bar-container li:hover {
+  background-color: #f8f8f8;
+}
+
+/* Add some padding at the bottom of the results to ensure the last item is fully visible */
+.search-bar-container ul::after {
+  content: '';
+  display: block;
+  height: 10px;
+}
+
+/* Style for game cover */
+.search-bar-container .game-cover {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  border-radius: 5px;
+  object-fit: cover;
+}
+
+/* Style for game title */
+.search-bar-container .game-title {
+  flex: 1;
+}
+
+/* Style for game link */
+.search-bar-container .game-link {
+  color: #333;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.search-bar-container .game-link:hover {
+  color: #007bff;
+}

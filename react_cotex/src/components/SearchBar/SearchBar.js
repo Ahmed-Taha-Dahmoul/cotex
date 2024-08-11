@@ -50,9 +50,11 @@ function SearchBar() {
   };
 
   const handleSearch = () => {
-    navigate(`/search_result?q=${searchTerm}`);
-    setSearchTerm('');
-    setShowResults(false); // Hide results when search is performed
+    if (searchTerm.trim() !== '') {
+      navigate(`/search_result?q=${searchTerm}`);
+      setSearchTerm(''); // Clear the search input
+      setShowResults(false); // Hide results when search is performed
+    }
   };
 
   useEffect(() => {

@@ -50,7 +50,7 @@ const SearchResults = () => {
 
   return (
     <div className="container-search-results">
-      <h1>Search Results for "{searchTerm}"</h1>
+      <h2>Search Results for "{searchTerm}"</h2>
       <div className="d-flex justify-content-center mt-4">
         <Paginator
           currentPage={currentPage}

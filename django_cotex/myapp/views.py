@@ -47,9 +47,9 @@ class GameSearchAPIView(views.APIView):
         if query:
             query_tokens = query.lower().split()
 
-            # Fetch games that have a non-null image_path
+            # Fetch games that have a non-null image_path and non-null title
             games = Game.objects.filter(
-                ~Q(image_path__isnull=True)
+                ~Q(image_path__isnull=True) & ~Q(title__isnull=True)
             ).annotate(
                 title_length=Length('title'),  # Annotate length of title
             ).values('id', 'title', 'image_path')
@@ -57,26 +57,28 @@ class GameSearchAPIView(views.APIView):
             games_with_scores = []
 
             for game in games:
-                title_tokens = game['title'].lower().split()
-                exact_match = any(query.lower() in game['title'].lower() for query in query_tokens)
-                distance = Levenshtein.distance(game['title'].lower(), query.lower())
-                dynamic_max_distance = max(3, len(game['title']) // 5)
+                # Ensure title is not None
+                if game['title']:
+                    title_tokens = game['title'].lower().split()
+                    exact_match = any(query.lower() in game['title'].lower() for query in query_tokens)
+                    distance = Levenshtein.distance(game['title'].lower(), query.lower())
+                    dynamic_max_distance = max(3, len(game['title']) // 5)
 
-                # Token-based matching
-                token_matches = sum(1 for token in query_tokens if token in title_tokens)
-                token_match_score = token_matches / len(query_tokens)
+                    # Token-based matching
+                    token_matches = sum(1 for token in query_tokens if token in title_tokens)
+                    token_match_score = token_matches / len(query_tokens)
 
-                if exact_match or distance <= dynamic_max_distance:
-                    combined_score = (1 - distance / (dynamic_max_distance + 1)) * 0.5 + token_match_score * 0.5
-                    games_with_scores.append({
-                        'id': game['id'],
-                        'title': game['title'],
-                        'image_path': game['image_path'],
-                        'exact_match': exact_match,
-                        'distance': distance,
-                        'token_match_score': token_match_score,
-                        'combined_score': combined_score
-                    })
+                    if exact_match or distance <= dynamic_max_distance:
+                        combined_score = (1 - distance / (dynamic_max_distance + 1)) * 0.5 + token_match_score * 0.5
+                        games_with_scores.append({
+                            'id': game['id'],
+                            'title': game['title'],
+                            'image_path': game['image_path'],
+                            'exact_match': exact_match,
+                            'distance': distance,
+                            'token_match_score': token_match_score,
+                            'combined_score': combined_score
+                        })
 
             # Sort games by exact match priority, combined score, and title length proximity
             games_with_scores.sort(key=lambda x: (-x['exact_match'], -x['combined_score'], x['distance'], abs(len(x['title']) - len(query)), -x['id']))
@@ -95,6 +97,7 @@ class GameSearchAPIView(views.APIView):
         serializer = Game_title_cracker_version_Serializer(result_page, many=True)
 
         return paginator.get_paginated_response(serializer.data)
+
 
 
 

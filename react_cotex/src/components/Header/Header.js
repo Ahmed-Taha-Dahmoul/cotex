@@ -141,7 +141,7 @@ function Header() {
           <Link className="nav-link" to="/">HOME</Link>
           
           <div className="nav-link-container" onMouseEnter={handlePCGamesDropdownToggle} onMouseLeave={handlePCGamesDropdownToggle}>
-            <Link className="nav-link" to="/category/?q=PC Games">PC GAMES ▼</Link>
+            <Link className="nav-link">PC GAMES ▼</Link>
             {showPCGamesDropdown && (
               <div className="dropdown-content">
                 <div className="dropdown-grid">
@@ -150,8 +150,6 @@ function Header() {
                     <li><Link to="/category/?q=Adventure">Adventure</Link></li>
                     <li><Link to="/category/?q=RPG">RPG</Link></li>
                     <li><Link to="/category/?q=Careers">Careers</Link></li>
-                  </ul>
-                  <ul>
                     <li><Link to="/category/?q=Indie">Indie</Link></li>
                     <li><Link to="/category/?q=Simulator">Simulator</Link></li>
                     <li><Link to="/category/?q=Open world">Open world</Link></li>
@@ -162,10 +160,10 @@ function Header() {
                     <li><Link to="/category/?q=Sandbox">Sandbox</Link></li>
                     <li><Link to="/category/?q=Terror">Terror</Link></li>
                     <li><Link to="/category/?q=Exploration">Exploration</Link></li>
-                  </ul>
-                  <ul>
                     <li><Link to="/category/?q=Struggle">Struggle</Link></li>
                   </ul>
+                  
+                  
                 </div>
               </div>
             )}
