@@ -115,10 +115,7 @@ class NearestGamesView(views.APIView):
 
         # Clean up genres list
         genres = [genre.strip() for genre in genres if genre.strip()]
-
-        # Parse release date
-        release_date = parse_date(date_str) if date_str else None
-
+        
         # Initial queryset excluding games without an image_path
         games = Game.objects.filter(~Q(image_path__isnull=True))
 
