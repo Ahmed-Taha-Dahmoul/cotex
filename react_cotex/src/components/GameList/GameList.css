@@ -1,7 +1,6 @@
 /* Container for the GameList */
 .container-game-list {
   padding: 0 15px;
-  margin-top: 50px;
   margin-right: 10%;
   margin-left: 10%;
   position: relative; /* Ensure positioning context for background image */

@@ -82,7 +82,7 @@ function SearchBar() {
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
         />
-        <button onClick={handleSearch} className="search-button">🔍</button>
+        
         {showResults && searchTerm && (
           <ul>
             {searchResults.map((game) => (
