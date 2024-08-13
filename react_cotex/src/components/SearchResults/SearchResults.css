@@ -1,9 +1,13 @@
 .container-search-results {
-    padding: 0 15px; /* Responsive padding */
-    margin-top: 50px;
-    margin-right: 17%;
-    margin-left: 17%;
-    background-color: #9493C5;
+  padding: 0 15px;
+  margin-top: 50px;
+  margin-right: 10%;
+  margin-left: 10%;
+  position: relative; /* Ensure positioning context for background image */
+  background-color: #1d2431; /* Original background color */
+  transition: opacity 0.3s ease; /* Add transition for fade effect */
+  border-radius: 1%;
+  margin-bottom: 3%;
   }
   
   @media (min-width: 576px) {
@@ -54,7 +58,10 @@
     transition: opacity 0.3s ease;
     opacity: 0;
   }
-  
+
+  .container-search-results h2 {
+    color: antiquewhite;
+  }
   .game-card:hover .game-info {
     opacity: 1;
   }

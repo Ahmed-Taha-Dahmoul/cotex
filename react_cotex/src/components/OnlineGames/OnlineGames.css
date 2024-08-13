@@ -32,7 +32,8 @@
   font-size: 4rem;
   margin: 0;
   opacity: 0.9;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  color: #f1e6ff;
+  text-shadow: 2px 2px 5px rgba(189, 56, 56, 0.5);
   animation: textMove 3s infinite;
 }
 
@@ -41,4 +42,8 @@
   margin-top: 10px;
   opacity: 0.8;
   animation: textFade 3s infinite;
+}
+
+.online-games-overlay p {
+  color: #f1e6ff;
 }
