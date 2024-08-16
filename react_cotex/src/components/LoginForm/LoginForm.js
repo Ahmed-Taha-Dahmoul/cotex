@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../AuthContext'; // Adjust the path if necessary
 import { useNavigate } from 'react-router-dom';
 import './LoginForm.css'; // Import CSS file for styling
+import gify from './giphy.gif'; // Import your GIF
 
 const LoginForm = () => {
   const { login } = useAuth();
@@ -10,7 +11,6 @@ const LoginForm = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Function to store the current URL in localStorage
   const storeLastVisitedPage = () => {
     localStorage.setItem('lastVisitedPage', window.location.pathname);
   };
@@ -33,6 +33,8 @@ const LoginForm = () => {
 
   return (
     <div className="login-container">
+      {/* Use the imported GIF here */}
+      <img src={gify} alt="Login GIF" className="login-gif" />
       <form className="login-form" onSubmit={handleSubmit}>
         <h2>Login</h2>
         {error && <div className="error-message">{error}</div>}

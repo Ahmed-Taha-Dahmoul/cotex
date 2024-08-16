@@ -3,7 +3,7 @@
     color: #ffffff;
     padding: 2rem;
     border-radius: 15px;
-    max-width: 1600px;
+    max-width: 1500px;
     margin: 0 auto;
     margin-top: 25px;
 }
@@ -211,43 +211,296 @@
     transform: scale(1.1); /* Slightly enlarge the text */
 }
 
-
-
-
-
-
 .requirements-section {
-    background-color: #1e1e1e;
-    padding: 1.5rem;
+    padding: 0.5rem;
     border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    width: 1600px; /* Set width to 1600px */
+    margin: 0 auto; /* Center the section horizontally */
 }
 
 .requirements-section h4 {
-    font-size: 1.8rem;
+    font-size: 2rem;
+    color: #f4c752;
     margin-bottom: 1rem;
+    border-bottom: 2px solid #333333;
+    padding-bottom: 0.5rem;
 }
 
-.download-button-section {
-    margin: 2rem 0;
-    text-align: center;
+.requirement-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0; /* Add padding for better spacing */
+    border-bottom: 1px solid #333333; /* Add a line between each row */
+    transition: color 0.3s ease, border-color 0.3s ease; /* Smooth transition on hover */
 }
 
-.download-button {
-    padding: 15px 30px;
-    background-color: #d32f2f;
-    color: #fff;
+.requirement-row:hover {
+    color: #f4c752; /* Change text color on hover */
+    border-color: #f4c752; /* Change border color on hover */
+}
+
+.requirement-row:last-child {
+    border-bottom: none; /* Remove border from the last row */
+}
+
+.requirement-row .label {
     font-weight: bold;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1.2rem;
-    transition: background-color 0.3s;
+    color: #ffffff;
+    flex: 0 0 200px; /* Adjust the width as needed */
+    text-align: left;
+    margin-right: 5px; /* Reduce the space between label and value */
+    padding-left: 15px;
+}
+.requirement-row .label:hover {
+    color: #f4c752;
 }
 
-.download-button:hover {
-    background-color: #b71c1c;
+.requirement-row .value {
+    color: #ffffff;
+    flex: 1;
+    text-align: left; /* Align the value to the left */
+    padding-left: 600px; /* Add padding to move the value slightly left */
 }
+
+.requirements-section pre {
+    background-color: #141c25;
+    color: #ffffff;
+    padding: 1rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    white-space: pre-wrap;
+    margin-top: 1rem;
+    overflow-x: auto;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.requirements-section pre:hover {
+    transform: scale(1.01);
+}
+
+.installation {
+    flex: 0 0 200px; /* Adjust the width as needed */
+    font-weight: bold;
+}
+
+  
+
+.download-container {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .download-button {
+    background-color: transparent;
+    border: 2px solid #f4c752;
+    display: flex;
+    align-items: center;
+    border-radius: 50px;
+    width: 200px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    padding: 5px;
+    position: relative;
+    justify-content: center; /* Center text horizontally */
+    height: 50px; /* Adjust height if needed */
+  }
+  
+  .download-title {
+    font-size: 17px;
+    color: #fff;
+    transition: all 0.4s ease;
+    position: absolute;
+    text-align: center;
+    top: 50%; /* Center text vertically */
+    transform: translateY(-50%);
+  }
+  
+  .download-title:last-child {
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  .download-button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    width: 8px;
+    height: 8px;
+    transition: all 0.4s ease;
+    border-radius: 100%;
+    margin: auto;
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  .download-checkbox {
+    display: none;
+  }
+  
+  .download-circle {
+    height: 50px;
+    width: 55px;
+    border-radius: 50%;
+    background-color: #f4c752;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.4s ease;
+    position: absolute; /* Changed from relative to absolute to adjust position */
+    left: 0px; /* Adjust to move circle to the desired position */
+    box-shadow: 0 0 0 0 rgb(255, 255, 255);
+    overflow: hidden;
+  }
+  
+  .download-circle .download-icon {
+    color: #fff;
+    width: 30px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.4s ease;
+  }
+  
+  .download-circle .download-square {
+    aspect-ratio: 1;
+    width: 15px;
+    border-radius: 2px;
+    background-color: #fff;
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.4s ease;
+  }
+  
+  .download-circle::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #f4c752;
+    width: 100%;
+    height: 0;
+    transition: all 0.4s ease;
+  }
+  
+  .download-button:has(.download-checkbox:checked) {
+    width: 57px;
+    animation: installed 0.4s ease 3.5s forwards;
+  }
+  
+  .download-button:has(.download-checkbox:checked)::before {
+    animation: rotate 3s ease-in-out 0.4s forwards;
+  }
+  
+  .download-checkbox:checked + .download-circle {
+    animation: pulse 1s forwards, circleDelete 0.2s ease 3.5s forwards;
+    rotate: 180deg;
+  }
+  
+  .download-checkbox:checked + .download-circle::before {
+    animation: installing 3s ease-in-out forwards;
+  }
+  
+  .download-checkbox:checked + .download-circle .download-icon {
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  .download-checkbox:checked ~ .download-circle .download-square {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .download-checkbox:checked ~ .download-title {
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  .download-checkbox:checked ~ .download-title:last-child {
+    animation: showInstalledMessage 0.4s ease 3.5s forwards;
+  }
+  
+  @keyframes pulse {
+    0% {
+      scale: 0.95;
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+    }
+    70% {
+      scale: 1;
+      box-shadow: 0 0 0 16px rgba(255, 255, 255, 0);
+    }
+    100% {
+      scale: 0.95;
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    }
+  }
+  
+  @keyframes installing {
+    from {
+      height: 0;
+    }
+    to {
+      height: 100%;
+    }
+  }
+  
+  @keyframes rotate {
+    0% {
+      transform: rotate(-90deg) translate(27px) rotate(0);
+      opacity: 1;
+      visibility: visible;
+    }
+    99% {
+      transform: rotate(270deg) translate(27px) rotate(270deg);
+      opacity: 1;
+      visibility: visible;
+    }
+    100% {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+  
+  @keyframes installed {
+    100% {
+      width: 150px;
+      border-color: rgb(35, 174, 35);
+    }
+  }
+  
+  @keyframes circleDelete {
+    100% {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+  
+  @keyframes showInstalledMessage {
+    100% {
+      opacity: 1;
+      visibility: visible;
+      right: 56px;
+    }
+  }
+  
+  
 
 .thank-you-message {
     color: #4caf50;
@@ -257,11 +510,9 @@
 }
 
 .suggested-games-section {
-    margin-top: 2rem;
-    background-color: #1e1e1e;
+    margin-top: 3rem;
     padding: 1.5rem;
     border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
 .suggested-games-section h3 {
@@ -276,37 +527,51 @@
 .scroll-wrapper {
     overflow-x: auto;
     display: flex;
-    gap: 1rem;
+    gap: 3rem;
     scroll-behavior: smooth;
 }
 
 .suggested-games {
     display: flex;
-    gap: 1rem;
+    gap: 2rem;
+    padding-left: 10px;
 }
 
 .suggested-game {
     display: block;
     text-align: center;
     flex: 0 0 auto;
-    width: 150px;
+    width: 200px;
+    text-decoration: none; 
 }
 
 .suggested-game-image {
     width: 100%;
     border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 12px #f4c752;
 }
 
+
+
 .suggested-game-title {
+    color: #ffffff;
     font-weight: bold;
     margin-top: 0.5rem;
+    text-decoration: none; /* Ensure no underline on the title */
+    font-size: 20px;
 }
 
 .suggested-game-genre {
     color: #cccccc;
     font-size: 0.9rem;
+    text-decoration: none; /* Ensure no underline on the genre */
 }
+
+.suggested-game-genre:hover {
+    color: #f4c752;
+}
+
+
 
 .scroll-button {
     position: absolute;
@@ -316,8 +581,8 @@
     color: white;
     border: none;
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -326,11 +591,11 @@
 }
 
 .scroll-button.left {
-    left: -15px;
+    left: -60px;
 }
 
 .scroll-button.right {
-    right: -15px;
+    right: -60px;
 }
 
 .comment-section {

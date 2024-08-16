@@ -110,38 +110,59 @@ const GameDetail = () => {
   const extractSections = (description) => {
     const sections = {
       mainDescription: '',
-      minimumRequirements: '',
-      recommendedRequirements: '',
+      minimumRequirements: {},
+      recommendedRequirements: {},
       installationInstructions: ''
     };
-
+  
     if (!description) return sections;
-
+  
     const minReqIndex = description.indexOf('Minimum requirements');
     const recReqIndex = description.indexOf('Recommended requirements');
     const instIndex = description.indexOf('Installation instructions');
-
+  
     if (minReqIndex !== -1) {
       sections.mainDescription = description.substring(0, minReqIndex).trim();
-      sections.minimumRequirements = description.substring(minReqIndex, recReqIndex !== -1 ? recReqIndex : description.length)
-        .replace('Minimum requirements', '')
-        .trim();
+      sections.minimumRequirements = parseRequirements(
+        description.substring(minReqIndex, recReqIndex !== -1 ? recReqIndex : description.length)
+          .replace('Minimum requirements', '')
+          .trim()
+      );
     }
-
+  
     if (recReqIndex !== -1) {
-      sections.recommendedRequirements = description.substring(recReqIndex, instIndex !== -1 ? instIndex : description.length)
-        .replace('Recommended requirements', '')
-        .trim();
+      sections.recommendedRequirements = parseRequirements(
+        description.substring(recReqIndex, instIndex !== -1 ? instIndex : description.length)
+          .replace('Recommended requirements', '')
+          .trim()
+      );
     }
-
+  
     if (instIndex !== -1) {
       sections.installationInstructions = description.substring(instIndex)
         .replace('Installation instructions', '')
         .trim();
     }
-
+  
     return sections;
   };
+  
+  const parseRequirements = (text) => {
+    const lines = text.split('\n');
+    const requirements = {};
+  
+    lines.forEach(line => {
+      const colonIndex = line.indexOf(':');
+      if (colonIndex !== -1) {
+        const label = line.substring(0, colonIndex).trim();
+        const value = line.substring(colonIndex + 1).trim();
+        requirements[label] = value;
+      }
+    });
+  
+    return requirements;
+  };
+  
 
   const formatText = (text) => {
     return text.split('. ').join('.\n');
@@ -240,36 +261,66 @@ const GameDetail = () => {
                 </span>
             </div>
 
-          <div className="requirements-section">
-            {minimumRequirements && (
-              <div className="requirements">
-                <h4>Minimum Requirements</h4>
-                <pre>{formatText(minimumRequirements)}</pre>
-              </div>
-            )}
-            {recommendedRequirements && (
-              <div className="requirements">
-                <h4>Recommended Requirements</h4>
-                <pre>{formatText(recommendedRequirements)}</pre>
-              </div>
-            )}
-            {installationInstructions && (
-              <div className="installation">
-                <h4>Installation Instructions</h4>
-                <pre>{formatText(installationInstructions)}</pre>
-              </div>
-            )}
-          </div>
+            <div className="requirements-section">
+              {minimumRequirements && (
+                <div className="requirements">
+                  <h4>Minimum Requirements</h4>
+                  {Object.entries(minimumRequirements).map(([label, value], index) => (
+                    <div key={index} className="requirement-row">
+                      <span className="label">{label}:</span>
+                      <span className="value">{value}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {recommendedRequirements && (
+                <div className="requirements">
+                  <h4>Recommended Requirements</h4>
+                  {Object.entries(recommendedRequirements).map(([label, value], index) => (
+                    <div key={index} className="requirement-row">
+                      <span className="label">{label}:</span>
+                      <span className="value">{value}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {installationInstructions && (
+                <div className="installation">
+                  <h4>Installation Instructions</h4>
+                  <pre>{formatText(installationInstructions)}</pre>
+                </div>
+              )}
+            </div>
 
-          <div className="download-button-section">
-            <button
-              className="download-button"
-              type="button"
-              onClick={handleDownloadClick}
-            >
-              Download
-            </button>
-          </div>
+
+            <div class="download-container">
+              <label class="download-button" onClick={handleDownloadClick}>
+                <input class="download-checkbox" type="checkbox" />
+                <span class="download-circle">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                    class="download-icon"
+                  >
+                    <path
+                      d="M12 19V5m0 14-4-4m4 4 4-4"
+                      stroke-width="1.5"
+                      stroke-linejoin="round"
+                      stroke-linecap="round"
+                      stroke="currentColor"
+                    ></path>
+                  </svg>
+                  <div class="download-square"></div>
+                </span>
+                <p class="download-title">Download</p>
+                <p class="download-title">Open</p>
+              </label>
+            </div>
+
+
+
 
           <div className="suggested-games-section">
             <h3>You Might Also Like</h3>

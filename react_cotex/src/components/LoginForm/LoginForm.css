@@ -1,4 +1,14 @@
 /* Container styling */
+/* GIF styling */
+/* GIF styling */
+.login-gif {
+  max-width: 700px; /* Adjust the size of the GIF */
+  margin-bottom: 80px; /* Space between the GIF and form */
+  margin-top: -200px; /* Move the GIF higher */
+}
+
+
+/* Center the form and GIF */
 .login-container {
   display: flex;
   flex-direction: column;
@@ -7,6 +17,7 @@
   height: 100vh;
   background-color: #141c25;
 }
+
 
 /* Form styling */
 .login-form {
