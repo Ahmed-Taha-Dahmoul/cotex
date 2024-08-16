@@ -54,6 +54,7 @@ function Header() {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(response.data.results)
 
       const sortedNotifications = Array.isArray(response.data.results)
         ? response.data.results.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
@@ -203,6 +204,12 @@ function Header() {
                           className={`notification-item ${notification.is_read ? 'notification-read' : ''}`}
                           onClick={() => markAsRead(notification.id, notification.game_url)}
                         >
+                          {!notification.is_read && <div className="notification-dot"></div>}
+                          <img 
+                            src={`${config.API_URL}/${notification.sender_profile_pic}`} 
+                            alt="Sender Profile" 
+                            className="notification-profile-pic" 
+                          />
                           <div>
                             <span className="notification-message">{notification.message}</span>
                             <div className="notification-timestamp">
@@ -213,20 +220,18 @@ function Header() {
                       ))
                     )}
                   </Dropdown.Menu>
+
                 </Dropdown>
                 <Dropdown>
                   <Dropdown.Toggle variant="light" id="dropdown-basic" className="header-profile-circle">
-                    {profilePic ? (
-                      <img src={`${config.API_URL}/${profilePic}`} alt="Profile" className="header-profile-circle" />
-                    ) : (
-                      <img src="default-profile-pic.jpg" alt="Default Profile" className="header-profile-circle" />
-                    )}
+                    <img src={`${config.API_URL}/${profilePic}`} alt="Profile" className="header-profile-img" />
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
                     <Dropdown.Item as={Link} to="/profile">Profile</Dropdown.Item>
                     <Dropdown.Item onClick={logout}>Log Out</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
+
               </>
             ) : (
               <>

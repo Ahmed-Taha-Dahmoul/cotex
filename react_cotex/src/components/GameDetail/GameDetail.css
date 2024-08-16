@@ -1,297 +1,338 @@
-/* Existing CSS */
-.body_content {
-  padding: 20px;
-  background-color: #c1c1c1;
-  margin-top: 4%;
-  margin-left: 4%;
-  margin-right: 4%;
+.game-detail-container {
+    background-color: #141c25;
+    color: #ffffff;
+    padding: 2rem;
+    border-radius: 15px;
+    max-width: 1600px;
+    margin: 0 auto;
+    margin-top: 25px;
 }
 
-.main_title {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
+.game-detail-body {
+    display: flex;
+    flex-direction: column;
 }
 
-.windowsflag {
-  width: 20px;  /* Adjust this value to make the image smaller or larger */
-  height: auto;
-  margin-left: 7px;
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    font: bold;
 }
 
-.row.game-page {
-  display: flex;
-  flex-wrap: wrap;
+.game-title-1 {
+    font-size: 2.7rem;
+    font-weight: 500; /* Test with a higher value */
+    margin: 0;
+    color: #ffffff;
 }
 
-.post_flag {
-  margin-right: 6px;
+.consolewindowsflag {
+    width: 25px;   /* Set the desired width */
+    height: 30px;  /* Set the desired height */
+    vertical-align: middle; /* Aligns the image vertically with the text */
 }
 
-.col-md-3,
-.col-md-6,
-.col-md-9,
-.col-md-12 {
-  padding: 15px;
+.consolewindowsflag:hover {
+    transform: scale(1.2);
 }
 
-.game-img img {
-  width: 100%;
-  border-radius: 8px;
+/* Genre link styling with spacing */
+.detail-list-1 li a {
+    color: #4a90e2; /* Initial color for the genre links */
+    text-decoration: none; /* Remove underline */
+    font-weight: bold; /* Make the genre text bold */
+    transition: color 0.3s ease, transform 0.3s ease; /* Smooth transition on hover */
+    margin-right: 0.5rem; /* Add space between genre links */
 }
 
-.listencio {
-  list-style: none;
-  padding: 0;
+.detail-list-1 li a:last-child {
+    margin-right: 0; /* Remove margin from the last link */
 }
 
-.listencio li {
-  margin-bottom: 10px;
+.detail-list-1 li a:hover {
+    color: #f4c752; /* Change color on hover */
+    transform: scale(1.05); /* Slight zoom effect on hover */
+    text-shadow: 0 2px 8px rgba(244, 199, 82, 0.8); /* Add a subtle glow effect */
 }
 
-.plataforma img {
-  margin-left: 10px;
-}
-
-.cationen a {
-  color: #007bff;
-  text-decoration: none;
-}
-
-.cationen a:hover {
-  text-decoration: underline;
-}
-
-.descriptinen {
-  margin-top: 20px;
-}
-
-.mantekol {
-  margin-top: 10px;
-  line-height: 1.6;
-}
-
-#loked {
-  cursor: pointer;
-  color: #007bff;
-  text-decoration: underline;
-}
-
-.button {
-  --main-focus: #2d8cf0;
-  --font-color: #323232;
-  --bg-color-sub: #dedede;
-  --bg-color: #eee;
-  --main-color: #323232;
-  position: relative;
-  width: 200px;
-  height: 60px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  border: 2px solid var(--main-color);
-  box-shadow: 4px 4px var(--main-color);
-  background-color: var(--bg-color);
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.button,
-.button__icon,
-.button__text {
-  transition: all 0.3s;
-}
-
-.button .button__text {
-  transform: translateX(22px);
-  color: var(--font-color);
-  font-weight: 600;
-}
-
-.button .button__icon {
-  position: absolute;
-  transform: translateX(140px);
-  height: 100%;
-  width: 50px;
-  background-color: var(--bg-color-sub);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.button .svg {
-  width: 20px;
-  fill: var(--main-color);
-}
-
-.button:hover {
-  background: var(--bg-color);
-}
-
-.button:hover .button__text {
-  color: transparent;
-}
-
-.button:hover .button__icon {
-  width: 200px;
-  transform: translateX(-10px);
-}
-
-.button:active {
-  transform: translate(8px, 8px);
-  box-shadow: 0px 0px var(--main-color);
-}
-
-.retruk {
-  margin-top: 20px;
-  padding: 20px;
-  background-color: #e9ecef;
-  border-radius: 8px;
-}
-
-.socia_boxen {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.buttonsocial {
-  cursor: pointer;
-  font-size: 24px;
-  color: #007bff;
-}
-
-.videoWrapperOuter {
-  margin-top: 20px;
-}
-
-.videoWrapperInner {
-  position: relative;
-  padding-bottom: 56.25%; /* 16:9 */
-  height: 0;
-}
-
-.videoWrapperInner iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
-
-.comment-highlight {
-  background-color: rgb(186, 63, 63); 
-  transition: background-color 0.3s ease; /* Add a smooth transition */
+/* Keeping list item hover effect consistent */
+.detail-list-1 li:hover {
+    color: #f4c752; /* Change text color on hover for a cool effect */
+    border-color: #f4c752; /* Change divider color on hover */
 }
 
 
 
-
-/* Suggestions Games Section */
-.suggested-games {
-  margin-top: 40px;
-  padding: 20px;
-  background-color: #ffffff; /* White background for a clean look */
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-  position: relative; /* Ensure relative positioning for child elements */
+.game-content {
+    display: flex;
+    align-items: flex-start; /* Align items to the top */
+    gap: 2rem; /* Space between the image and details */
+    overflow: hidden; /* Ensure no content overflow */
 }
 
-.suggested-games h3 {
-  font-size: 22px;
-  margin-bottom: 20px;
-  font-weight: bold;
-  color: #323232; /* Darker color for better readability */
-  text-align: center;
+.game-image {
+    flex: 0 0 300px; /* Fixed width for the image */
+    margin-right: 1.5rem;
+}
+
+.game-info-1 {
+    flex: 1;
+    max-width: calc(100% - 400px - 2rem);
+    color: #FFFFFF; /* White text */
+    padding: 1.5rem;
+    border-radius: 12px; /* Rounded corners */
+    
+}
+
+
+
+.game-info-1 .detail-list-1 {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* Increased space between list items for better readability */
+    padding: 0;
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.6rem;
+}
+
+.detail-list-1 li {
+    border-bottom: 1px solid #333333; /* Subtle divider between items */
+    padding-bottom: 0.5rem;
+    display: flex;
+    align-items: center; /* Center content vertically */
+    transition: color 0.3s ease, border-color 0.3s ease; /* Smooth transition on hover */
+}
+
+.detail-list-1 li:last-child {
+    border-bottom: none; /* Remove divider from the last item */
+}
+
+.detail-list-1 li:hover {
+    color: #f4c752; /* Change text color on hover for a cool effect */
+    border-color: #f4c752; /* Change divider color on hover */
+}
+
+.detail-list-1 strong {
+    font-weight: 700;
+    color: #CCCCCC;
+    margin-right: 0.5rem; /* Space between label and text */
+    transition: color 0.3s ease; /* Smooth transition for label color */
+}
+
+.detail-list-1 strong:hover {
+    color: #f4c752; /* Change label color on hover */
+}
+
+.language-icon {
+    margin-left: 0.3rem;
+    height: 16px; /* Adjust icon size */
+    vertical-align: middle;
+    transition: transform 0.3s ease; /* Smooth transform transition */
+}
+
+.language-icon:hover {
+    transform: scale(1.2); /* Slight zoom on hover for icons */
+}
+
+
+.game-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+
+
+.game-details {
+    background-color: #1e1e1e;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.detail-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    font-size: 1.2rem;
+    line-height: 1.8rem;
+}
+
+.detail-list li {
+    margin-bottom: 10px;
+}
+
+.language-icon {
+    width: 24px;
+    height: 24px;
+    margin-left: 5px;
+}
+
+.game-description p {
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    padding: 1rem;
+}
+
+.game-description p:hover {
+    transform: scale(1.02);
+    border-radius: 8px;
+}
+
+.game-description h3 {
+    font-size: 2.2rem;
+    color: #f4c752; /* Highlight color for headings */
+    margin-bottom: 1rem;
+}
+
+.game-description p {
+    color: #dcdcdc; /* Lighter text color */
+    line-height: 1.6;
+    font-size: 120%;
+}
+
+.toggle-description {
+    color: #4a90e2;
+    cursor: pointer;
+    font-weight: bold;
+    display: inline-block; /* Change to inline-block */
+    margin-top: 1rem;
+    text-decoration: none; /* Remove the underline */
+    transition: color 0.3s ease, transform 0.3s ease; /* Smooth transition for both color and transform */
+    transform-origin: center; /* Scale from the center */
+    margin-bottom: 16px;
+}
+
+.toggle-description:hover {
+    color: #f4c752;
+    transform: scale(1.1); /* Slightly enlarge the text */
+}
+
+
+
+
+
+
+.requirements-section {
+    background-color: #1e1e1e;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.requirements-section h4 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.download-button-section {
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.download-button {
+    padding: 15px 30px;
+    background-color: #d32f2f;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background-color 0.3s;
+}
+
+.download-button:hover {
+    background-color: #b71c1c;
+}
+
+.thank-you-message {
+    color: #4caf50;
+    font-weight: bold;
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.suggested-games-section {
+    margin-top: 2rem;
+    background-color: #1e1e1e;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.suggested-games-section h3 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .scroll-container {
-  display: flex;
-  align-items: center;
-  position: relative;
+    position: relative;
 }
 
 .scroll-wrapper {
-  overflow-x: hidden;
-  flex: 1;
+    overflow-x: auto;
+    display: flex;
+    gap: 1rem;
+    scroll-behavior: smooth;
 }
 
-.scroll-content {
-  display: flex;
-  transition: transform 0.3s ease-in-out;
+.suggested-games {
+    display: flex;
+    gap: 1rem;
 }
 
-.scroll-item {
-  flex: 0 0 auto;
-  width: calc(20% - 12px); /* Adjusted width for 5 items per row, with margin */
-  margin-right: 12px; /* Adjust margin to fit spacing */
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
+.suggested-game {
+    display: block;
+    text-align: center;
+    flex: 0 0 auto;
+    width: 150px;
 }
 
-.scroll-item:last-child {
-  margin-right: 0; /* Remove margin on the last item to avoid extra space */
+.suggested-game-image {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
-.scroll-item img {
-  width: 100%;
-  border-radius: 8px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.suggested-game-title {
+    font-weight: bold;
+    margin-top: 0.5rem;
 }
 
-.scroll-item:hover img {
-  transform: scale(1.05); /* Slight zoom on hover */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Elevate the item on hover */
-}
-
-.scroll-caption {
-  text-align: center;
-  margin-top: 10px;
-  font-size: 16px;
-  font-weight: 500;
-  color: #007bff; /* Matching the theme color */
-}
-
-.scroll-caption h3 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: bold;
-  color: #333; /* Darker color for title */
-}
-
-.scroll-caption h3:hover {
-  color: #0056b3; /* Darker shade on hover */
-  text-decoration: underline;
+.suggested-game-genre {
+    color: #cccccc;
+    font-size: 0.9rem;
 }
 
 .scroll-button {
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-  border: none;
-  color: #fff; /* White arrow color */
-  font-size: 1.2rem; /* Smaller font size */
-  cursor: pointer;
-  position: absolute;
-  top: 50%;
-  width: 50px; /* Fixed width */
-  height: 50px; /* Fixed height */
-  padding: 0; /* Remove padding to control size with width and height */
-  border-radius: 60%;
-  display: flex; /* Center the icon */
-  align-items: center; /* Center the icon vertically */
-  justify-content: center; /* Center the icon horizontally */
-  transition: background-color 0.3s ease;
-  z-index: 2; /* Ensure buttons are above everything else */
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1;
 }
 
 .scroll-button.left {
-  left: -35px; /* Move button more to the left */
+    left: -15px;
 }
 
 .scroll-button.right {
-  right: -40px; /* Move button more to the right */
+    right: -15px;
 }
 
-.scroll-button:hover {
-  background-color: rgba(0, 0, 0, 0.7); /* Darker background on hover */
+.comment-section {
+    margin-top: 2rem;
 }

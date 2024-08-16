@@ -3,9 +3,9 @@
   padding: 0 15px;
   margin-right: 10%;
   margin-left: 10%;
-  position: relative; /* Ensure positioning context for background image */
-  background-color: #1d2431; /* Original background color */
-  transition: opacity 0.3s ease; /* Add transition for fade effect */
+  position: relative;
+  background-color: #141c25;
+  transition: opacity 0.3s ease;
   border-radius: 1%;
 }
 
@@ -42,15 +42,15 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: url('./images.jpg') no-repeat center center/cover; /* Make sure path is correct */
-  filter: blur(8px); /* Adjust blur intensity */
-  z-index: -1; /* Ensure it's behind the content */
+  background: url('./images.jpg') no-repeat center center/cover;
+  filter: blur(8px);
+  z-index: -1;
 }
 
 /* Ensure the main content is above the background */
 .container-game-list > * {
   position: relative;
-  z-index: 1; /* Ensure all content is above the background */
+  z-index: 1;
 }
 
 /* Game card styles */

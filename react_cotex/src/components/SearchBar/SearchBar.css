@@ -29,7 +29,7 @@
 .search-bar-container .search-icon {
   position: absolute;
   left: 15px;
-  top: 50%;
+  top: 40%;
   transform: translateY(-50%);
   pointer-events: none;
   font-size: 20px;

@@ -3,10 +3,11 @@ import axios from 'axios';
 import { useParams, useLocation, Link } from 'react-router-dom';
 import { Container, Spinner } from 'react-bootstrap';
 import './GameDetail.css';
-import windowsflag from './windows logo.svg';
+import windowsflag from './windowslogo.svg';
 import CommentSection from '../CommentSection/CommentSection';
 import config from '../../config';
 
+// Import language images
 import Arabic from './languages_logo/Arabic.png';
 import Brazil from './languages_logo/Brazil.png';
 import Chinese from './languages_logo/Chinese.png';
@@ -57,7 +58,6 @@ const GameDetail = () => {
         const response = await axios.get(`${config.API_URL}/api/games/${id}/`);
         setGame(response.data);
         setLoading(false);
-        console.log(response.data)
       } catch (error) {
         console.error("Error fetching game details:", error);
         setLoading(false);
@@ -69,53 +69,26 @@ const GameDetail = () => {
 
   useEffect(() => {
     const fetchSuggestedGames = async () => {
-      if (game && game.genres && game.languages) {
-        try {
-          const response = await axios.get(`${config.API_URL}/api/suggestion/`, {
-            params: {
-              title: game.title,
-              genres: game.genres.join(','),
-              languages: game.languages.join(','),
-              date: game.release_date,
+        if (game) {
+            try {
+                // Build the params object conditionally
+                const params = {};
+                if (game.title) params.title = game.title;
+                if (game.genres && game.genres.length > 0) params.genres = game.genres.join(',');
+                if (game.languages && game.languages.length > 0) params.languages = game.languages.join(',');
+                if (game.release_date) params.date = game.release_date;
+
+                const response = await axios.get(`${config.API_URL}/api/suggestion/`, { params });
+                setSuggestedGames(response.data);
+            } catch (error) {
+                console.error("Error fetching suggested games:", error);
             }
-          });
-          console.log(response.data);
-          setSuggestedGames(response.data);
-        } catch (error) {
-          console.error("Error fetching suggested games:", error);
         }
-      }
     };
-  
+
     fetchSuggestedGames();
-  }, [game]);
+}, [game]);
 
-  useEffect(() => {
-    const handleFragmentNavigation = () => {
-      const hash = window.location.hash;
-      if (hash.startsWith('#comment-')) {
-        const commentId = hash.substring(8);
-        const targetComment = document.getElementById(`comment-${commentId}`);
-
-        if (targetComment) {
-          targetComment.scrollIntoView({
-            behavior: 'smooth',
-            block: 'center',
-            inline: 'nearest'
-          });
-
-          targetComment.classList.add('comment-highlight');
-
-          setTimeout(() => {
-            targetComment.classList.remove('comment-highlight');
-          }, 3000);
-        }
-      }
-    };
-
-    handleFragmentNavigation();
-
-  }, [location]);
 
   const toggleDescription = () => {
     setShowFullDescription(!showFullDescription);
@@ -176,7 +149,6 @@ const GameDetail = () => {
 
   const { mainDescription, minimumRequirements, recommendedRequirements, installationInstructions } = game ? extractSections(game.description) : {};
 
-
   const scrollWrapperRef = useRef(null);
 
   const scrollLeft = () => {
@@ -197,184 +169,144 @@ const GameDetail = () => {
     }
   };
 
-
   return (
-    <Container>
+    <Container className="game-detail-container">
       {loading ? (
         <Spinner animation="border" role="status">
           <span className="sr-only">Loading...</span>
         </Spinner>
       ) : (
-        <div className="body_content">
-          <h1 className="main_title">Download {game?.title}</h1>
-          <div className="row game-page">
-            <div className="col-md-3 game-img">
-              <img
-                className="post_image"
-                src={`${config.API_URL}/${game?.image_path}`}
-                alt={`Download ${game?.title}`}
-                title={`Download ${game?.title}`}
-              />
-            </div>
-            <div className="col-md-9">
-              <div className="col-md-6">
-                <ul className="list">
-                  <li>Name: <strong>{game?.title}</strong></li>
-                  <li className="platform">Platform: <strong>{game?.platform}</strong>
-                    <img
-                      style={{ marginTop: '-9px' }}
-                      className="console windowsflag"
+        <div className="game-detail-body">
+          <div className="game-header">
+            <h1 className="game-title-1">{game?.title}</h1>
+          </div>
+          <div className="game-content">
+    <div className="game-image">
+        <img
+            className="post-image"
+            src={`${config.API_URL}/${game?.image_path}`}
+            alt={`Download ${game?.title}`}
+            title={`Download ${game?.title}`}
+        />
+    </div>
+    <div className="game-info-1">
+        <ul className="detail-list-1">
+            <li><strong>Name:</strong> {game?.title}</li>
+            <li><strong>Platform:</strong> {game?.platform}  
+                    <img 
+                      className="consolewindowsflag"
                       src={windowsflag}
                       alt={`Games for ${game?.platform}`}
                     />
-                  </li>
-                  <li className="language">Languages:
-                    <span>
-                      {game?.languages?.map((language, index) => {
-                        const languageKey = language.replace('Idioma ', '');
-                        const imagePath = languageImages[languageKey];
-                        return (
-                          <img
+            </li>
+            <li><strong>Languages:</strong> 
+                {game?.languages?.map((language, index) => {
+                    const languageKey = language.replace('Idioma ', '');
+                    const imagePath = languageImages[languageKey];
+                    return (
+                        <img
                             key={index}
-                            className="post_flag"
+                            className="language-icon"
                             src={imagePath}
                             title={languageKey}
                             alt={languageKey}
-                          />
-                        );
-                      })}
-                    </span>
-                  </li>
-                  <li>Genre:
-                    <span className="category">
-                      {game?.genres?.map((genre, index) => (
-                        <React.Fragment key={index}>
-                          <a href={`${config.LOCAL_URL}/category/?q=${genre}`} rel="category tag">{genre}</a>{index < game.genres.length - 1 && ', '}
-                        </React.Fragment>
-                      ))}
-                    </span>
-                  </li>
-                  <li>Format: <strong>{game?.format}</strong></li>
-                </ul>
-              </div>
-              <div className="col-md-6">
-                <ul className="list">
-                  <li>Size: <strong>{game?.size}</strong></li>
-                  <li>Release Date: <strong>{game?.release_date}</strong></li>
-                  <li>Cracker: <strong>{game?.cracker}</strong></li>
-                  <li>Version: <strong>{game?.version}</strong></li>
-                </ul>
-              </div>
-              <div className="col-md-12">
-                <h3 className="description">Description:</h3>
-                <p className="details">
-                  {showFullDescription ? mainDescription : mainDescription.split('\n').slice(0, 2).join('\n')}
+                        />
+                    );
+                })}
+            </li>
+            <li><strong>Genre:</strong> 
+                {game?.genres?.map((genre, index) => (
+                    <React.Fragment key={index}>
+                        <a href={`${config.LOCAL_URL}/category/?q=${genre}`} rel="category tag">{genre}</a>{index < game.genres.length - 1 && ', '}
+                    </React.Fragment>
+                ))}
+            </li>
+            <li><strong>Format:</strong> {game?.format}</li>
+            <li><strong>Size:</strong> {game?.size}</li>
+            <li><strong>Release Date:</strong> {game?.release_date}</li>
+            <li><strong>Cracker:</strong> {game?.cracker}</li>
+            <li><strong>Version:</strong> {game?.version}</li>
+        </ul>
+    </div>
+</div>
+
+            <div className="game-description">
+                <h3>Description:</h3>
+                <p>
+                    {showFullDescription ? mainDescription : mainDescription.split('\n').slice(0, 2).join('\n')}
                 </p>
-                <span id="view_full_description" onClick={toggleDescription} style={{ cursor: 'pointer', color: '#007bff' }}>
-                  {showFullDescription ? 'View Less' : 'View Full Description >'}
+                <span className="toggle-description" onClick={toggleDescription}>
+                    {showFullDescription ? 'View Less' : 'View Full Description >'}
                 </span>
-  
-                <>
-                  {minimumRequirements && (
-                    <div className="requirements">
-                      <h4>Minimum Requirements</h4>
-                      <pre>{formatText(minimumRequirements)}</pre>
-                    </div>
-                  )}
-                  {recommendedRequirements && (
-                    <div className="requirements">
-                      <h4>Recommended Requirements</h4>
-                      <pre>{formatText(recommendedRequirements)}</pre>
-                    </div>
-                  )}
-                  {installationInstructions && (
-                    <div className="instructions">
-                      <h4>Installation Instructions</h4>
-                      <pre>{formatText(installationInstructions)}</pre>
-                    </div>
-                  )}
-                </>
-  
-                <br />
-                <center>
-                  <button
-                    className="button"
-                    type="button"
-                    onClick={handleDownloadClick}
-                    download={`${game?.title}.torrent`}
-                  >
-                    <span className="button__text">Download</span>
-                    <span className="button__icon">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 35" id="bdd05811-e15d-428c-bb53-8661459f9307" data-name="Layer 2" className="svg">
-                        <path d="M17.5,22.131a1.249,1.249,0,0,1-1.25-1.25V2.187a1.25,1.25,0,0,1,2.5,0V20.881A1.25,1.25,0,0,1,17.5,22.131Z"></path>
-                        <path d="M17.5,22.693a3.189,3.189,0,0,1-2.262-.936L8.487,15.006a1.249,1.249,0,0,1,1.767-1.767l6.751,6.751a.7.7,0,0,0,.99,0l6.751-6.751a1.25,1.25,0,0,1,1.768,1.767l-6.752,6.751A3.191,3.191,0,0,1,17.5,22.693Z"></path>
-                        <path d="M31.436,34.063H3.564A3.318,3.318,0,0,1,.25,30.749V22.011a1.25,1.25,0,0,1,2.5,0v8.738a.815.815,0,0,0,.814.814H31.436a.815.815,0,0,0,.814-.814V22.011a1.25,1.25,0,1,1,2.5,0v8.738A3.318,3.318,0,0,1,31.436,34.063Z"></path>
-                      </svg>
-                    </span>
-                  </button>
-                </center>
-                {showThankYou && (
-                  <div className="thank_you">
-                    <center>
-                      <p>Your file has been downloaded!</p>
-                      <span>The best way to thank us is by sharing this game. Come on... it will only take 5 seconds!</span>
-                      <img id="helping" src={`${config.API_URL}/path_to_image/help_down.gif`} alt="Help Down" />
-                      <div className="social_buttons">
-                        <span rel="nofollow" onClick={() => window.open(`https://www.facebook.com/sharer.php?u=http://localhost:8000/games-pc/${game?.slug}/`, 'mywin', 'width=500,height=500')} className="buttonsocial fa fa-facebook"></span>
-                        <span rel="nofollow" onClick={() => window.open(`https://twitter.com/share?url=http://localhost:8000/games-pc/${game?.slug}/`, 'mywin', 'width=500,height=500')} className="buttonsocial fa fa-twitter"></span>
-                        <span rel="nofollow" onClick={() => window.open(`https://plus.google.com/share?url=http://localhost:8000/games-pc/${game?.slug}/`, 'mywin', 'width=500,height=500')} className="buttonsocial fa fa-google"></span>
-                        <span rel="nofollow" onClick={() => window.open(`https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:8000/games-pc/${game?.slug}/&title=${game?.title}&summary=&source=`, 'mywin', 'width=500,height=500')} className="buttonsocial fa fa-linkedin"></span>
-                      </div>
-                    </center>
-                  </div>
-                )}
-                {youtubeVideoId && (
-                  <div className="videoWrapperOuter">
-                    <div className="videoWrapperInner">
-                      <iframe
-                        src={`https://www.youtube.com/embed/${youtubeVideoId}`}
-                        frameBorder="0"
-                        allowFullScreen
-                        title={game?.title}
-                      ></iframe>
-                    </div>
-                  </div>
-                )}
-              </div>
             </div>
+
+          <div className="requirements-section">
+            {minimumRequirements && (
+              <div className="requirements">
+                <h4>Minimum Requirements</h4>
+                <pre>{formatText(minimumRequirements)}</pre>
+              </div>
+            )}
+            {recommendedRequirements && (
+              <div className="requirements">
+                <h4>Recommended Requirements</h4>
+                <pre>{formatText(recommendedRequirements)}</pre>
+              </div>
+            )}
+            {installationInstructions && (
+              <div className="installation">
+                <h4>Installation Instructions</h4>
+                <pre>{formatText(installationInstructions)}</pre>
+              </div>
+            )}
           </div>
-  
-          {/* Updated Suggested Games Section */}
-          {suggestedGames?.length > 0 && (
-            <div className="suggested-games">
-              <h3>You might also like</h3>
-              <div className="scroll-container">
-                <button className="scroll-button left" onClick={() => scrollLeft()}>‹</button>
-                <button className="scroll-button right" onClick={() => scrollRight()}>›</button>
-                <div className="scroll-wrapper" ref={scrollWrapperRef}>
-                  <div className="scroll-content">
-                    {suggestedGames.map((suggestedGame) => (
-                      <div key={suggestedGame.id} className="scroll-item">
-                        <Link to={`/games/${suggestedGame.id}/`}>
-                          <img
-                            className="d-block w-100"
-                            src={`${config.API_URL}/${suggestedGame.image_path}`}
-                            alt={suggestedGame.title}
-                          />
-                          <div className="scroll-caption">
-                            <h3>{suggestedGame.title}</h3>
-                          </div>
-                        </Link>
+
+          <div className="download-button-section">
+            <button
+              className="download-button"
+              type="button"
+              onClick={handleDownloadClick}
+            >
+              Download
+            </button>
+          </div>
+
+          <div className="suggested-games-section">
+            <h3>You Might Also Like</h3>
+            <div className="scroll-container">
+              <button className="scroll-button left" onClick={scrollLeft}>‹</button>
+              <button className="scroll-button right" onClick={scrollRight}>›</button>
+              <div className="scroll-wrapper" ref={scrollWrapperRef}>
+                <div className="suggested-games">
+                  {suggestedGames.map((game, index) => (
+                    <Link to={`/game/${game.id}`} key={index} className="suggested-game">
+                      <img
+                        className="suggested-game-image"
+                        src={`${config.API_URL}/${game.image_path}`}
+                        alt={`Download ${game.title}`}
+                        title={`Download ${game.title}`}
+                      />
+                      <div className="suggested-game-info">
+                        <p className="suggested-game-title">{game.title}</p>
+                        <p className="suggested-game-genre">
+                          {game.genres?.join(', ')}
+                        </p>
                       </div>
-                    ))}
-                  </div>
+                    </Link>
+                  ))}
                 </div>
               </div>
             </div>
+          </div>
+
+          {showThankYou && (
+            <div className="thank-you-message">
+              Thank you for downloading {game?.title}! Enjoy the game.
+            </div>
           )}
-  
-          <div className="game-details" ref={commentRef}>
-            <CommentSection gameId={id} />
+
+          <div className="comment-section">
+            <CommentSection gameId={id} ref={commentRef} />
           </div>
         </div>
       )}

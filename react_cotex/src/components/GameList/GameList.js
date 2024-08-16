@@ -3,8 +3,12 @@ import axios from 'axios';
 import { Row, Col, Skeleton } from 'antd';
 import { Link } from 'react-router-dom';
 import Paginator from '../Paginator/Paginator';
-import './GameList.css';
+import styles from './GameList.module.css'; // Importing as a module
 import config from '../../config';
+
+
+
+
 
 const GameList = () => {
   const [games, setGames] = useState([]);
@@ -49,7 +53,7 @@ const GameList = () => {
   };
 
   return (
-    <div className="container-game-list">
+    <div className={styles['container-game-list']}>
       <div className="d-flex justify-content-center mt-4">
         <Paginator
           currentPage={currentPage}
@@ -57,11 +61,11 @@ const GameList = () => {
           onPageChange={handlePageChange}
         />
       </div>
-      <Row gutter={[16, 16]} className={fade ? 'fade' : ''}>
+      <Row gutter={[16, 16]} className={fade ? styles.fade : ''}>
         {loading ? (
           [...Array(24)].map((_, index) => (
             <Col key={index} xs={24} sm={12} md={8} lg={6} xl={4} style={{ padding: '0 8px' }}>
-              <div className="game-card">
+              <div className={styles['game-card']}>
                 <Skeleton active />
               </div>
             </Col>
@@ -70,14 +74,14 @@ const GameList = () => {
           games.map((game) => (
             <Col key={game.id} xs={24} sm={12} md={8} lg={6} xl={4} style={{ padding: '0 8px' }}>
               <Link to={`/games/${game.id}`}>
-                <div className="game-card">
-                  <div className="game-cover">
+                <div className={styles['game-card']}>
+                  <div className={styles['game-cover']}>
                     <img alt="Game Cover" src={`${config.API_URL}/${game.image_path}`} />
                   </div>
-                  <div className="game-info">
-                    <h3 className="game-title">{game.title}</h3>
-                    <p className="game-description">{game.description}</p>
-                    <div className="game-actions">
+                  <div className={styles['game-info']}>
+                    <h3 className={styles['game-title']}>{game.title}</h3>
+                    <p className={styles['game-description']}>{game.description}</p>
+                    <div className={styles['game-actions']}>
                       <span>Download</span>
                       <Link to={`/games/${game.id}`}>Details</Link>
                     </div>

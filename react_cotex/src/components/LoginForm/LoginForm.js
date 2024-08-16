@@ -20,16 +20,13 @@ const LoginForm = () => {
     setError(''); // Clear any previous error messages
 
     try {
-      // Call login method from AuthContext
       const success = await login({ email, password });
 
       if (success) {
         const lastVisitedPage = localStorage.getItem('lastVisitedPage') || '/';
         navigate(lastVisitedPage); // Redirect to last visited page
-        window.location.reload(); // Optionally reload the page to refresh data
       }
     } catch (error) {
-      // Handle specific error messages based on the response
       setError('Invalid email or password. Please try again.');
     }
   };
@@ -39,22 +36,31 @@ const LoginForm = () => {
       <form className="login-form" onSubmit={handleSubmit}>
         <h2>Login</h2>
         {error && <div className="error-message">{error}</div>}
+        
         <div className="form-group">
+          <label htmlFor="login-email">Email</label>
           <input
+            id="login-email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
+            placeholder="Enter your email"
+            aria-required="true"
           />
         </div>
+        
         <div className="form-group">
+          <label htmlFor="login-password">Password</label>
           <input
+            id="login-password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
+            placeholder="Enter your password"
+            aria-required="true"
           />
         </div>
+        
         <div className="form-group">
           <button type="submit" onClick={storeLastVisitedPage}>Login</button>
         </div>

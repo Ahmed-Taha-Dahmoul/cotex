@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Row, Col, Skeleton } from 'antd';
 import { Link } from 'react-router-dom';
 import Paginator from '../Paginator/Paginator';
-import './SearchResults.css';
+import styles from './SearchResults.module.css';
 import config from '../../config';
 
 function useQuery() {
@@ -49,7 +49,7 @@ const SearchResults = () => {
   };
 
   return (
-    <div className="container-search-results">
+    <div className={styles['container-search-results']}>
       <h2>Search Results for "{searchTerm}"</h2>
       <div className="d-flex justify-content-center mt-4">
         <Paginator
@@ -69,14 +69,14 @@ const SearchResults = () => {
           searchResults.map((game) => (
             <Col key={game.id} xs={24} sm={12} md={8} lg={6} xl={4} style={{ padding: '0 8px' }}>
               <Link to={`/games/${game.id}`}>
-                <div className="game-card">
-                  <div className="game-cover">
+                <div className={styles['game-card']}>
+                  <div className={styles['game-cover']}>
                     <img alt="Game Cover" src={`${config.API_URL}/${game.image_path}`} />
                   </div>
-                  <div className="game-info">
-                    <h3 className="game-title">{game.title}</h3>
-                    <p className="game-description">{game.description}</p>
-                    <div className="game-actions">
+                  <div className={styles['game-info']}>
+                    <h3 className={styles['game-title']}>{game.title}</h3>
+                    <p className={styles['game-description']}>{game.description}</p>
+                    <div className={styles['game-actions']}>
                       <span>Download</span>
                       <Link to={`/games/${game.id}`}>Details</Link>
                     </div>
@@ -96,6 +96,7 @@ const SearchResults = () => {
       </div>
     </div>
   );
+  
 };
 
 export default SearchResults;

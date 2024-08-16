@@ -25,7 +25,6 @@ function App() {
       <div className="App">
         <Header />
         <div className="background-wrapper">
-          <div className="blurred-background"></div>
           <main className="main-content">
               <Routes>
                 <Route path="/" element={<GameList />} />

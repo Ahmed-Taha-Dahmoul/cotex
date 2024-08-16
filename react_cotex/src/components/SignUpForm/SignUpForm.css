@@ -1,43 +1,50 @@
-/* Container styling to center the form */
+/* Container styling */
 .signup-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: #f4f4f4; /* Light background color with a subtle fade effect */
+  background-color: #141c25;
 }
 
 /* Form styling */
 .signup-form {
   width: 100%;
-  max-width: 300px; /* Adjusted maximum width */
-  padding: 20px;
-  border: 1px solid #ccc; /* Light border color */
-  border-radius: 8px; /* Rounded corners */
-  background-color: #fff; /* White background for the form */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Slightly deeper shadow for depth */
-  opacity: 0.9; /* Slightly faded effect */
+  max-width: 400px;
+  padding: 0;
+  background-color: transparent;
 }
 
 /* Header styling inside the form */
 .signup-form h2 {
-  margin-bottom: 20px;
-  font-size: 1.5rem; /* Consistent font size */
-  color: #333; /* Darker text color */
-  text-align: center;
+  margin-bottom: 30px;
+  font-size: 1.75rem;
+  color: #e1e3e7;
+  text-align: left;
+  width: 100%;
 }
 
 /* Error message styling */
 .error-message {
-  color: #dc3545; /* Red color for error messages */
+  color: #dc3545;
   margin-bottom: 1rem;
-  font-size: 0.875rem; /* Slightly smaller font size */
-  text-align: center; /* Center align error message */
+  font-size: 0.875rem;
+  text-align: center;
 }
 
 /* Form group styling */
 .form-group {
-  margin-bottom: 15px; /* Space between form groups */
+  margin-bottom: 15px;
+}
+
+/* Label styling */
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #e1e3e7;
+  font-weight: bold;
+  font-size: 1rem;
 }
 
 /* Input and button styling */
@@ -45,34 +52,65 @@ input[type="email"],
 input[type="text"],
 input[type="password"] {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc; /* Light border color */
-  border-radius: 5px; /* Rounded corners for inputs */
-  font-size: 1rem; /* Consistent font size */
-  color: #333; /* Darker text color */
-  box-sizing: border-box; /* Include padding and border in total width */
-  outline: none; /* Remove default outline */
-  transition: border-color 0.3s, box-shadow 0.3s; /* Smooth transitions for focus effects */
+  padding: 15px;
+  border: 1px solid #2c3e50;
+  border-radius: 10px;
+  background-color: #141c25;
+  color: #e1e3e7;
+  font-size: 1rem;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  margin-bottom: 15px;
 }
 
 input[type="email"]:focus,
 input[type="text"]:focus,
 input[type="password"]:focus {
-  border-color: #007bff; /* Blue border on focus */
-  box-shadow: 0 0 0 3px rgba(38, 143, 255, 0.2); /* Light blue shadow on focus */
+  border-color: #f4c752;
+  box-shadow: 0 0 0 3px rgba(244, 199, 82, 0.3);
 }
 
+/* Checkbox styling */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.checkbox-group input {
+  margin-right: 10px;
+}
+
+.checkbox-group label {
+  color: #e1e3e7;
+  font-size: 0.875rem;
+}
+
+/* Link styling for Terms of Service and Privacy Policy */
+.terms-link {
+  color: #f4c752; /* Yellow link color */
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.terms-link:hover {
+  text-decoration: underline; /* Underline on hover */
+}
+
+/* Button styling */
 button {
-  background-color: #007bff; /* Primary button color */
-  color: #fff; /* White text */
-  border: none; /* Remove border */
-  border-radius: 5px; /* Rounded corners */
-  padding: 10px;
-  font-size: 1rem; /* Consistent font size */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Smooth transition for background color */
+  background-color: #f4c752;
+  color: #141c25;
+  border: none;
+  border-radius: 5px;
+  padding: 15px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
 }
 
 button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+  background-color: #ddb847;
 }

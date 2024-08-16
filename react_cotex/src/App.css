@@ -1,23 +1,3 @@
-.background-wrapper {
-    position: relative; /* Set positioning to relative so the background can be positioned absolutely within it */
-    overflow: hidden; /* Ensure background doesn't overflow and cover content */
-  }
-  
-  .blurred-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url("images.jpg");
-    background-size: cover; /* Ensure the background image covers the whole element */
-    filter: blur(8px);
-    -webkit-filter: blur(8px);
-    z-index: -1; /* Ensure it's behind the main content */
-  }
-  
-  .main-content {
-    position: relative; /* Ensure it's positioned normally in the stacking context */
-    z-index: 1; /* Make sure it's above the background */
-  }
-  
+body {
+  overflow: auto; /* Ensure scrolling is enabled */
+}

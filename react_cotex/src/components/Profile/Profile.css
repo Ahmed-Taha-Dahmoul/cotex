@@ -1,11 +1,15 @@
+/* General Body Styling */
+/* General Body Styling */
 body {
     margin: 0;
-    color: #2e323c;
-    background: #f5f6fa;
-    position: relative;
-    height: 100%;
+    color: #e1e3e7; /* Light text color */
+    background: #141c25; /* Dark background */
+    font-family: 'Roboto', sans-serif; /* Modern font */
+    height: 100vh; /* Full viewport height */
+    overflow: auto; /* Enable body scrolling */
 }
 
+/* Account Settings Profile Styling */
 .account-settings .user-profile {
     margin: 0 0 1rem 0;
     padding-bottom: 1rem;
@@ -17,11 +21,11 @@ body {
 
 .account-settings .user-profile .user-avatar {
     margin: 0 auto 1rem auto;
-    width: 120px; /* Make the avatar larger */
-    height: 120px; /* Make the avatar larger */
-    border-radius: 50%; /* Make it a circle */
-    overflow: hidden; /* Hide overflow */
-    border: 3px solid rgb(175, 175, 175); /* Add black contour */
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #f4c752; /* Gold contour */
 }
 
 .account-settings .user-profile .user-avatar img {
@@ -35,13 +39,15 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    color: #f4c752; /* Gold text */
+    font-size: 1.5rem; /* Larger font size */
 }
 
 .account-settings .user-profile h6.user-email {
     margin: 0;
-    font-size: 0.8rem;
+    font-size: 0.875rem;
     font-weight: 400;
-    color: #9fa8b9;
+    color: #9fa8b9; /* Muted text color */
 }
 
 .account-settings .about {
@@ -54,86 +60,163 @@ body {
 
 .account-settings .about h5 {
     margin: 0 0 15px 0;
-    color: #007ae1;
+    color: #f4c752; /* Gold color for section titles */
+    font-size: 1.25rem; /* Slightly larger font */
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .account-settings .about p {
-    font-size: 0.825rem;
+    font-size: 0.925rem; /* Slightly larger font for about text */
+    color: #cfd1d8; /* Light gray for about text */
 }
 
+/* Input Fields Styling */
 .form-control {
-    border: 1px solid #cfd1d8;
-    border-radius: 2px;
-    font-size: 0.825rem;
-    background: #ffffff;
-    color: #2e323c;
+    border: 1px solid #2c3e50; /* Darker border */
+    border-radius: 5px; /* More rounded corners */
+    font-size: 0.925rem;
+    background: #27384a; /* Updated dark blue background for inputs */
+    color: #aeb8bc; /* Light gray text for input content */
 }
 
+.form-control::placeholder {
+    color: #aeb8bc; /* Ensure placeholder text uses the light gray color */
+}
+
+.form-control:focus {
+    border-color: #f4c752; /* Gold border on focus */
+    box-shadow: 0 0 0 3px rgba(244, 199, 82, 0.3); /* Subtle glow on focus */
+}
+
+/* Card Styling */
 .card {
-    background: #ffffff;
-    border-radius: 5px;
-    border: 0;
+    background: #1f2a36; /* Dark background for cards */
+    border-radius: 10px; /* More rounded card corners */
+    border: 1px solid #2c3e50; /* Darker border for cards */
     margin-bottom: 1rem;
 }
 
+/* Text Colors for Specific Classes */
+.d-flex.align-items-center {
+    color: #dbdbda; /* Light gray text */
+}
+
+.mt-3.mb-2.text-primary,
+.mb-2.text-primary {
+    color: #f4c752; /* Gold color for section headers */
+}
+
 .text-right .btn + .btn {
-    margin-left: 10px; /* Add space between buttons */
+    margin-left: 10px; /* Spacing between buttons */
 }
 
 .ml-2 {
-    margin-left: 10px; /* Adjust margin for edit icon */
-    cursor: pointer; /* Make the cursor a pointer for edit icons */
-    color: #007ae1; /* Color for edit icons */
+    margin-left: 10px; /* Margin for edit icon */
+    cursor: pointer;
+    color: #f4c752; /* Gold color for edit icons */
 }
 
 .edit-icon {
     display: inline-block;
-    margin-left: 10px; /* Add space between text and icon */
-    color: #007ae1;
+    margin-left: 10px; /* Margin for edit icon */
+    color: #f4c752; /* Gold color for edit icons */
     cursor: pointer;
 }
 
 .edit-icon:hover {
-    color: #005bb5; /* Darken the icon color on hover */
+    color: #ddb847; /* Slightly darker gold on hover */
 }
 
+/* Button Styling */
+.btn-primary,
 .btn-warning {
-    background-color: #ffc107;
-    border-color: #ffc107;
-    color: #fff;
+    background-color: #f4c752;
+    color: #141c25; /* Dark text on gold button */
+    border: none;
+    padding: 10px 20px; /* Adjusted padding */
+    font-size: 1rem; /* Font size */
+    border-radius: 20px; /* Rounded corners */
 }
 
+/* Hover Effect for Buttons */
+.btn-primary:hover,
 .btn-warning:hover {
-    background-color: #e0a800;
-    border-color: #d39e00;
+    background-color: #29384c; /* Dark blue background on hover */
+    color: #f4c752; /* Gold text color on hover */
 }
 
+/* Position and Alignment */
 .position-relative {
     position: relative;
 }
 
+.text-right {
+    display: flex;
+    justify-content: flex-end;
+}
 
-/* Password.css */
+.d-flex.justify-content-between {
+    justify-content: space-between;
+}
+
+.btn-spacing {
+    margin-right: 10px;
+}
+
+/* Password Modal Styling */
 .password-modal {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.5); /* Dimmed background */
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
 }
 
+/* Password Modal Content Styling */
 .password-modal-content {
-    background: #fff;
-    border-radius: 5px;
+    background: #141c25; /* Dark background */
+    border-radius: 8px; /* Rounded corners */
     padding: 20px;
-    width: 80%;
-    max-width: 600px;
+    width: 90%;
+    max-width: 500px; /* Adjust size as needed */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #e1e3e7; /* Light text color */
+}
+
+/* Form Control Input Fields (Specific for Password Change Form) */
+.password-modal-content .form-control {
+    background: #27384a; /* Dark background for inputs */
+    color: #aeb8bc; /* Light gray text */
+    border: 1px solid #2c3e50; /* Darker border */
+}
+
+.password-modal-content .form-control::placeholder {
+    color: #aeb8bc; /* Placeholder text color */
+}
+
+.password-modal-content .form-control:focus {
+    border-color: #f4c752; /* Gold border on focus */
+    box-shadow: 0 0 0 3px rgba(244, 199, 82, 0.3); /* Subtle glow on focus */
+}
+
+/* Button Styles within the Password Modal */
+.password-modal-content .btn {
+    background-color: #f4c752;
+    color: #141c25; /* Dark text on gold button */
+    border: none;
+    padding: 10px 20px; /* Adjusted padding */
+    font-size: 1rem; /* Font size */
+    border-radius: 20px; /* Rounded corners */
+}
+
+.password-modal-content .btn:hover {
+    background-color: #29384c; /* Dark blue background on hover */
+    color: #f4c752; /* Gold text color on hover */
 }
