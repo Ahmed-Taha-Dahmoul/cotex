@@ -370,9 +370,9 @@ const GameDetail = () => {
 
           
 
-          <div className="comment-section">
+          
             <CommentSection gameId={id} ref={commentRef} />
-          </div>
+          
         </div>
       )}
     </Container>
