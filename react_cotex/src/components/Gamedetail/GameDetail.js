@@ -319,7 +319,24 @@ const GameDetail = () => {
               </label>
             </div>
 
+            {showThankYou && (
+            <div className="thank-you-message">
+              Thank you for downloading {game?.title}! Enjoy the game.
+            </div>
+          )}
 
+            {youtubeVideoId && (
+                  <div className="videoWrapperOuter">
+                    <div className="videoWrapperInner">
+                      <iframe
+                        src={`https://www.youtube.com/embed/${youtubeVideoId}`}
+                        frameBorder="0"
+                        allowFullScreen
+                        title={game?.title}
+                      ></iframe>
+                    </div>
+                  </div>
+                )}
 
 
           <div className="suggested-games-section">
@@ -330,7 +347,8 @@ const GameDetail = () => {
               <div className="scroll-wrapper" ref={scrollWrapperRef}>
                 <div className="suggested-games">
                   {suggestedGames.map((game, index) => (
-                    <Link to={`/game/${game.id}`} key={index} className="suggested-game">
+                    <Link to={`/games/${game.id}`} key={index} className="suggested-game">
+                       
                       <img
                         className="suggested-game-image"
                         src={`${config.API_URL}/${game.image_path}`}
@@ -350,11 +368,7 @@ const GameDetail = () => {
             </div>
           </div>
 
-          {showThankYou && (
-            <div className="thank-you-message">
-              Thank you for downloading {game?.title}! Enjoy the game.
-            </div>
-          )}
+          
 
           <div className="comment-section">
             <CommentSection gameId={id} ref={commentRef} />
