@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Dropdown, Button } from 'react-bootstrap';
 import './Header.css';
-import logo from './logo.png';
+import logo from './LogoFinal.png';
 import SearchBar from '../SearchBar/SearchBar';
 import { useAuth } from '../AuthContext';
 import config from '../../config';
