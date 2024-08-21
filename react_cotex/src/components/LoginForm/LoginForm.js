@@ -18,13 +18,13 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(''); // Clear any previous error messages
-
+  
     try {
       const success = await login({ email, password });
-
+  
       if (success) {
-        const lastVisitedPage = localStorage.getItem('lastVisitedPage') || '/';
-        navigate(lastVisitedPage); // Redirect to last visited page
+        navigate('/'); // Redirect to the home page
+        
       }
     } catch (error) {
       setError('Invalid email or password. Please try again.');
@@ -33,7 +33,6 @@ const LoginForm = () => {
 
   return (
     <div className="login-container">
-      {/* Use the imported GIF here */}
       <img src={gify} alt="Login GIF" className="login-gif" />
       <form className="login-form" onSubmit={handleSubmit}>
         <h2>Login</h2>
@@ -65,6 +64,10 @@ const LoginForm = () => {
         
         <div className="form-group">
           <button type="submit" onClick={storeLastVisitedPage}>Login</button>
+        </div>
+        
+        <div className="signup-link">
+          <p>First visit to <span className="highlight">PixelRealmGames?</span> <a href="/signup">Sign up</a></p>
         </div>
       </form>
     </div>

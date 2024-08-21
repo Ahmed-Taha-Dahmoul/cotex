@@ -31,7 +31,7 @@ function App() {
                 <Route path="/games/:id" element={<GameDetail />} />
                 <Route path="/category" element={<CategoryResults />} />
                 <Route path="/search_result" element={<SearchResults />} />
-                <Route path="/signup" element={<SignUpForm />} />
+                <Route path="/signup" element={<PublicRoute element={<SignUpForm />} />} />
                 <Route path="/login" element={<PublicRoute element={<LoginForm />} />} />
                 <Route path="/profile" element={<PrivateRoute element={<Profile />} />} />
                 <Route path="/FAQ" element={<FAQ />} />
