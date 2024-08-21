@@ -220,3 +220,7 @@ body {
     background-color: #29384c; /* Dark blue background on hover */
     color: #f4c752; /* Gold text color on hover */
 }
+
+.password-container{
+    margin-left: 22px;
+}
