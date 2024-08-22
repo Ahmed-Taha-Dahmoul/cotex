@@ -437,7 +437,7 @@ const CommentSection = ({ gameId }) => {
       {showLogin && (
         <div className="login-modal">
           <div className="login-modal-content">
-            <button className="close-button" onClick={handleCloseLogin}>X</button>
+            <button className="close-button-1-azs" onClick={handleCloseLogin}>X</button>
             <LoginForm />
           </div>
         </div>

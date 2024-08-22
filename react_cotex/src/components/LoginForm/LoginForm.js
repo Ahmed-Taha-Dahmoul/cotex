@@ -24,7 +24,6 @@ const LoginForm = () => {
   
       if (success) {
         navigate('/'); // Redirect to the home page
-        
       }
     } catch (error) {
       setError('Invalid email or password. Please try again.');
@@ -32,7 +31,7 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="login-container">
+    <div className="login-container login-form-wrapper">
       <img src={gify} alt="Login GIF" className="login-gif" />
       <form className="login-form" onSubmit={handleSubmit}>
         <h2>Login</h2>

@@ -535,6 +535,7 @@
     display: flex;
     gap: 2rem;
     padding-left: 10px;
+    padding-top: 10px;
 }
 
 .suggested-game {
@@ -565,6 +566,7 @@
     color: #cccccc;
     font-size: 0.9rem;
     text-decoration: none; /* Ensure no underline on the genre */
+    
 }
 
 .suggested-game-genre:hover {

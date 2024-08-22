@@ -359,7 +359,9 @@ const GameDetail = () => {
                         <p className="suggested-game-title">{game.title}</p>
                         <p className="suggested-game-genre">
                           {game.genres?.join(', ')}
+                          {game.version}
                         </p>
+                        
                       </div>
                     </Link>
                   ))}
