@@ -1,0 +1,8 @@
+.items-container{
+    padding:calc(var(--padding-primary)/2);
+    background-color: var(--color-darkest);
+    margin-top:var(--padding-primary) ;
+    border-radius:var(--border-radius-primary) ;
+    padding-bottom: var(--padding-primary);
+    position: relative;
+}

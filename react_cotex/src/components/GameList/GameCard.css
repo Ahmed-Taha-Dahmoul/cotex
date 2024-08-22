@@ -1,0 +1,42 @@
+.star_icon{
+    color: yellow;
+    padding-right: 5px;
+    
+    
+}
+.download_icon{
+    color:var(--color-primary);
+    padding-right: 2px;
+}
+
+.mostpopular-card{
+    background-color: var(--color-dark);
+    padding: 30px 20px 15px;
+    border-radius: var(--border-radius-primary);
+    margin: 15px;
+    width: 250px;
+
+
+}
+.mostpopular-card-image{
+    border-radius: var(--border-radius-primary);
+    width: 100%;
+    height: 170px;
+    
+}
+.mostpopular-card-details{
+    padding-top: 20px ;
+    display: flex;
+    justify-content: flex-start;
+
+}
+/*.title-and-type{}*/
+.mostpopular-card-title{
+    font-weight: var(--font-weight-bold);
+}
+.mostpopular-card-type{
+    color: rgb(107, 107, 107);
+}
+.rating-and-storage{
+    list-style: none;
+}

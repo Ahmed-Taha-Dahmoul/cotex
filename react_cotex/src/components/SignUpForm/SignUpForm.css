@@ -1,78 +1,91 @@
-/* Container styling to center the form */
-.signup-container {
+.Body-Signup{
+  padding: 40px;
   display: flex;
-  justify-content: center;
+
+
+  justify-content:center;
   align-items: center;
-  height: 100vh;
-  background: #f4f4f4; /* Light background color with a subtle fade effect */
+  background:var(--color-darkest);
+  border-radius: var(--border-radius-primary);
+}
+.contain{
+  max-width:800px;
+  width:100%;
+  padding: 20px 80px;
+  background-color: var(--color-dark);
+  padding: 25px 30px;
+  border-radius: var(--border-radius-primary);
+  border: 5px var(--color-primary) solid;
+
+
+}
+form .user-details{
+  display:flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: row;
+}
+form .user-details .input-box{
+  width:80%;
+  margin:20px 0 20px 0;
+
 }
 
-/* Form styling */
-.signup-form {
-  width: 100%;
-  max-width: 300px; /* Adjusted maximum width */
-  padding: 20px;
-  border: 1px solid #ccc; /* Light border color */
-  border-radius: 8px; /* Rounded corners */
-  background-color: #fff; /* White background for the form */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Slightly deeper shadow for depth */
-  opacity: 0.9; /* Slightly faded effect */
+form .user-details .input-box .input-details{
+  font-weight: 500;
+  margin-bottom: 5px;
+  display: block;
+
+}
+form .user-details .input-box input{
+  width:100%;
+  height:45px;
+  outline: none;
+  border-radius: var(--border-radius-primary);
+  border: 2px solid #696868;
+  border-bottom-width: 3px;
+  padding-left: 15px;
+  font-size: 16px;
+
+}
+form .user-details .input-box input:focus,
+form .user-details .input-box input:valid{
+  border-color: rgb(232, 230, 230);
+
 }
 
-/* Header styling inside the form */
-.signup-form h2 {
+
+
+.submit-button input{
+  background-color: var(--color-primary);
+}
+
+
+.submit-button{
+  height:45px;
+  margin:45px 0;
+  display: flex;
+  justify-content:center ;
+  
+}
+.submit-button input{
+  width:50%;
+  height: 100%;
+  border-radius: calc(var(--border-radius-primary)*2);
+  color:white;
+  letter-spacing: 1px;
+  font-weight: 500;
+  border: none;
+
+}
+
+.imgSignUp{
+  width:100%;
   margin-bottom: 20px;
-  font-size: 1.5rem; /* Consistent font size */
-  color: #333; /* Darker text color */
-  text-align: center;
-}
-
-/* Error message styling */
-.error-message {
-  color: #dc3545; /* Red color for error messages */
-  margin-bottom: 1rem;
-  font-size: 0.875rem; /* Slightly smaller font size */
-  text-align: center; /* Center align error message */
-}
-
-/* Form group styling */
-.form-group {
-  margin-bottom: 15px; /* Space between form groups */
-}
-
-/* Input and button styling */
-input[type="email"],
-input[type="text"],
-input[type="password"] {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc; /* Light border color */
-  border-radius: 5px; /* Rounded corners for inputs */
-  font-size: 1rem; /* Consistent font size */
-  color: #333; /* Darker text color */
-  box-sizing: border-box; /* Include padding and border in total width */
-  outline: none; /* Remove default outline */
-  transition: border-color 0.3s, box-shadow 0.3s; /* Smooth transitions for focus effects */
-}
-
-input[type="email"]:focus,
-input[type="text"]:focus,
-input[type="password"]:focus {
-  border-color: #007bff; /* Blue border on focus */
-  box-shadow: 0 0 0 3px rgba(38, 143, 255, 0.2); /* Light blue shadow on focus */
-}
-
-button {
-  background-color: #007bff; /* Primary button color */
-  color: #fff; /* White text */
-  border: none; /* Remove border */
-  border-radius: 5px; /* Rounded corners */
-  padding: 10px;
-  font-size: 1rem; /* Consistent font size */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Smooth transition for background color */
-}
-
-button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+  height: 160px;
+  background-image: url('../../components/LoginForm/login.jpg');
+  background-position: center center;
+  background-size: cover;
+  border-radius: 23px;
+  padding:  60px;
 }

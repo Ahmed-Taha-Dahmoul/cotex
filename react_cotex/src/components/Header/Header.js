@@ -9,6 +9,7 @@ import config from '../../config';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
+import Nav from './Nav';
 
 
 
@@ -22,7 +23,7 @@ function Header() {
   const [showNotifications, setShowNotifications] = useState(false);
   const navigate = useNavigate(); 
   const [showPCGamesDropdown, setShowPCGamesDropdown] = useState(false);
-
+  console.log('22',config.API_URL)
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollPos = window.pageYOffset;
@@ -129,111 +130,12 @@ function Header() {
   };
 
   return (
-    <div className="search">
-      <header className={`header ${visible ? 'header-visible' : 'header-hidden'}`}>
-        <div className="header-container">
-          <Link className="logo" to="/">
-            <img alt="Logo" className="logo-img" src={logo} />
-          </Link>
-          
-          <nav className="nav-links">
-          
-          <Link className="nav-link" to="/">HOME</Link>
-          
-          <div className="nav-link-container" onMouseEnter={handlePCGamesDropdownToggle} onMouseLeave={handlePCGamesDropdownToggle}>
-            <Link className="nav-link" to="/category/?q=PC Games">PC GAMES ▼</Link>
-            {showPCGamesDropdown && (
-              <div className="dropdown-content">
-                <div className="dropdown-grid">
-                  <ul>
-                    <li><Link to="/category/?q=Action">Action</Link></li>
-                    <li><Link to="/category/?q=Adventure">Adventure</Link></li>
-                    <li><Link to="/category/?q=RPG">RPG</Link></li>
-                    <li><Link to="/category/?q=Careers">Careers</Link></li>
-                  </ul>
-                  <ul>
-                    <li><Link to="/category/?q=Indie">Indie</Link></li>
-                    <li><Link to="/category/?q=Simulator">Simulator</Link></li>
-                    <li><Link to="/category/?q=Open world">Open world</Link></li>
-                    <li><Link to="/category/?q=ROLE">ROLE</Link></li>
-                  </ul>
-                  <ul>
-                    <li><Link to="/category/?q=Strategy">Strategy</Link></li>
-                    <li><Link to="/category/?q=Sandbox">Sandbox</Link></li>
-                    <li><Link to="/category/?q=Terror">Terror</Link></li>
-                    <li><Link to="/category/?q=Exploration">Exploration</Link></li>
-                  </ul>
-                  <ul>
-                    <li><Link to="/category/?q=Struggle">Struggle</Link></li>
-                  </ul>
-                </div>
-              </div>
-            )}
-          </div>
-            <Link className="nav-link" to="/online-games">ONLINE GAMES</Link>
-            <Link className="nav-link" to="/faq">FAQ</Link>
-            <Link className="nav-link" to="/about-us">ABOUT US</Link>
-            <Link className="nav-link" to="/contact">CONTACT US</Link>
+    <div className="search" style={{marginBottom:'10px'}}>
+     <Nav logo={logo} isLoggedIn={isLoggedIn} notifications={notifications}
+      profilePic={profilePic} logout={logout} markAsRead={markAsRead} />
 
-            
-          </nav>
-          <div className="search-container">
-            {isLoggedIn() ? (
-              <div className="profile-container">
-                <Dropdown show={showNotifications} onToggle={() => setShowNotifications(!showNotifications)}>
-                  <Dropdown.Toggle as={Button} variant="light" className="notification-button">
-                    <FontAwesomeIcon icon={faBell} />
-                    {notifications.filter(notification => !notification.is_read).length > 0 && (
-                      <span className="notification-badge">
-                        {notifications.filter(notification => !notification.is_read).length}
-                      </span>
-                    )}
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu className="notification-list">
-                    {notifications.length === 0 ? (
-                      <Dropdown.Item>No notifications</Dropdown.Item>
-                    ) : (
-                      notifications.map(notification => (
-                        <Dropdown.Item
-                          key={notification.id}
-                          className={`notification-item ${notification.is_read ? 'notification-read' : ''}`}
-                          onClick={() => markAsRead(notification.id, notification.game_url)} 
-                        >
-                          <div>
-                            <span className="notification-message">{notification.message}</span>
-                            <div className="notification-timestamp">
-                              {new Date(notification.created_at).toLocaleString()}
-                            </div>
-                          </div>
-                        </Dropdown.Item>
-                      ))
-                    )}
-                  </Dropdown.Menu>
-                </Dropdown>
-                <Dropdown>
-                  <Dropdown.Toggle variant="light" id="dropdown-basic" className="profile-circle">
-                    {profilePic ? (
-                      <img src={`${config.API_URL}/${profilePic}`} alt="Profile" className="profile-pic" />
-                    ) : (
-                      <img src="default-profile-pic.jpg" alt="Default Profile" className="profile-pic" />
-                    )}
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <Dropdown.Item as={Link} to="/profile">Profile</Dropdown.Item>
-                    <Dropdown.Item onClick={logout}>Log Out</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </div>
-            ) : (
-              <>
-                <Link to="/signup" className="btn btn-signup">Sign Up</Link>
-                <Link to="/login" className="btn btn-login" onClick={handleLoginClick}>Log In</Link>
-              </>
-            )}
-          </div>
-        </div>
-      </header>
-      <SearchBar />
+  
+
     </div>
   );
 }

@@ -1,72 +1,12 @@
 .paginator-container {
   display: flex;
   justify-content: center;
-  margin: 20px 0;
+  align-items: center;
+  padding: 20px;
 }
 
 .paginator-stack {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.MuiPagination-root {
-  background-color: transparent; /* Ensure no background color for the paginator itself */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-}
-
-.MuiPagination-ul {
-  padding: 0;
-  margin: 0;
-}
-
-.MuiPagination-item {
-  border: 1px solid #ddd; /* Light border for subtle definition */
-  border-radius: 4px; /* Rounded corners for pagination items */
-  margin: 0 8px; /* Increased spacing between pagination items */
-  width: 36px; /* Consistent width */
-  height: 36px; /* Consistent height */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4px; /* Space between the number and background */
-  color: #000; /* Black text color for contrast */
-  transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
-}
-
-/* Specific targeting for pagination items */
-.MuiButtonBase-root.MuiPaginationItem-root.MuiPaginationItem-sizeMedium.MuiPaginationItem-outlined.MuiPaginationItem-rounded.MuiPaginationItem-page,
-.MuiButtonBase-root.MuiPaginationItem-root.MuiPaginationItem-sizeMedium.MuiPaginationItem-outlined.MuiPaginationItem-rounded.MuiPaginationItem-previousNext,
-.MuiPaginationItem-root.MuiPaginationItem-sizeMedium.MuiPaginationItem-outlined.MuiPaginationItem-rounded.MuiPaginationItem-ellipsis {
-  background-color: #fff; /* White background color for pagination squares, previous/next, and ellipsis */
-  color: #000; /* Black text color for contrast */
-}
-
-.MuiButtonBase-root.MuiPaginationItem-root.MuiPaginationItem-sizeMedium.MuiPaginationItem-outlined.MuiPaginationItem-rounded.MuiPaginationItem-page:hover,
-.MuiButtonBase-root.MuiPaginationItem-root.MuiPaginationItem-sizeMedium.MuiPaginationItem-outlined.MuiPaginationItem-rounded.MuiPaginationItem-previousNext:hover,
-.MuiPaginationItem-root.MuiPaginationItem-sizeMedium.MuiPaginationItem-outlined.MuiPaginationItem-rounded.MuiPaginationItem-ellipsis:hover {
-  background-color: #808080; /* Blue background on hover */
-  color: #fff; /* White text on hover */
-}
-
-/* Updated class selector for selected page */
-.MuiButtonBase-root.MuiPaginationItem-root.MuiPaginationItem-sizeMedium.MuiPaginationItem-outlined.MuiPaginationItem-rounded.Mui-selected.MuiPaginationItem-page {
-  background-color: #808080; /* Grey background for selected page */
-  color: #fff; /* White text for selected page */
-  border-color: #808080; /* Match border color with background */
-}
-
-.MuiPagination-item.Mui-disabled {
-  color: #aaa; /* Grey text for disabled items */
-  border-color: #ddd; /* Light grey border for disabled items */
-}
-
-@media (max-width: 600px) {
-  .MuiPagination-item {
-    width: 32px; /* Smaller width for mobile devices */
-    height: 32px; /* Smaller height for mobile devices */
-    padding: 3px; /* Smaller padding for mobile devices */
-    margin: 0 6px; /* Adjusted spacing for mobile devices */
-  }
+  width: 100%;
+  max-width: 400px; /* Adjust based on your design */
+  margin: 0 auto;
 }

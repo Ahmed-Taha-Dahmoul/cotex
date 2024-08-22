@@ -5,6 +5,9 @@ import { Link } from 'react-router-dom';
 import Paginator from '../Paginator/Paginator';
 import './GameList.css';
 import config from '../../config';
+import GameCard from './GameCard';
+import Title from '../Title/Title'
+import ItemsCotainer from '../ItemsContainer/ItemsCotainer';
 
 const GameList = () => {
   const [games, setGames] = useState([]);
@@ -49,7 +52,35 @@ const GameList = () => {
   };
 
   return (
-    <div className="container-game-list">
+    <div>
+      <ItemsCotainer>
+      <Title underlined="See All" colored="Games"/>
+  
+      <Row className={fade ? 'fade' : ''}>
+  {loading ? (
+    [...Array(24)].map((_, index) => (
+      <Col key={index} xs={24} sm={12} md={8} lg={6} xl={4} style={{ padding: '0 8px' }}>
+        <div className="game-card">
+          <Skeleton active />
+        </div>
+      </Col>
+    ))
+  ) : (
+    games.map((game) => (
+      <Col key={game.id}>
+        <Link to={`/games/${game.id}`}>
+          <GameCard 
+            image={`${config.API_URL}/${game.image_path}`} 
+            title={game.title} 
+            details={game.description} 
+          />
+        </Link>
+      </Col>
+    ))
+  )}
+</Row>
+
+
       <div className="d-flex justify-content-center mt-4">
         <Paginator
           currentPage={currentPage}
@@ -57,44 +88,7 @@ const GameList = () => {
           onPageChange={handlePageChange}
         />
       </div>
-      <Row gutter={[16, 16]} className={fade ? 'fade' : ''}>
-        {loading ? (
-          [...Array(24)].map((_, index) => (
-            <Col key={index} xs={24} sm={12} md={8} lg={6} xl={4} style={{ padding: '0 8px' }}>
-              <div className="game-card">
-                <Skeleton active />
-              </div>
-            </Col>
-          ))
-        ) : (
-          games.map((game) => (
-            <Col key={game.id} xs={24} sm={12} md={8} lg={6} xl={4} style={{ padding: '0 8px' }}>
-              <Link to={`/games/${game.id}`}>
-                <div className="game-card">
-                  <div className="game-cover">
-                    <img alt="Game Cover" src={`${config.API_URL}/${game.image_path}`} />
-                  </div>
-                  <div className="game-info">
-                    <h3 className="game-title">{game.title}</h3>
-                    <p className="game-description">{game.description}</p>
-                    <div className="game-actions">
-                      <span>Download</span>
-                      <Link to={`/games/${game.id}`}>Details</Link>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            </Col>
-          ))
-        )}
-      </Row>
-      <div className="d-flex justify-content-center mt-4">
-        <Paginator
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
-      </div>
+      </ItemsCotainer>
     </div>
   );
 };

@@ -1,14 +1,14 @@
-import React from 'react';
-import './Footer.css';
+import './Footer.css'
 
-const Footer = () => {
+export const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-white py-4 px-6 md:px-8 lg:px-12">
-      <div className="text-center">
-        <p>&copy; 2024 GameHub. All rights reserved.</p>
-      </div>
-    </footer>
-  );
-};
-
-export default Footer;
+    <div className='footer'>
+      <p className='footer-containt' >
+      Copyright © 2024 GameHub. All rights reserved.
+      
+      </p>
+     
+    </div>
+  )
+}
+export default Footer

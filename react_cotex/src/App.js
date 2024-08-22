@@ -17,6 +17,8 @@ import { AuthProvider } from './components/AuthContext';
 import FAQ from './components/FAQ/FAQ';
 import OnlineGames from './components/OnlineGames/OnlineGames';
 import AboutUs from './components/AboutUs/AboutUs';
+import Container from './components/Container/Container';
+import Home from './Pages/Home';
 
 function App() {
   return (
@@ -24,9 +26,10 @@ function App() {
       <Router>
         <div className="App">
           <Header />
-          <main className='main'>
+          <Container>
             <Routes>
-              <Route path="/" element={<GameList />} />
+            <Route path="/" element={<Home />} />
+              <Route path="/new" element={<GameList />} />
               <Route path="/games/:id" element={<GameDetail />} />
               <Route path="/category" element={<CategoryResults />} />
               <Route path="/action" element={<div>Action Games</div>} />
@@ -41,7 +44,8 @@ function App() {
               <Route path="/online-games" element={<OnlineGames/>} />
               <Route path="/about-us" element={<AboutUs/>} />
             </Routes>
-          </main>
+            </Container>
+          
           <Footer />
         </div>
       </Router>

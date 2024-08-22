@@ -93,9 +93,9 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = 100000
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cotex',
+        'NAME': 'Cotex',
         'USER': 'postgres',
-        'PASSWORD': '2002ahmed',
+        'PASSWORD': 'yosra',
         'HOST': 'localhost',
         'PORT': '5432',
     }

@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useAuth } from '../AuthContext'; // Adjust the path if necessary
 import { useNavigate } from 'react-router-dom';
 import './LoginForm.css'; // Import CSS file for styling
+import ItemsCotainer from '../ItemsContainer/ItemsCotainer';
+import Title from '../Title/Title';
+import loginPhoto from './login.jpg'
 
 const LoginForm = () => {
   const { login } = useAuth();
@@ -35,31 +38,41 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="login-container">
-      <form className="login-form" onSubmit={handleSubmit}>
-        <h2>Login</h2>
+    <ItemsCotainer>
+      <div className='containerLogin'>
+      <div className='ImgRight'>
+            <img src={loginPhoto} />
+        </div>
+        <div className='LoginLeft'>
+        <Title underlined="Login" colored="Now"/>
+      <form  onSubmit={handleSubmit}>
         {error && <div className="error-message">{error}</div>}
-        <div className="form-group">
+       
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
-          />
-        </div>
-        <div className="form-group">
+            className='InputLogin'
+          /> <br/> <br/>
+      
+        
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
-          />
-        </div>
-        <div className="form-group">
-          <button type="submit" onClick={storeLastVisitedPage}>Login</button>
-        </div>
+            className='InputLogin'
+          /> <br/> <br/>
+          <button className='LoginButton' type="submit" onClick={storeLastVisitedPage}>Login</button>
+          <div className='linkSingUp'>
+            <a href='/signup'>create account</a>
+            </div>
+       
       </form>
-    </div>
+      </div>
+      </div>
+    </ItemsCotainer>
   );
 };
 

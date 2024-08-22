@@ -1,81 +1,113 @@
-/* Container styling to center the form */
-.login-container {
+/* Container styling for the login form */
+.containerLogin {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: c;
+  align-items: center;
+  padding: 20px;
+  
+}
+
+/* Styling for the right-side image */
+.ImgRight img {
+  border-radius: var(--border-radius-primary) 0 0 var(--border-radius-primary);
+  height: 400px;
+  object-fit: cover;
+}
+
+/* Styling for the left-side login form container */
+.LoginLeft {
+  background-color: rgba(170, 170, 170, 0.042);
+  width: 33%;
+  border-radius: 0 var(--border-radius-primary) var(--border-radius-primary) 0;
+  padding: 30px 7%;
+  line-height: 1.7;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background: #f4f4f4; /* Original light background color */
 }
 
-/* Form styling */
-.login-form {
+/* Input field styling */
+.InputLogin {
   width: 100%;
-  max-width: 300px; /* Adjusted maximum width */
-  padding: 20px;
-  border: 1px solid #ccc; /* Light border color */
-  border-radius: 8px; /* Rounded corners */
-  background-color: #fff; /* White background for the form */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Slightly deeper shadow for depth */
-  opacity: 0.9; /* Slightly faded effect */
+  padding: 10px 15px;
+  margin-bottom: 15px;
+  border: solid 0.5px var(--color-primary);
+  border-radius: var(--border-radius-primary);
+  text-align: center;
+  background-color: var(--color-darkest);
+  color: white;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s ease;
 }
 
-/* Header styling inside the form */
-.login-form h2 {
-  margin-bottom: 20px;
-  font-size: 1.5rem; /* Consistent font size */
-  color: #333; /* Darker text color */
+.InputLogin::placeholder {
+  color: white;
+}
+
+/* Input field border color on focus */
+.InputLogin:focus {
+  border-color: pink;
+}
+
+/* Styling for the login button */
+.LoginButton {
+  padding: 5px 30px;
+  width: 100%;
+  border-radius: calc(var(--border-radius-primary) * 2);
+  background-color: var(--color-primary);
+  outline: none;
+  border: none;
+  font-weight: 500;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.LoginButton:hover {
+  background-color: #007bff;
+}
+
+/* Styling for the 'Remember Me' checkbox text */
+.Remember-Login {
+  color: gray;
+  padding-left: 5px;
+}
+
+/* Styling for the sign-up link */
+.linkSingUp {
+  padding-top: 20px;
+  width: 100%;
   text-align: center;
 }
 
-/* Error message styling */
-.error-message {
-  color: #dc3545; /* Red color for error messages */
-  margin-bottom: 1rem;
-  font-size: 0.875rem; /* Slightly smaller font size */
-  text-align: center; /* Center align error message */
+.linkSingUp a {
+  font-size: 14px;
+  text-decoration: underline;
+  color: var(--color-primary);
 }
 
-/* Form group styling */
-.form-group {
-  margin-bottom: 15px; /* Space between form groups */
-}
+/* Responsive styling for smaller screens */
+@media screen and (max-width: 1400px) {
+  .ImgRight img {
+    border-radius: var(--border-radius-primary) var(--border-radius-primary) 0 0;
+    width: 100%;
+    height: auto;
+  }
 
-/* Input and button styling */
-input[type="email"],
-input[type="password"] {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc; /* Light border color */
-  border-radius: 5px; /* Rounded corners for inputs */
-  font-size: 1rem; /* Consistent font size */
-  color: #333; /* Darker text color */
-  box-sizing: border-box; /* Include padding and border in total width */
-  outline: none; /* Remove default outline */
-  transition: border-color 0.3s, box-shadow 0.3s; /* Smooth transitions for focus effects */
-}
+  .ImgRight {
+    width: 100%;
+  }
 
-input[type="email"]:focus,
-input[type="password"]:focus {
-  border-color: #007bff; /* Blue border on focus */
-  box-shadow: 0 0 0 3px rgba(38, 143, 255, 0.2); /* Light blue shadow on focus */
-}
-
-button {
-  display: block; /* Make the button a block element */
-  width: 100%; /* Make the button take the full width of the form group */
-  background-color: #007bff; /* Primary button color */
-  color: #fff; /* White text */
-  border: none; /* Remove border */
-  border-radius: 5px; /* Rounded corners */
-  padding: 12px 0; /* Increase padding for a larger button */
-  font-size: 1rem; /* Consistent font size */
-  font-weight: bold; /* Make the font bold */
-  text-align: center; /* Center the text */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s, transform 0.3s; /* Smooth transition for background color and transform */
-}
-
-button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
-  transform: scale(1.05); /* Slightly increase size on hover */
+  .LoginLeft {
+    width: 100%;
+    border-radius: 0 0 var(--border-radius-primary) var(--border-radius-primary);
+    padding: 30px 7%;
+    line-height: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }

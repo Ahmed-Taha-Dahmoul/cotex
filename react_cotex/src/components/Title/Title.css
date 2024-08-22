@@ -1,0 +1,17 @@
+.header-title{
+    padding-bottom: 20px;
+    padding-left: 10px;
+}
+
+.colored{
+    color:var(--color-primary)
+}
+
+.header-title u{
+    font-size: 30px;
+    font-weight: var(--font-weight-bold);
+}
+.header-title .colored{
+    font-size: 30px;
+    font-weight: var(--font-weight-bold);
+}

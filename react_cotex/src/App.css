@@ -1,4 +1,35 @@
-.main {
+
+
+:root{
+    --color-dark:#27292a;
+    --color-darkest:#1f2122;
+    --color-light:rgb(255, 255, 255);
+    --color-primary:#af9cf5;
+
+    --distance-primary:50px;
+    --padding-primary:var(--distance-primary);
+    --margin-primary:var(var(--distance-primary));
+    --border-radius-primary:calc(var(--distance-primary)/3);
+
+    --font-weight-bold:800;
+    --font-weight-normal:400;
+
+    --font-family:'Poppins', sans-serif;
     
-    background: linear-gradient(to bottom, #0c9adc 10%, #1d556f 20%,  #000000 70%);
+
+}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&display=swap');
+
+body{
+    background-color: var(--color-darkest);
+    color:white;
+    width: 100%;
+    margin:0;
+    width:100%
+}
+a{
+    text-decoration: none;
+    color: rgb(236, 245, 245);
+    font-weight: 400;
+
 }

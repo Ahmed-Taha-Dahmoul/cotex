@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../AuthContext';
 import { useNavigate } from 'react-router-dom';
 import './SignUpForm.css'; // Import CSS file for styling
+import Title from '../Title/Title';
 
 const SignUpForm = () => {
   const { register } = useAuth();
@@ -30,19 +31,25 @@ const SignUpForm = () => {
   };
 
   return (
-    <div className="signup-container">
+    
+    <div className='Body-Signup'>
+    <div className="contain">
       <form className="signup-form" onSubmit={handleSubmit}>
-        <h2>Sign Up</h2>
-        {error && <div className="error-message">{error}</div>}
-        <div className="form-group">
+      <div className='imgSignUp'>
+        <Title underlined="Sign Up" colored="now"/>
+        </div>
+        {error && <div className="errmsg">{error}</div>}
+        <div className="user-details">
+        <div className="input-box">
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Username"
           />
-        </div>
-        <div className="form-group">
+      </div>
+      <div className="input-box">
+       
           <input
             type="email"
             value={email}
@@ -50,7 +57,7 @@ const SignUpForm = () => {
             placeholder="Email"
           />
         </div>
-        <div className="form-group">
+        <div className="input-box">
           <input
             type="password"
             value={password}
@@ -58,10 +65,15 @@ const SignUpForm = () => {
             placeholder="Password"
           />
         </div>
-        <div className="form-group">
-          <button type="submit">Sign Up</button>
         </div>
+        <div className="submit-button" >
+                <input type="submit" value="Register"
+                
+              
+                />
+            </div>
       </form>
+    </div>
     </div>
   );
 };
