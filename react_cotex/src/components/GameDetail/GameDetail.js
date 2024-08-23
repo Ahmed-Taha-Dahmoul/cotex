@@ -22,8 +22,6 @@ import Polaco from './languages_logo/Polaco.png';
 import Portuguese from './languages_logo/Portuguese.png';
 import Russian from './languages_logo/Russian.png';
 import Turkish from './languages_logo/Turkish.png';
-import ItemsCotainer from '../ItemsContainer/ItemsCotainer';
-import Title from '../Title/Title';
 
 const languageImages = {
   Arabic,
@@ -180,15 +178,14 @@ const GameDetail = () => {
 
 
   return (
-    
-      <ItemsCotainer>
+    <Container>
       {loading ? (
         <Spinner animation="border" role="status">
           <span className="sr-only">Loading...</span>
         </Spinner>
       ) : (
-        <div>
-          <Title underlined="Download" colored={game.title}/>
+        <div className="body_content">
+          <h1 className="main_title">Download {game.title}</h1>
           <div className="row game-page">
             <div className="col-md-3 game-img">
               <img
@@ -354,9 +351,7 @@ const GameDetail = () => {
           </div>
         </div>
       )}
-      </ItemsCotainer>
-    
-    
+    </Container>
   );
 };
 
