@@ -19,6 +19,8 @@
 .MuiPagination-ul {
   padding: 0;
   margin: 0;
+  display: flex;
+  gap: 2px; /* Adds a 2px gap between pagination items */
 }
 
 .MuiPagination-item {
