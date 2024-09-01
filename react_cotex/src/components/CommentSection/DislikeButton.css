@@ -1,10 +1,10 @@
-.dislike-container {
+.dislike-container-2 {
   position: absolute;
   top: 35px;
   right: 5px;
 }
 
-.dislike-container input {
+.dislike-container-2 input {
   position: absolute;
   opacity: 0;
   cursor: pointer;
@@ -12,7 +12,7 @@
   width: 0;
 }
 
-.dislike-container svg {
+.dislike-container-2 svg {
   position: relative;
   height: 30px;
   width: 30px;
@@ -20,10 +20,10 @@
   fill: #666;
 }
 
-.dislike-container svg:hover {
+.dislike-container-2 svg:hover {
   transform: scale(1.1) rotate(-10deg);
 }
 
-.dislike-container input:checked ~ svg {
+.dislike-container-2 input:checked ~ svg {
   fill: rgb(185, 51, 51);
 }

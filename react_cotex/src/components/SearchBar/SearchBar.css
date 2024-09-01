@@ -12,53 +12,33 @@
 .search-bar-container .search-input {
   width: calc(100% - 80px); /* Adjusted to leave space for the button */
   padding: 10px 60px 10px 40px; /* Adjusted to leave space for the button and icon */
-  border: 1px solid #ccc;
-  border-radius: 20px;
+  border-radius: 10px;
   font-size: 16px;
   outline: none;
   transition: border-color 0.3s;
+  background-color: #27384a;
+  color: antiquewhite;
 }
 
 /* Input field focus state */
 .search-bar-container .search-input:focus {
-  border-color: #007bff;
+  border-color: #f4c752;
 }
 
 /* Search icon styling */
 .search-bar-container .search-icon {
   position: absolute;
   left: 15px;
-  top: 50%;
+  top: 40%;
   transform: translateY(-50%);
   pointer-events: none;
   font-size: 20px;
-  color: #888;
+  color: #b4b3b3;
 }
-
-/* Search button styling */
-.search-bar-container .search-button {
-  position: absolute;
-  right: 90px;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: #e2e2e2;
-  color: white;
-  border: 1px solid rgb(192, 192, 192); /* Add a black border */
-  padding: 10px;
-  width: 15%; /* Button width to fill 15% of the search bar */
-  height: 43px;
-  border-radius: 20px; /* Rounded corners */
-  font-size: 16px;
-  cursor: pointer;
-  text-align: center;
-  line-height: 1; /* Ensure proper alignment of text */
-  transition: background-color 0.3s, transform 0.3s;
-}
-
 
 /* Button hover effect */
 .search-bar-container .search-button:hover {
-  background-color: #7194f3;
+  background-color: #f4c752;
   transform: translateY(-50%) scale(1.05); /* Slight zoom effect */
 }
 
@@ -66,17 +46,17 @@
 .search-bar-container ul {
   list-style: none;
   margin: 10px 0 0 0;
-  padding: 0;
-  border: 1px solid #ccc;
+  padding: 10px; /* Added padding */
+  border: 1px solid #27384a;
   border-radius: 8px;
-  background-color: #fff;
-  max-height: 300px;
+  background-color: #141C24;
+  max-height: 400px; /* Increased max height */
   overflow-y: auto;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   position: absolute;
   top: 100%;
   left: 0;
-  width: calc(100% - 20px); /* Adjusted to account for scrollbar */
+  width: 130% ;/* Adjusted to account for scrollbar */
   z-index: 1000;
 }
 
@@ -84,18 +64,20 @@
 .search-bar-container li {
   display: flex;
   align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid #eee;
+  padding: 15px; /* Increased padding */
+  border-bottom: 1px solid #141C24;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
+/* Remove border from the last item */
 .search-bar-container li:last-child {
   border-bottom: none;
 }
 
+/* Highlight hovered item */
 .search-bar-container li:hover {
-  background-color: #f8f8f8;
+  background-color: #f4c752;
 }
 
 /* Add some padding at the bottom of the results to ensure the last item is fully visible */
@@ -107,16 +89,22 @@
 
 /* Style for game cover */
 .search-bar-container .game-cover {
-  width: 40px;
-  height: 40px;
-  margin-right: 10px;
+  width: 80px; /* Increased width */
+  height: 80px; /* Increased height */
+  margin-right: 15px; /* Adjusted margin for better spacing */
   border-radius: 5px;
-  object-fit: cover;
+  object-fit: cover; /* Ensure the image covers the container */
+  object-position: center; /* Center the image in the container */
+  /* Ensure the image fits within the container without being cut off */
+  overflow: hidden;
 }
 
 /* Style for game title */
 .search-bar-container .game-title {
   flex: 1;
+  color: white;
+  font-weight: bolder; /* Adjusted font weight */
+  font-size: 1rem; /* Adjusted font size */
 }
 
 /* Style for game link */
@@ -125,8 +113,4 @@
   text-decoration: none;
   display: flex;
   align-items: center;
-}
-
-.search-bar-container .game-link:hover {
-  color: #007bff;
 }

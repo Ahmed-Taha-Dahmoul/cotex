@@ -3,6 +3,7 @@ from custom_auth.models import CustomUser
 from myapp.models import Game
 from .models import Comment, LikeDislike, CommentReport , Notification
 
+
 class UserSerializer(serializers.ModelSerializer):
     profile_pic = serializers.SerializerMethodField()
 
@@ -60,6 +61,11 @@ class CommentReportSerializer(serializers.ModelSerializer):
 
 
 class NotificationSerializer(serializers.ModelSerializer):
+    sender_profile_pic = serializers.SerializerMethodField()
+
     class Meta:
         model = Notification
         fields = '__all__'
+
+    def get_sender_profile_pic(self, obj):
+        return obj.sender.profile_pic.url if obj.sender and obj.sender.profile_pic else None

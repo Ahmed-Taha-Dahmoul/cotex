@@ -25,14 +25,13 @@ function App() {
       <div className="App">
         <Header />
         <div className="background-wrapper">
-          <div className="blurred-background"></div>
           <main className="main-content">
               <Routes>
                 <Route path="/" element={<GameList />} />
                 <Route path="/games/:id" element={<GameDetail />} />
                 <Route path="/category" element={<CategoryResults />} />
                 <Route path="/search_result" element={<SearchResults />} />
-                <Route path="/signup" element={<SignUpForm />} />
+                <Route path="/signup" element={<PublicRoute element={<SignUpForm />} />} />
                 <Route path="/login" element={<PublicRoute element={<LoginForm />} />} />
                 <Route path="/profile" element={<PrivateRoute element={<Profile />} />} />
                 <Route path="/FAQ" element={<FAQ />} />

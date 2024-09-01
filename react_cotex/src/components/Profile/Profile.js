@@ -3,7 +3,7 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaEdit } from 'react-icons/fa';
 import './Profile.css';
-import './Password.css'; // Ensure this is included for password component styling
+import './Password.css'; // Include the password styling
 import config from '../../config';
 import Password from './Password'; // Adjust path as needed
 
@@ -65,7 +65,7 @@ const Profile = () => {
         throw new Error('Access token not found.');
       }
 
-      console.log('Updating profile with data:', profile); // Log the profile data
+      console.log('Updating profile with data:', profile);
 
       const response = await axios.put(`${config.API_URL}/auth/profile/`, profile, {
         headers: {
@@ -75,12 +75,11 @@ const Profile = () => {
 
       console.log('Profile updated:', response.data);
       setSuccessMessage('Profile updated successfully!');
-      // Clear the success message after 3 seconds
       setTimeout(() => {
         setSuccessMessage('');
       }, 3000);
     } catch (error) {
-      console.error('Failed to update profile:', error.response.data); // Log the error response
+      console.error('Failed to update profile:', error.response.data);
     }
   };
 
@@ -301,7 +300,9 @@ const Profile = () => {
 
       {showPassword && (
         <div className="password-modal">
-          <Password onClose={handleClosePassword} />
+          <div className="password-modal-content">
+            <Password onClose={handleClosePassword} />
+          </div>
         </div>
       )}
     </div>

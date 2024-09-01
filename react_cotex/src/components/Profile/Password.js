@@ -72,99 +72,58 @@ const Password = ({ onClose }) => {
   };
 
   return (
-    <div className="password-modal-content">
-      <div className="container bootstrap snippets bootdey">
-        <div className="row">
-          <div className="col-xs-12 col-sm-12 col-md-8 col-md-offset-2">
-            <div className="panel panel-info">
-              <div className="panel-heading d-flex align-items-center justify-content-between">
-                <button
-                  className="btn btn-danger btn-sm close-btn"
-                  onClick={onClose}
-                >
-                  Close
-                </button>
-                <h3 className="panel-title mb-0">
-                  <span className="glyphicon glyphicon-th"></span>
-                  Change Password
-                </h3>
-                <div></div> {/* Empty div for alignment */}
-              </div>
-              <div className="panel-body">
-                <div className="row">
-                  <div className="col-xs-6 col-sm-6 col-md-6 separator social-login-box">
-                    <img
-                      alt="Profile"
-                      className="img-thumbnail profile-img"
-                      src={`${config.API_URL}/${profilePic}`}
-                    />
-                  </div>
-                  <div className="col-xs-6 col-sm-6 col-md-6 login-box">
-                    {error && <div className="alert alert-danger">{error}</div>}
-                    {successMessage && <div className="alert alert-success">{successMessage}</div>}
-                    <div className="form-group">
-                      <div className="input-group">
-                        <div className="input-group-addon">
-                          <span className="glyphicon glyphicon-lock"></span>
-                        </div>
-                        <input
-                          className="form-control"
-                          type="password"
-                          placeholder="Current Password"
-                          value={currentPassword}
-                          onChange={(e) => setCurrentPassword(e.target.value)}
-                        />
-                      </div>
-                    </div>
-                    <div className="form-group">
-                      <div className="input-group">
-                        <div className="input-group-addon">
-                          <span className="glyphicon glyphicon-log-in"></span>
-                        </div>
-                        <input
-                          className="form-control"
-                          type="password"
-                          placeholder="New Password"
-                          value={newPassword}
-                          onChange={(e) => setNewPassword(e.target.value)}
-                        />
-                      </div>
-                    </div>
-                    <div className="form-group">
-                      <div className="input-group">
-                        <div className="input-group-addon">
-                          <span className="glyphicon glyphicon-log-in"></span>
-                        </div>
-                        <input
-                          className="form-control"
-                          type="password"
-                          placeholder="Confirm New Password"
-                          value={confirmPassword}
-                          onChange={(e) => setConfirmPassword(e.target.value)}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="panel-footer">
-                <div className="row">
-                  <div className="col-xs-6 col-sm-6 col-md-6"></div>
-                  <div className="col-xs-6 col-sm-6 col-md-6 text-right">
-                    <button className="btn icon-btn-save btn-success" type="button" onClick={handlePasswordChange}>
-                      <span className="btn-save-label">
-                        <i className="glyphicon glyphicon-floppy-disk"></i>
-                      </span>
-                      Save
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+    
+      <div className="password-container">
+        <button className="btn-close" onClick={onClose}>×</button>
+        <div className="profile-section">
+          <img
+            alt="Profile"
+            className="profile-img"
+            src={`${config.API_URL}/${profilePic}`}
+          />
+          <h3 className="modal-title">Change Password</h3>
+        </div>
+        <div className="message-section">
+          {error && <div className="alert alert-danger">{error}</div>}
+          {successMessage && <div className="alert alert-success">{successMessage}</div>}
+        </div>
+        <div className="form-group">
+          <label htmlFor="currentPassword">Current Password</label>
+          <input
+            id="currentPassword"
+            type="password"
+            className="form-control"
+            value={currentPassword}
+            onChange={(e) => setCurrentPassword(e.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="newPassword">New Password</label>
+          <input
+            id="newPassword"
+            type="password"
+            className="form-control"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="confirmPassword">Confirm New Password</label>
+          <input
+            id="confirmPassword"
+            type="password"
+            className="form-control"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+        </div>
+        <div className="button-group">
+          <button className="btn btn-success" type="button" onClick={handlePasswordChange}>
+            Save
+          </button>
         </div>
       </div>
-    </div>
+   
   );
 };
 

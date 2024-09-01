@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Dropdown, Button } from 'react-bootstrap';
 import './Header.css';
-import logo from './logo.png';
+import logo from './LogoFinal.png';
 import SearchBar from '../SearchBar/SearchBar';
 import { useAuth } from '../AuthContext';
 import config from '../../config';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
-
-
 
 function Header() {
   const [prevScrollPos, setPrevScrollPos] = useState(0);
@@ -20,7 +18,7 @@ function Header() {
   const location = useLocation();
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [showPCGamesDropdown, setShowPCGamesDropdown] = useState(false);
 
   useEffect(() => {
@@ -42,29 +40,6 @@ function Header() {
     setProfilePic(storedProfilePic);
   }, []);
 
-
-  useEffect(() => {
-    const handleScrollAnimation = () => {
-      const elements = document.querySelectorAll('.animate-on-scroll');
-      elements.forEach((el) => {
-        const rect = el.getBoundingClientRect();
-        if (rect.top <= window.innerHeight && rect.bottom >= 0) {
-          el.classList.add('animate');
-        } else {
-          el.classList.remove('animate');
-        }
-      });
-    };
-  
-    window.addEventListener('scroll', handleScrollAnimation);
-    handleScrollAnimation(); // Initial check
-  
-    return () => {
-      window.removeEventListener('scroll', handleScrollAnimation);
-    };
-  }, []);
-
-
   useEffect(() => {
     if (isLoggedIn()) {
       fetchNotifications();
@@ -79,6 +54,7 @@ function Header() {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(response.data.results)
 
       const sortedNotifications = Array.isArray(response.data.results)
         ? response.data.results.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
@@ -89,8 +65,8 @@ function Header() {
       console.error('Error fetching notifications', error);
     }
   };
-  
-  const markAsRead = async (notificationId, gameUrl) => { 
+
+  const markAsRead = async (notificationId, gameUrl) => {
     try {
       const token = sessionStorage.getItem('accessToken');
       await axios.patch(`${config.API_URL}/comments/notifications/${notificationId}/`, { is_read: true }, {
@@ -98,23 +74,23 @@ function Header() {
           Authorization: `Bearer ${token}`,
         },
       });
-      fetchNotifications(); 
+      fetchNotifications();
 
       if (gameUrl) {
         const commentMatch = gameUrl.match(/#comment-(\d+)$/);
         if (commentMatch) {
-          const commentId = commentMatch[1]; 
-          navigate(gameUrl); 
-          setTimeout(() => { 
+          const commentId = commentMatch[1];
+          navigate(gameUrl);
+          setTimeout(() => {
             const commentElement = document.getElementById(`comment-${commentId}`);
             if (commentElement) {
               commentElement.scrollIntoView({ behavior: 'smooth' });
             }
-          }, 500); 
+          }, 500);
         } else {
-          navigate(gameUrl); 
+          navigate(gameUrl);
         }
-      }      
+      }
     } catch (error) {
       console.error('Error marking notification as read', error);
     }
@@ -130,59 +106,90 @@ function Header() {
 
   return (
     <div className="search">
-      <header className={`header ${visible ? 'header-visible' : 'header-hidden'}`}>
-        <div className="header-container">
-          <Link className="logo" to="/">
-            <img alt="Logo" className="logo-img" src={logo} />
-          </Link>
-          
-          <nav className="nav-links">
-          
-          <Link className="nav-link" to="/">HOME</Link>
-          
-          <div className="nav-link-container" onMouseEnter={handlePCGamesDropdownToggle} onMouseLeave={handlePCGamesDropdownToggle}>
-            <Link className="nav-link">PC GAMES ▼</Link>
-            {showPCGamesDropdown && (
-              <div className="dropdown-content">
-                <div className="dropdown-grid">
-                  <ul>
-                    <li><Link to="/category/?q=Action">Action</Link></li>
-                    <li><Link to="/category/?q=Adventure">Adventure</Link></li>
-                    <li><Link to="/category/?q=RPG">RPG</Link></li>
-                    <li><Link to="/category/?q=Careers">Careers</Link></li>
-                    <li><Link to="/category/?q=Indie">Indie</Link></li>
-                    <li><Link to="/category/?q=Simulator">Simulator</Link></li>
-                    <li><Link to="/category/?q=Open world">Open world</Link></li>
-                    <li><Link to="/category/?q=ROLE">ROLE</Link></li>
-                  </ul>
-                  <ul>
-                    <li><Link to="/category/?q=Strategy">Strategy</Link></li>
-                    <li><Link to="/category/?q=Sandbox">Sandbox</Link></li>
-                    <li><Link to="/category/?q=Terror">Terror</Link></li>
-                    <li><Link to="/category/?q=Exploration">Exploration</Link></li>
-                    <li><Link to="/category/?q=Struggle">Struggle</Link></li>
-                  </ul>
-                  
-                  
-                </div>
-              </div>
-            )}
-          </div>
-            <Link className="nav-link" to="/online-games">ONLINE GAMES</Link>
-            <Link className="nav-link" to="/faq">FAQ</Link>
-            <Link className="nav-link" to="/about-us">ABOUT US</Link>
-            <Link className="nav-link" to="/contact">CONTACT US</Link>
+      <header className={`header-container ${visible ? 'header-visible' : 'header-hidden'}`}>
+        <Link className="header-logo-img" to="/">
+          <img alt="Logo" className="header-logo-img" src={logo} />
+        </Link>
 
-            
+        <div className="header-right">
+          <nav className="header-nav-links">
+            <NavLink 
+              to="/" 
+              className={({ isActive }) => `header-nav-link ${isActive ? 'active-link' : ''}`}
+            >
+              HOME
+            </NavLink>
+            <div
+              className="header-nav-link-container"
+              onMouseEnter={handlePCGamesDropdownToggle}
+              onMouseLeave={handlePCGamesDropdownToggle}
+            >
+              <span className="header-nav-link">PC GAMES ▼</span>
+              {showPCGamesDropdown && (
+                <div className="dropdown-content">
+                  <div className="dropdown-grid">
+                    <ul>
+                      <li><NavLink to="/category/?q=Action" className={({ isActive }) => `dropdown-link ${isActive ? 'active-link' : ''}`}>Action</NavLink></li>
+                      <li><NavLink to="/category/?q=Adventure" className={({ isActive }) => `dropdown-link ${isActive ? 'active-link' : ''}`}>Adventure</NavLink></li>
+                      <li><NavLink to="/category/?q=RPG" className={({ isActive }) => `dropdown-link ${isActive ? 'active-link' : ''}`}>RPG</NavLink></li>
+                      <li><NavLink to="/category/?q=Careers" className={({ isActive }) => `dropdown-link ${isActive ? 'active-link' : ''}`}>Careers</NavLink></li>
+                      <li><NavLink to="/category/?q=Indie" className={({ isActive }) => `dropdown-link ${isActive ? 'active-link' : ''}`}>Indie</NavLink></li>
+                      <li><NavLink to="/category/?q=Simulator" className={({ isActive }) => `dropdown-link ${isActive ? 'active-link' : ''}`}>Simulator</NavLink></li>
+                      <li><NavLink to="/category/?q=Open world" className={({ isActive }) => `dropdown-link ${isActive ? 'active-link' : ''}`}>Open world</NavLink></li>
+                      <li><NavLink to="/category/?q=ROLE" className={({ isActive }) => `dropdown-link ${isActive ? 'active-link' : ''}`}>ROLE</NavLink></li>
+                    </ul>
+                    <ul>
+                      <li><NavLink to="/category/?q=Strategy" className={({ isActive }) => `dropdown-link ${isActive ? 'active-link' : ''}`}>Strategy</NavLink></li>
+                      <li><NavLink to="/category/?q=Sandbox" className={({ isActive }) => `dropdown-link ${isActive ? 'active-link' : ''}`}>Sandbox</NavLink></li>
+                      <li><NavLink to="/category/?q=Terror" className={({ isActive }) => `dropdown-link ${isActive ? 'active-link' : ''}`}>Terror</NavLink></li>
+                      <li><NavLink to="/category/?q=Exploration" className={({ isActive }) => `dropdown-link ${isActive ? 'active-link' : ''}`}>Exploration</NavLink></li>
+                      <li><NavLink to="/category/?q=Struggle" className={({ isActive }) => `dropdown-link ${isActive ? 'active-link' : ''}`}>Struggle</NavLink></li>
+                    </ul>
+                  </div>
+                </div>
+              )}
+            </div>
+            <NavLink 
+              to="/online-games" 
+              className={({ isActive }) => `header-nav-link ${isActive ? 'active-link' : ''}`}
+            >
+              ONLINE GAMES
+            </NavLink>
+            <NavLink 
+              to="/faq" 
+              className={({ isActive }) => `header-nav-link ${isActive ? 'active-link' : ''}`}
+            >
+              FAQ
+            </NavLink>
+            <NavLink 
+              to="/about-us" 
+              className={({ isActive }) => `header-nav-link ${isActive ? 'active-link' : ''}`}
+            >
+              ABOUT US
+            </NavLink>
+            <NavLink 
+              to="/contact" 
+              className={({ isActive }) => `header-nav-link ${isActive ? 'active-link' : ''}`}
+            >
+              CONTACT US
+            </NavLink>
           </nav>
-          <div className="search-container">
+
+          <div className="header-search-container">
+            <SearchBar />
+          </div>
+
+          <div className="header-user-options">
             {isLoggedIn() ? (
-              <div className="profile-container">
-                <Dropdown show={showNotifications} onToggle={() => setShowNotifications(!showNotifications)}>
-                  <Dropdown.Toggle as={Button} variant="light" className="notification-button">
+              <>
+                <Dropdown
+                  show={showNotifications}
+                  onToggle={() => setShowNotifications(!showNotifications)}
+                >
+                  <Dropdown.Toggle as={Button} variant="light" className="header-notification-button">
                     <FontAwesomeIcon icon={faBell} />
                     {notifications.filter(notification => !notification.is_read).length > 0 && (
-                      <span className="notification-badge">
+                      <span className="header-notification-badge">
                         {notifications.filter(notification => !notification.is_read).length}
                       </span>
                     )}
@@ -195,8 +202,14 @@ function Header() {
                         <Dropdown.Item
                           key={notification.id}
                           className={`notification-item ${notification.is_read ? 'notification-read' : ''}`}
-                          onClick={() => markAsRead(notification.id, notification.game_url)} 
+                          onClick={() => markAsRead(notification.id, notification.game_url)}
                         >
+                          {!notification.is_read && <div className="notification-dot"></div>}
+                          <img 
+                            src={`${config.API_URL}/${notification.sender_profile_pic}`} 
+                            alt="Sender Profile" 
+                            className="notification-profile-pic" 
+                          />
                           <div>
                             <span className="notification-message">{notification.message}</span>
                             <div className="notification-timestamp">
@@ -207,31 +220,28 @@ function Header() {
                       ))
                     )}
                   </Dropdown.Menu>
+
                 </Dropdown>
                 <Dropdown>
-                  <Dropdown.Toggle variant="light" id="dropdown-basic" className="profile-circle">
-                    {profilePic ? (
-                      <img src={`${config.API_URL}/${profilePic}`} alt="Profile" className="profile-pic" />
-                    ) : (
-                      <img src="default-profile-pic.jpg" alt="Default Profile" className="profile-pic" />
-                    )}
+                  <Dropdown.Toggle variant="light" id="dropdown-basic" className="header-profile-circle">
+                    <img src={`${config.API_URL}/${profilePic}`} alt="Profile" className="header-profile-img" />
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
                     <Dropdown.Item as={Link} to="/profile">Profile</Dropdown.Item>
                     <Dropdown.Item onClick={logout}>Log Out</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
-              </div>
+
+              </>
             ) : (
               <>
-                <Link to="/signup" className="btn btn-signup">Sign Up</Link>
-                <Link to="/login" className="btn btn-login" onClick={handleLoginClick}>Log In</Link>
+                <Link to="/signup" className="header-btn-signup">Sign Up</Link>
+                <Link to="/login" className="header-btn-login" onClick={handleLoginClick}>Log In</Link>
               </>
             )}
           </div>
         </div>
       </header>
-      <SearchBar />
     </div>
   );
 }

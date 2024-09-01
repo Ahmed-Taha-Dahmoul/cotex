@@ -178,7 +178,7 @@ class NearestGamesView(views.APIView):
         games = list(unique_games.values())[:20]
 
         # Serialize and return response
-        serializer = GameSerializer(games, many=True)
+        serializer = Game_title_cracker_version_Serializer(games, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 

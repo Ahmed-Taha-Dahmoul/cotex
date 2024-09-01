@@ -1,31 +1,40 @@
-/* CommentSection.css */
 .comment-section {
-  margin-top: 20px;
-  border: 1px solid #ccc;
+  margin-top: 5px;
+  border: 1px solid #2c3e50; /* Update border color to match header */
   border-radius: 8px;
   padding: 20px;
+  background-color: #141c25; /* Update background to match header */
 }
 
 .comment-section h2 {
   font-size: 24px;
   margin-bottom: 15px;
   text-align: center;
+  color: #f4c752; /* Match header active link color */
 }
 
 .comment-list {
   list-style-type: none;
   padding: 0;
 }
+.comment{
+  margin-top: 20px;
+  border: 1px solid #2c3e50; /* Update border color to match header */
+  border-radius: 8px;
+  padding: 20px;
+}
 
 .comment-item {
-  background-color: #f9f9f9;
+  background-color: #1f2a36; /* Update background for comments */
   border-radius: 8px;
   margin-bottom: 15px;
   padding: 15px;
   display: flex;
   flex-direction: column;
   position: relative;
-  margin-left: 20px; /* Add margin for nested replies */
+  margin-left: 20px;
+  color: #cacaca; /* Light gray text color */
+  
 }
 
 .comment-info {
@@ -57,43 +66,45 @@
 .comment-content {
   flex: 1;
   margin-top: 5px;
+  color: #a5adb8; /* Update text color */
+}
+
+.comment-content p {
+  color: #ffffff; /* Update text color */
 }
 
 .comment-time {
   font-size: 12px;
-  color: #999;
+  color: #a5adb8; /* Lighter gray for timestamp */
 }
 
 .user-username {
   font-weight: bold;
   margin-bottom: 5px;
+  color: #f4c752; /* Yellow for username */
 }
 
 .reply-button {
   display: inline-flex;
   align-items: center;
-  color: #666;
+  color: #cacaca;
   cursor: pointer;
-  margin-right: 10px; /* Add margin to separate from the three-dots-menu */
+  margin-right: 10px;
 }
 
 .reply-button:hover {
-  text-decoration: underline; /* Underline text on hover */
-}
-
-
-.reply-button:hover .reply-text {
-  text-decoration: underline; /* Underline text on hover */
+  color: #f4c752; /* Yellow on hover */
+  text-decoration: underline;
 }
 
 .replies {
-  margin-left: 40px; /* Double the margin for nested replies */
-  border-left: 2px solid #ddd;
+  margin-left: 40px;
+  border-left: 2px solid #29384c; /* Update border color */
   padding-left: 10px;
 }
 
 .comment-form {
-  margin-bottom: 20px; /* Adjust margin to separate form from comments */
+  margin-bottom: 20px;
   display: flex;
   align-items: center;
 }
@@ -102,65 +113,27 @@
   flex: 1;
   padding: 10px;
   border-radius: 4px;
-  border: 1px solid #ccc;
-  margin-right: 10px;
+  border: 1px solid #29384c; /* Update border color */
+  background-color: #29384c; /* Match search bar */
+  color: #a5adb8; /* Text color */
 }
 
 .comment-form button {
   width: 80px;
   padding: 10px;
-  background-color: #2196f3;
-  color: #fff;
+  background-color: #f4c752; /* Match header button */
+  color: #333b29;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
 .comment-form button:hover {
-  background-color: #0c7bb3;
+  background-color: #29384c; /* Match hover color */
+  color: #f4c752;
 }
 
-.login-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.login-modal-content {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  position: relative;
-  width: 300px;
-}
-
-.comment-section.modal-open {
-  filter: blur(5px);
-}
-
-.close-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
-  color: #333;
-}
-
-.close-button:hover {
-  color: #ff0000;
-}
-
+/* Updated comment-actions to position buttons side by side with content */
 .comment-actions {
   display: flex;
   justify-content: flex-start;
@@ -171,36 +144,35 @@
 .like-container {
   display: flex;
   align-items: center;
-  gap: 10px; /* Add spacing between like and dislike buttons */
+  gap: 10px;
 }
 
 .like-button, .dislike-button {
   display: flex;
   align-items: center;
   cursor: pointer;
+  color: #cacaca; /* Light gray color */
 }
 
 .like-button .count, .dislike-button .count {
   margin-left: 5px;
   font-size: 14px;
-  color: #666;
+  color: #cacaca;
 }
 
 .like-button:hover .count, .dislike-button:hover .count {
-  color: #2196f3;
+  color: #f4c752; /* Yellow on hover */
 }
 
 .like-button:hover, .dislike-button:hover {
-  color: #2196f3;
+  color: #f4c752; /* Yellow on hover */
 }
 
 .like-button .icon, .dislike-button .icon {
   font-size: 18px;
 }
 
-
 /* Report modal styles */
-
 .report-modal-overlay {
   position: fixed;
   top: 0;
@@ -214,23 +186,27 @@
 }
 
 .report-modal {
-  background: white;
+  background: #141c25; /* Update background */
   padding: 20px;
   border-radius: 8px;
   width: 400px;
   max-width: 90%;
+  color: #cacaca; /* Update text color */
 }
 
 .report-modal h3 {
   margin-top: 0;
+  color: #f4c752; /* Yellow header */
 }
 
 .report-modal textarea {
   width: 100%;
   height: 100px;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #29384c; /* Update border */
   border-radius: 4px;
+  background-color: #29384c; /* Match input fields */
+  color: #a5adb8;
   margin-bottom: 20px;
 }
 
@@ -247,14 +223,60 @@
 }
 
 .modal-buttons button:first-child {
-  background: #ccc;
+  background: #29384c; /* Update background */
+  color: #a5adb8;
 }
 
 .modal-buttons button:last-child {
-  background: #007bff;
-  color: white;
+  background: #f4c752;
+  color: #333b29;
 }
 
 .modal-buttons button:last-child:hover {
-  background: #0056b3;
+  background: #29384c; /* Match hover color */
+  color: #f4c752;
+}
+
+/* Login modal styles */
+.login-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.login-modal-content {
+  background-color: #141c25; /* Update background */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  width: 300px;
+  color: #cacaca; /* Update text color */
+}
+
+.comment-section.modal-open {
+  filter: blur(5px);
+}
+
+.close-button-1 {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #f4c752;
+  width: 60px;
+}
+
+.close-button-1:hover {
+  color: #e74c3c; /* Red for close button on hover */
 }

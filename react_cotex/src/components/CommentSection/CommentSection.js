@@ -308,6 +308,7 @@ const CommentSection = ({ gameId }) => {
       .filter((comment) => !comment.parent)
       .map((comment) => (
         <li key={comment.id} className="comment-item" id={`comment-${comment.id}`}>
+          <div className='comment'>
           <div className="comment-info">
             <div className="user-avatar">
               <img src={comment.user.profile_pic} alt="Profile" />
@@ -342,12 +343,14 @@ const CommentSection = ({ gameId }) => {
               />
             </div>
           </div>
+          </div>
           <ul className="replies">
             {renderReplyComments(comment.id)}
           </ul>
           {replyingTo === comment.id && (
             <ReplyForm onSubmit={(text) => handleCommentReply(text, comment.id)} onCancel={handleCancelReply} />
           )}
+          
         </li>
       ));
   };
@@ -357,6 +360,7 @@ const CommentSection = ({ gameId }) => {
       .filter((comment) => comment.parent === parentId)
       .map((comment) => (
         <li key={comment.id} className="comment-item" id={`comment-${comment.id}`}> 
+        <div className='comment'>
           <div className="comment-info">
             <div className="user-avatar">
               <img src={comment.user.profile_pic} alt="Profile" />
@@ -390,6 +394,7 @@ const CommentSection = ({ gameId }) => {
                 updateDislikesCount={fetchComments} 
               />
             </div>
+          </div>
           </div>
           <ul className="replies">
             {renderReplyComments(comment.id)}
@@ -432,7 +437,7 @@ const CommentSection = ({ gameId }) => {
       {showLogin && (
         <div className="login-modal">
           <div className="login-modal-content">
-            <button className="close-button" onClick={handleCloseLogin}>X</button>
+            <button className="close-button-1-azs" onClick={handleCloseLogin}>X</button>
             <LoginForm />
           </div>
         </div>
