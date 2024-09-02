@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from custom_auth.models import CustomUser
-from myapp.models import Game
 from .models import Comment, LikeDislike, CommentReport , Notification
 
 
