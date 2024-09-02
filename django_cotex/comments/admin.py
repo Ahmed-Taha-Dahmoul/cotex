@@ -11,10 +11,15 @@ class CommentReportInline(admin.TabularInline):
 
 class CommentAdmin(admin.ModelAdmin):
     form = CommentForm
-    list_display = ('user', 'game', 'time', 'parent_info', 'get_likes', 'get_dislikes', 'get_reports_count')  # Include custom method to display parent info and reports count
-    list_filter = ('game',)  # Add filter by game
-    search_fields = ('user__email', 'game__title', 'text')  # Add search fields
+    list_display = ('user', 'get_game', 'time', 'parent_info', 'get_likes', 'get_dislikes', 'get_reports_count')  # Updated game reference
+    list_filter = ('time',)  # Removed game from filter
+    search_fields = ('user__email', 'text')  # Removed game from search fields
     inlines = [LikeDislikeInline, CommentReportInline]  # Inline likes, dislikes, and reports
+
+    def get_game(self, obj):
+        return obj.game.title if obj.game else "No Game"  # Assuming obj.game points to the correct related object
+
+    get_game.short_description = 'Game'
 
     def get_likes(self, obj):
         return obj.likedislike_set.filter(like=True).count()

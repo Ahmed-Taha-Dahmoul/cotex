@@ -1,7 +1,18 @@
 from django.db import models
 
-class Game(models.Model):
+
+class GameBase(models.Model):
     title = models.CharField(max_length=200, null=True)
+
+    class Meta:
+        abstract = True  # This makes it an abstract model
+
+    def __str__(self):
+        return self.title if self.title else "Unnamed Game"
+
+
+
+class Game(GameBase):
     description = models.TextField(null=True)
     release_date = models.DateField(null=True)
     cracker = models.CharField(max_length=100, null=True)
@@ -18,3 +29,8 @@ class Game(models.Model):
 
     def __str__(self):
         return self.title if self.title else "Unnamed Game"
+
+
+class GameOnline(GameBase):
+    platform = models.CharField(max_length=100, null=True)
+    

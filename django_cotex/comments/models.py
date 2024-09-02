@@ -1,19 +1,23 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from custom_auth.models import CustomUser
-from myapp.models import Game
+
 
 class Comment(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True)  # Temporarily allow null
+    object_id = models.PositiveIntegerField(null=True)  # Temporarily allow null
+    game = GenericForeignKey('content_type', 'object_id')
     text = models.TextField()
     time = models.DateTimeField()
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
 
     def __str__(self):
-        return f"Comment by {self.user.email} on {self.game.title}"
+        return f"Comment by {self.user.email} on {self.game}"
 
     def save(self, *args, **kwargs):
         if not self.id:  # If it's a new comment
@@ -26,10 +30,13 @@ class Comment(models.Model):
         return "No Parent"
     parent_info.short_description = 'Parent Comment'
 
+
+
+
 @receiver(post_save, sender=Comment)
 def create_notifications(sender, instance, created, **kwargs):
     if created and instance.parent:
-        game_url = f"/games/{instance.game.id}/#comment-{instance.id}"  # Include comment ID
+        game_url = f"/games/{instance.object_id}/#comment-{instance.id}"  # Adjust URL for generic relation
         Notification.objects.create(
             recipient=instance.parent.user,
             sender=instance.user,
@@ -38,6 +45,7 @@ def create_notifications(sender, instance, created, **kwargs):
             message=f'{instance.user.username} replied to your comment.',
             game_url=game_url 
         )
+
 
 class LikeDislike(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -50,6 +58,10 @@ class LikeDislike(models.Model):
     def __str__(self):
         reaction = "No Reaction" if self.like is None else "Like" if self.like else "Dislike"
         return f"{reaction} by {self.user.email} on {self.comment}"
+
+
+
+
 
 @receiver(post_save, sender=LikeDislike)
 def create_like_dislike_notifications(sender, instance, created, **kwargs):

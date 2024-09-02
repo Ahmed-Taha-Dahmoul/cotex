@@ -49,7 +49,8 @@ class CommentDetailSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ('user', 'game', 'text', 'parent')  # Excluding 'time' as it's auto-generated
+        fields = ('user', 'content_type', 'object_id', 'text', 'parent')  # Adjusted fields to match the model
+
 
 
 class CommentReportSerializer(serializers.ModelSerializer):

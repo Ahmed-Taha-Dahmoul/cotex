@@ -6,18 +6,25 @@ from .serializers import CommentDetailSerializer, CommentSerializer, CommentRepo
 from .models import Comment, LikeDislike, CommentReport , Notification
 from rest_framework.decorators import api_view
 from rest_framework import serializers
-
+from django.contrib.contenttypes.models import ContentType
 
 
 class CommentListAPIView(generics.ListAPIView):
     serializer_class = CommentDetailSerializer
     
     def get_queryset(self):
-        game_id = self.request.query_params.get('game')
-        if game_id:
-            queryset = Comment.objects.filter(game_id=game_id).select_related('user').order_by('time')
+        content_type_id = self.request.query_params.get('content_type')
+        object_id = self.request.query_params.get('object_id')
+        
+        if content_type_id and object_id:
+            queryset = Comment.objects.filter(content_type_id=content_type_id, object_id=object_id).select_related('user').order_by('time')
             return queryset
         return Comment.objects.none()
+
+
+
+
+
 
 
 
@@ -27,7 +34,22 @@ class CommentCreateAPIView(generics.CreateAPIView):
     serializer_class = CommentSerializer
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        content_type_id = self.request.data.get('content_type')
+        object_id = self.request.data.get('object_id')
+        
+        if not content_type_id or not object_id:
+            raise serializers.ValidationError('content_type and object_id are required.')
+        
+        # Ensure content_type_id is valid
+        try:
+            content_type = ContentType.objects.get(pk=content_type_id)
+        except ContentType.DoesNotExist:
+            raise serializers.ValidationError('Invalid content_type.')
+
+        # Save the comment with content_type and object_id
+        serializer.save(user=self.request.user, content_type=content_type, object_id=object_id)
+
+
 
 
 

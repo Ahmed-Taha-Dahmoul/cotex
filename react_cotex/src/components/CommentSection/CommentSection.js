@@ -22,25 +22,37 @@ const CommentSection = ({ gameId }) => {
   const [reportReason, setReportReason] = useState('');
   const [reportCommentId, setReportCommentId] = useState(null); 
 
+
+
   const fetchComments = async () => {
     const accessToken = sessionStorage.getItem('accessToken');
     const headers = {};
-
+  
     if (accessToken) {
       headers.Authorization = `Bearer ${accessToken}`;
     }
-
+  
     try {
-      const response = await axios.get(`${config.API_URL}/comments/?game=${gameId}`, {
-        headers: headers,
-      });
-
-      const fetchedComments = response.data.results;
+      const contentTypeId = 6; // Replace with the actual ContentType ID for 'game'
+  
+      const response = await axios.get(
+        `${config.API_URL}/comments/`,
+        {
+          headers: headers,
+          params: {
+            content_type: contentTypeId,  // Use the actual ContentType ID here
+            object_id: gameId,  // Pass the game ID
+          },
+        }
+      );
+  
+      const fetchedComments = response.data.results || [];
       setComments(fetchedComments);
-
+      console.log(response.data);
+  
       const initialLikedComments = new Set();
       const initialDislikedComments = new Set();
-
+  
       fetchedComments.forEach(comment => {
         if (comment.liked_disliked_by_user === true) {
           initialLikedComments.add(comment.id);
@@ -48,14 +60,17 @@ const CommentSection = ({ gameId }) => {
           initialDislikedComments.add(comment.id);
         }
       });
-
+  
       setLikedComments(initialLikedComments);
       setDislikedComments(initialDislikedComments);
-
+  
     } catch (error) {
       console.error('Error fetching comments:', error);
     }
   };
+  
+  
+  
 
   useEffect(() => {
     fetchComments();
@@ -155,20 +170,24 @@ const CommentSection = ({ gameId }) => {
 
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
+  
     if (!isLoggedIn()) {
       setShowLogin(true);
       return;
     }
-
+  
     try {
       const accessToken = sessionStorage.getItem('accessToken');
+      const contentTypeId = 6; // Replace with the actual ContentType ID for 'game'
+  
       const response = await axios.post(
         `${config.API_URL}/comments/create/`,
         {
           user: user.id,
-          game: gameId,
           text: newComment,
           parent: null, // This is a top-level comment
+          content_type: contentTypeId,  // Use the actual ContentType ID here
+          object_id: gameId,  // This is your object ID (game ID)
         },
         {
           headers: {
@@ -176,22 +195,23 @@ const CommentSection = ({ gameId }) => {
           },
         }
       );
-
+  
       const newCommentData = processCommentData(response.data);
       setComments([newCommentData, ...comments]);
       setNewComment('');
-      window.location.reload();
-      // Optional: You might want to scroll to the new comment here
-      // For example: 
+  
       const newCommentElement = document.getElementById(`comment-${response.data.id}`);
-       if (newCommentElement) {
-         newCommentElement.scrollIntoView({ behavior: 'smooth' });
+      if (newCommentElement) {
+        newCommentElement.scrollIntoView({ behavior: 'smooth' });
       }
-
     } catch (error) {
       console.error('Error adding comment:', error);
+      // Optionally show an error message to the user
     }
   };
+  
+  
+  
 
   const handleCommentReply = async (text, parentId) => {
     if (!isLoggedIn()) {
@@ -201,13 +221,16 @@ const CommentSection = ({ gameId }) => {
   
     try {
       const accessToken = sessionStorage.getItem('accessToken');
+      const contentTypeId = 6; // Replace with the actual ContentType ID for 'game'
+  
       const response = await axios.post(
         `${config.API_URL}/comments/create/`,
         {
           user: user.id,
-          game: gameId,
           text: text,
           parent: parentId,
+          content_type: contentTypeId,  // Use the actual ContentType ID here
+          object_id: gameId,  // This is your object ID (game ID)
         },
         {
           headers: {
@@ -216,21 +239,21 @@ const CommentSection = ({ gameId }) => {
         }
       );
   
-      // Update the comments state with the new reply
       const newCommentData = processCommentData(response.data);
       setComments([newCommentData, ...comments]);
       setReplyingTo(null);
   
-      // Save the new comment ID to local storage before reload
-      localStorage.setItem('scrollToCommentId', response.data.id);
-  
-      // Reload the page
-      window.location.reload();
-  
+      const newCommentElement = document.getElementById(`comment-${response.data.id}`);
+      if (newCommentElement) {
+        newCommentElement.scrollIntoView({ behavior: 'smooth' });
+      }
     } catch (error) {
-      console.error('Error replying to comment:', error);
+      console.error('Error replying to comment:', error.response ? error.response.data : error.message);
+      // Optionally show an error message to the user
     }
   };
+  
+  
   
 
   const handleCloseLogin = () => {
