@@ -1,43 +1,47 @@
-/* Container for Search Results */
-.container-search-results {
+/* Container for CategoryResults */
+.container-category-results {
   padding: 0 15px;
-  margin-top: 50px;
-  margin-right: 10%;
-  margin-left: 10%;
+  margin: 50px 10%;
   position: relative;
   background-color: #141c25;
   transition: opacity 0.3s ease;
   border-radius: 1%;
-  margin-bottom: 3%;
+}
+
+.container-category-results h2 {
+  color: #e1e3ff;
+  font-size: 24px;
+  font-weight: bold;
+  padding-top: 3%;
 }
 
 /* Responsive padding */
 @media (min-width: 576px) {
-  .container-search-results {
+  .container-category-results {
     padding: 0 30px;
   }
 }
 
 @media (min-width: 768px) {
-  .container-search-results {
+  .container-category-results {
     padding: 0 60px;
   }
 }
 
 @media (min-width: 992px) {
-  .container-search-results {
+  .container-category-results {
     padding: 0 100px;
   }
 }
 
 @media (min-width: 1200px) {
-  .container-search-results {
+  .container-category-results {
     padding: 0 150px;
   }
 }
 
-/* Background styling */
-.container-search-results::before {
+/* Background image styling */
+.container-category-results::before {
   content: '';
   position: absolute;
   top: 0;
@@ -48,7 +52,8 @@
   z-index: -1;
 }
 
-.container-search-results > * {
+/* Main content layering */
+.container-category-results > * {
   position: relative;
   z-index: 1;
 }
@@ -89,30 +94,6 @@
 
 .game-title {
   font-weight: 300;
-  color: antiquewhite;
-}
-
-.game-description {
-  margin-top: 0.5rem;
-  font-size: 0.875rem;
-  color: #ccc;
-}
-
-.game-actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 0.5rem;
-}
-
-.game-actions span,
-.game-actions a {
-  color: white;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.game-actions a:hover {
-  color: #fca311;
 }
 
 /* Fade effect for page change */

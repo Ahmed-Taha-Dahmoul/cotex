@@ -5,7 +5,8 @@ import { Row, Col, Skeleton } from 'antd';
 import { Link } from 'react-router-dom';
 import Paginator from '../Paginator/Paginator';
 import config from '../../config';
-import './CategoryResults.css';
+import styles from './CategoryResults.module.css'; // Import as a CSS module
+
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
@@ -17,6 +18,7 @@ const CategoryResults = () => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [fade, setFade] = useState(false);
 
   useEffect(() => {
     if (categoryTerm) {
@@ -45,12 +47,16 @@ const CategoryResults = () => {
 
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
-      setCurrentPage(newPage);
+      setFade(true);
+      setTimeout(() => {
+        setCurrentPage(newPage);
+        setFade(false);
+      }, 300);
     }
   };
 
   return (
-    <div className="container-category-results">
+    <div className={styles['container-category-results']}>
       <h2>Category Results for "{categoryTerm}"</h2>
       <div className="d-flex justify-content-center mt-4">
         <Paginator
@@ -59,7 +65,7 @@ const CategoryResults = () => {
           onPageChange={handlePageChange}
         />
       </div>
-      <Row gutter={[16, 16]}>
+      <Row gutter={[16, 16]} className={fade ? styles.fade : ''}>
         {loading ? (
           Array.from({ length: 30 }).map((_, index) => (
             <Col key={index} xs={24} sm={12} md={8} lg={6} xl={4} style={{ padding: '0 8px' }}>
@@ -70,12 +76,12 @@ const CategoryResults = () => {
           categoryResults.map((game) => (
             <Col key={game.id} xs={24} sm={12} md={8} lg={6} xl={4} style={{ padding: '0 8px' }}>
               <Link to={`/games/${game.id}`}>
-                <div className="game-card">
-                  <div className="game-cover">
+                <div className={styles['game-card']}>
+                  <div className={styles['game-cover']}>
                     <img alt="Game Cover" src={`${config.API_URL}/${game.image_path}`} />
                   </div>
-                  <div className="game-info">
-                    <h3 className="game-title">{game.title}</h3>
+                  <div className={styles['game-info']}>
+                    <h3 className={styles['game-title']}>{game.title}</h3>
                   </div>
                 </div>
               </Link>

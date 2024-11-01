@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Row, Col, Skeleton } from 'antd';
 import { Link } from 'react-router-dom';
 import Paginator from '../Paginator/Paginator';
-import styles from './SearchResults.module.css';
+import styles from './SearchResults.module.css'; // Updated import for module CSS
 import config from '../../config';
 
 function useQuery() {
@@ -18,6 +18,7 @@ const SearchResults = () => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [fade, setFade] = useState(false); // For page transition
 
   useEffect(() => {
     fetchSearchResults(searchTerm, currentPage);
@@ -44,12 +45,16 @@ const SearchResults = () => {
 
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
-      setCurrentPage(newPage);
+      setFade(true);
+      setTimeout(() => {
+        setCurrentPage(newPage);
+        setFade(false);
+      }, 300);
     }
   };
 
   return (
-    <div className={styles['container-search-results']}>
+    <div className={`${styles['container-search-results']} ${fade ? styles.fade : ''}`}>
       <h2>Search Results for "{searchTerm}"</h2>
       <div className="d-flex justify-content-center mt-4">
         <Paginator
@@ -96,7 +101,6 @@ const SearchResults = () => {
       </div>
     </div>
   );
-  
 };
 
 export default SearchResults;
