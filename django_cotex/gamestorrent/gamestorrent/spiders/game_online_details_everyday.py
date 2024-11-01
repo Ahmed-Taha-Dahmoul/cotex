@@ -1,109 +1,118 @@
 import scrapy
 import json
 import os
-import urllib.request  # To download images
-from datetime import datetime
+from urllib.parse import urlparse
+from gamestorrent.items import OnlineGameItem
 
-# Ensure Django is set up before importing models
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cotex.settings')
-import django
-django.setup()
-
-from gamestorrent.items import OnlineGameItem  # Import the DjangoItem
-from myapp.models import GameOnline  # Import your Django model
-
-class GameDetailsOnlineSpider(scrapy.Spider):
-    name = "game_details_online"
+class GameOnlineSpider(scrapy.Spider):
+    name = "game_online_details"
     allowed_domains = ["game3rb.com"]
-    scraped_links = set()
+    start_urls = []
+    download_delay = 0.2  # Delay in seconds between requests
+
+    def __init__(self, *args, **kwargs):
+        super(GameOnlineSpider, self).__init__(*args, **kwargs)
+        self.first_scraped_game = None  # Variable to track the first scraped game
+        self.scraped_file_path = os.path.join(os.path.dirname(__file__), '../../scraped_games_online_everyday.json')
+
+        # Load the first scraped game link if the file exists
+        if os.path.exists(self.scraped_file_path):
+            with open(self.scraped_file_path, 'r') as f:
+                try:
+                    scraped_games = json.load(f)
+                    if scraped_games:  # Check if there are any scraped games
+                        self.first_scraped_game = scraped_games[0]  # Load the first scraped game
+                        self.logger.info(f"First scraped game loaded: {self.first_scraped_game}")
+                except json.JSONDecodeError:
+                    self.logger.error(f"Error reading JSON file: {self.scraped_file_path}")
 
     def start_requests(self):
         script_dir = os.path.dirname(__file__)
         rel_path = '../../visited_links_games_online.json'
         abs_file_path = os.path.join(script_dir, rel_path)
 
-        scraped_rel_path = '../../scraped_games_online.json'
-        scraped_abs_file_path = os.path.join(script_dir, scraped_rel_path)
-
-        # Load previously scraped links to avoid duplicates
-        if os.path.exists(scraped_abs_file_path):
-            try:
-                with open(scraped_abs_file_path, 'r') as f:
-                    scraped_games = json.load(f)
-                    self.scraped_links = {game['link'] for game in scraped_games if 'link' in game}
-            except (FileNotFoundError, json.JSONDecodeError) as e:
-                self.logger.error(f"Error reading the scraped games JSON file: {scraped_abs_file_path} - {e}")
-
-        # Load game links to be scraped
+        # Load the visited links from the JSON file
         if os.path.exists(abs_file_path):
             try:
                 with open(abs_file_path, 'r') as f:
-                    existing_games = json.load(f)
-                    for game in existing_games:
-                        link = game.get('link')
-                        if link and link.startswith("//"):
-                            link = "https:" + link
+                    visited_links = json.load(f)
 
-                        if link not in self.scraped_links:
-                            yield scrapy.Request(url=link, callback=self.parse_game, meta={'game': game})
+                    # Check if there are visited links
+                    if visited_links:
+                        first_visited_link = visited_links[0].get('link')
 
-            except (FileNotFoundError, json.JSONDecodeError) as e:
-                self.logger.error(f"Error reading the JSON file: {abs_file_path} - {e}")
+                        # If there are scraped games, check the first one
+                        if self.first_scraped_game and self.first_scraped_game['link'] == first_visited_link:
+                            self.logger.info("Stopping spider as the first visited link matches the first scraped game link.")
+                            return  # Stop the spider if the links match
+
+                        # Start scraping each link one by one
+                        for game in visited_links:
+                            link = game.get('link')
+                            if link:
+                                # Introducing a delay before each request
+                                yield scrapy.Request(url=link, callback=self.parse_game, meta={'title': game.get('title'), 'link': link},
+                                                     dont_filter=True, priority=1)
+            except json.JSONDecodeError:
+                self.logger.error(f"Error reading JSON file: {abs_file_path}")
 
     def parse_game(self, response):
-        """Parse the game details and save to database."""
-        game = response.meta['game']
-        title = game.get('title', 'unknown_title')  # Fallback for title
-        html_code = response.text  # Store the entire HTML content
+        title = response.meta['title']
+        link = response.meta['link']
+        html_content = response.body.decode('utf-8')  # Get the full HTML content
 
-        # Extract image URL
-        image_url = response.css('div.game-page div.game-img img::attr(src)').get()
-        if image_url and image_url.startswith("//"):
-            image_url = "https:" + image_url
+        # Extract title_uri from the link
+        parsed_url = urlparse(link)
+        title_uri = parsed_url.path.split('/')[-1] if parsed_url.path.split('/')[-1] else parsed_url.path.split('/')[-2]
 
-        # Save the image to a specified directory
+        # Extract the image URL from the HTML
+        image_url = response.css('div#post-content div.post-body img::attr(src)').get()
+
+        # If an image URL is found, set the image path
         image_path = None
         if image_url:
-            image_path = self.download_image(image_url, title)
+            image_name = f"{title_uri}.jpg"  # Create a name for the image
+            image_path = f"media/game_images/{image_name}"  # Relative path to save the image
+            yield scrapy.Request(url=image_url, callback=self.download_image, meta={'image_path': image_path, 'title_uri': title_uri})
 
-        # Create an OnlineGameItem to save the data
+        # Create an item instance to yield to the pipeline
         item = OnlineGameItem()
         item['title'] = title
-        item['html_code'] = html_code
-        item['image_path'] = image_path
+        item['title_uri'] = title_uri
+        item['html_code'] = html_content
+        item['image_path'] = image_path  # This will be updated in the download_image callback
 
-        # Save to the database
-        self.save_to_database(item)
+        self.logger.info(f'Scraped HTML for game: {title}, title_uri: {title_uri}, image_path: {image_path}')
 
-        yield item
+        # Save the first scraped game
+        if self.first_scraped_game is None:
+            self.first_scraped_game = {
+                'title': title,
+                'link': link,
+                'title_uri': title_uri
+            }
 
-    def download_image(self, url, title):
-        """Download the image from the URL and save it locally."""
-        try:
-            # Create a directory for images if it doesn't exist
-            image_dir = os.path.join('images', 'game_images')  # Change path as necessary
-            os.makedirs(image_dir, exist_ok=True)
+        yield item  # Yield item for the pipeline to save
 
-            # Construct the file path and download the image
-            image_filename = f"{title.replace(' ', '_')}.jpg"  # Replace spaces for filename
-            image_path = os.path.join(image_dir, image_filename)
+    def download_image(self, response):
+        image_path = response.meta['image_path']
+        title_uri = response.meta['title_uri']
 
-            # Download the image
-            urllib.request.urlretrieve(url, image_path)
-            self.logger.info(f"Downloaded image for {title}: {image_path}")
-            return image_path
-        except Exception as e:
-            self.logger.error(f"Failed to download image {url}: {e}")
-            return None
+        # Ensure the media directory exists
+        media_dir = os.path.join('media', 'game_images')
+        if not os.path.exists(media_dir):
+            os.makedirs(media_dir)
 
-    def save_to_database(self, item):
-        """Save the item to the database (Django model)."""
-        GameOnline.objects.update_or_create(title=item['title'], defaults={
-            'html_code': item['html_code'],
-            'image_path': item['image_path'],
-        })
+        # Save the image
+        with open(os.path.join(media_dir, f"{title_uri}.jpg"), 'wb') as f:
+            f.write(response.body)
+
+        self.logger.info(f'Saved image for {title_uri} at {image_path}')
 
     def closed(self, reason):
-        """Update the scraped links JSON file when the spider closes."""
-        # Optional: Save scraped links to a JSON file if needed
-        pass
+        # After the spider closes, save the first scraped game to the JSON file
+        if self.first_scraped_game:
+            with open(self.scraped_file_path, 'w') as f:
+                json.dump([self.first_scraped_game], f, indent=4)  # Only save the first game
+
+        self.logger.info(f'Spider closed: {reason}')

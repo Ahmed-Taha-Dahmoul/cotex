@@ -31,6 +31,7 @@ class Game(GameBase):
 
 class GameOnline(GameBase):
     image_path = models.CharField(max_length=500, null=True)
+    title_uri = models.CharField(max_length=500, null=True)
     html_code = models.TextField(null=True, blank=True)  # Field to store the HTML code
 
     def __str__(self):
