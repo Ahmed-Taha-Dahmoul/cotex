@@ -10,11 +10,13 @@ class GameOnlineSpider(scrapy.Spider):
     start_urls = []
     download_delay = 0.3  # Delay in seconds between requests
     scraped_links = set()  # Set to store links of scraped games
+    image_src_list = []  # List to store image source URLs
 
     def __init__(self, *args, **kwargs):
         super(GameOnlineSpider, self).__init__(*args, **kwargs)
         self.first_scraped_game = None  # Variable to track the first scraped game
         self.scraped_file_path = os.path.join(os.path.dirname(__file__), '../../scraped_games_online_everyday.json')
+        self.image_src_file_path = os.path.join(os.path.dirname(__file__), '../../image_src_links.json')
 
         # Load the already scraped game links if the file exists
         if os.path.exists(self.scraped_file_path):
@@ -70,41 +72,37 @@ class GameOnlineSpider(scrapy.Spider):
         title_uri = parsed_url.path.split('/')[-1] if parsed_url.path.split('/')[-1] else parsed_url.path.split('/')[-2]
 
         image_url = response.css('div#post-content div.post-body img::attr(src)').get()
-        image_path = None
         if image_url:
-            image_name = f"{title_uri}.jpg"
-            image_path = f"media/game_images/{image_name}"
-            yield scrapy.Request(url=image_url, callback=self.download_image, meta={'image_path': image_path, 'title_uri': title_uri})
+            # Save the image src to the list (if you still want to keep track)
+            self.image_src_list.append({
+                'title': title,
+                'link': link,
+                'image_src': image_url
+            })
 
+        # Create an OnlineGameItem and set image_url
         item = OnlineGameItem()
         item['title'] = title
         item['title_uri'] = title_uri
-        item['html_code'] = html_content
-        item['image_path'] = image_path
+        item['html_code'] = html_content  # This will store the HTML code
+        item['image_url'] = image_url  # This will store the image URL
 
         yield item
 
-    def download_image(self, response):
-        image_path = response.meta['image_path']
-        title_uri = response.meta['title_uri']
-
-        # Ensure the media directory exists
-        media_dir = os.path.join('media', 'game_images')
-        if not os.path.exists(media_dir):
-            os.makedirs(media_dir)
-
-        # Save the image
-        with open(os.path.join(media_dir, f"{title_uri}.jpg"), 'wb') as f:
-            f.write(response.body)
-
-        self.logger.info(f'Saved image for {title_uri} at {image_path}')
-
     def closed(self, reason):
-        # After the spider closes, save only the first scraped game to the JSON file
+        # After the spider closes, save the image sources to the JSON file
+        if self.image_src_list:
+            try:
+                with open(self.image_src_file_path, 'w') as f:
+                    json.dump(self.image_src_list, f, indent=4)
+                self.logger.info(f'Saved {len(self.image_src_list)} image src links to {self.image_src_file_path}')
+            except IOError as e:
+                self.logger.error(f"Failed to write image src links to {self.image_src_file_path}: {e}")
+
+        # Save only the first scraped game to the JSON file
         if self.first_scraped_game:
             try:
                 with open(self.scraped_file_path, 'w') as f:
-                    # Write only the first scraped game as the only entry in the file
                     json.dump([self.first_scraped_game], f, indent=4)
                 self.logger.info(f'Updated the scraped games file with the first game: {self.first_scraped_game["title"]}')
             except IOError as e:

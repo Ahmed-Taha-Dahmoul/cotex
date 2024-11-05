@@ -27,6 +27,7 @@ share/python-wheels/
 MANIFEST
 
 /django_cotex/media/game_images/*
+/django_cotex/media/online_game_images/*
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
